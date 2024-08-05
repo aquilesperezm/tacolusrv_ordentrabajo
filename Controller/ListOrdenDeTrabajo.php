@@ -31,7 +31,10 @@ class ListOrdenDeTrabajo extends ListController
 
     protected function createViewsOrdenDeTrabajo(string $viewName = "ListOrdenDeTrabajo"): void
     {
-        $this->addView($viewName, "OrdenDeTrabajo", "Ordenes de Trabajo","fas fa-file-alt");
+
+        $this->setTemplate('Test');
+
+       // $this->addView($viewName, "OrdenDeTrabajo", "Ordenes de Trabajo","fas fa-file-alt");
         
         // Esto es un ejemplo ... debe de cambiarlo según los nombres de campos del modelo
         // $this->addOrderBy($viewName, ["id"], "id", 2);

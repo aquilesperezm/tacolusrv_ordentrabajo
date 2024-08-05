@@ -1,0 +1,24 @@
+{% extends "Master/MenuTemplate.html.twig" %}
+
+{% block body %}
+	{{ parent() }}
+	<div id="RenderAPP">
+    </div>
+{% endblock %}
+
+{% block css %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/theme-neptune-all.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/charts-all.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/ux-all.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('Plugins/OrdenDeTrabajo/Assets/CSS/style.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('Plugins/OrdenDeTrabajo/Assets/JS/Extjs/ext-all.js') }}"></script>
+	<script src="{{ asset('Plugins/OrdenDeTrabajo/Assets/JS/Extjs/charts.js') }}"></script>
+	<script src="{{ asset('Plugins/OrdenDeTrabajo/Assets/JS/Extjs/theme-neptune.js') }}"></script>
+	<script src="{{ asset('Plugins/OrdenDeTrabajo/Assets/JS/Extjs/ux.js') }}"></script>
+	<script src="{{ asset('Plugins/OrdenDeTrabajo/App/app.js') }}"></script>
+{% endblock %}

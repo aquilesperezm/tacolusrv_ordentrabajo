@@ -3,6 +3,9 @@
 namespace FacturaScripts\Plugins\OrdenDeTrabajo;
 
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Core\Controller\ApiRoot;
+use FacturaScripts\Core\Kernel;
+
 
 /**
  * Los plugins pueden contener un archivo Init.php en el que se definen procesos a ejecutar
@@ -15,6 +18,11 @@ class Init extends InitClass
     public function init(): void
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
+
+        Kernel::addRoute('/api/3/mi-endpoint', 'ApiControllerPruebas', -1);
+        ApiRoot::addCustomResource('mi-endpoint');
+
+
     }
 
     public function uninstall(): void
