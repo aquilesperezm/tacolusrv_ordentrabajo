@@ -41,19 +41,29 @@ Ext.application({
             }*/,
         {
           region: "center",
-          xtype: "tabpanel", // TabPanel itself has no title
-          activeTab: 0, // First tab active by default
+          xtype: "container", // TabPanel itself has no title
+          //activeTab: 0, // First tab active by default
           items: {
-            title: "Ordenes de Trabajo",
+           // title: "Ordenes de Trabajo",
             items: [
               {
                 xtype: "panel",
                 // title: "Grid",
-
+                tbar: [
+                  {
+                    text: "Adicionar Orden de Trabajo"
+                  },{
+                    text: "Actualizar Orden de Trabajo"
+                  },{
+                    text: "Eliminar Orden de Trabajo"
+                  },{
+                    text: "Imprimir Orden de Trabajo"
+                  }
+                ],
                 items: [
                   {
                     xtype: "grid",
-                    title: "Tabla",
+                    title: "Ordenes de Trabajo",
                     columns: [
                       {
                         text: "No. Orden de Trabajo",
@@ -76,10 +86,21 @@ Ext.application({
                         flex: 1,
                       },
                     ],
-                  },
+                  },{
+                    xtype: "grid",
+                    title: "Tipos de Intervenciones por Orden de Trabajo Seleccionada",
+                    columns: [
+                      {
+                        text: "Nombre de Intervención",
+                        flex: 1,
+                      }
+                    ],
+                  },{
+                    xtype:'form',
+                    title:'Formulario para Orden de Trabajo'
+                  }
                 ],
-              }
-             
+              },
             ],
           },
         },

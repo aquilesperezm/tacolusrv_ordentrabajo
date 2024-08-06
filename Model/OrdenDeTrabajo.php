@@ -9,29 +9,30 @@ class OrdenDeTrabajo extends ModelClass
 {
     use ModelTrait;
 
-    /** @var string */
-    public $fecha_orden;
-
     /** @var int */
     public $id;
 
-    /** @var int */
-    public $id_cliente;
+    /** @var string */
+    public $numero_orden;
+
+    /** @var string */
+    public $fecha_orden;
+
+    /** @var string */
+    public $codcliente;
 
     /** @var int */
     public $id_tacografo;
 
     /** @var int */
     public $id_vehiculo;
-
-    /** @var string */
-    public $numero_orden;
+    
 
     public function clear() 
     {
         parent::clear();
         $this->fecha_orden = date(self::DATE_STYLE);
-        $this->id_cliente = 0;
+        //$this->id_cliente = 0;
         $this->id_tacografo = 0;
         $this->id_vehiculo = 0;
     }
