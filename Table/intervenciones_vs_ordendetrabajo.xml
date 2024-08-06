@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+    <column>
+        <name>id</name>
+        <type>serial</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>id_ordendetrabajo</name>
+        <type>integer</type>
+        <null>NO</null>
+    </column>
+    <column>
+        <name>id_tipodeintervencion</name>
+        <type>integer</type>
+        <null>NO</null>
+    </column>
+    <constraint>
+        <name>intervenciones_vs_ordendetrabajo_pkey</name>
+        <type>PRIMARY KEY (id)</type>
+        <!--
+
+    CONSTRAINT `intervenciones_vs_ordendetrabajo_fk1` FOREIGN KEY (`id_ordendetrabajo`) REFERENCES `ordenes_de_trabajo` (`id`) ON UPDATE CASCADE,
+    CONSTRAINT `intervenciones_vs_ordendetrabajo_fk2` FOREIGN KEY (`id_tipodeintervencion`) REFERENCES `tiposintervenciones` (`id`) ON UPDATE CASCADE
+    -->
+    <constraint>
+        <name>intervenciones_vs_ordendetrabajo_fk1</name>
+        <type>FOREIGN KEY (id_ordendetrabajo) REFERENCES ordenes_de_trabajo (id) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+
+    <constraint>
+        <name>intervenciones_vs_ordendetrabajo_fk2</name>
+        <type>FOREIGN KEY (id_tipodeintervencion) REFERENCES tiposintervenciones (id) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+
+    </constraint>
+</table>

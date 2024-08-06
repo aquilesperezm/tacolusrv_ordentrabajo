@@ -16,8 +16,8 @@
         <null>NO</null>
     </column>
     <column>
-        <name>id_cliente</name>
-        <type>integer</type>
+        <name>codcliente</name>
+        <type>character varying(10)</type>
         <null>NO</null>
     </column>
     <column>
@@ -39,4 +39,22 @@
         <name>ordenes_de_trabajo_pkey</name>
         <type>PRIMARY KEY (id)</type>
     </constraint>
+    <!-- Llaves foraneas -->
+     <constraint>
+        <name>ordenes_de_trabajo_fk1</name>
+        <type>FOREIGN KEY (codcliente) REFERENCES clientes (codcliente) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+    <constraint>
+        <name>ordenes_de_trabajo_fk2</name>
+        <type>FOREIGN KEY (id_vehiculo) REFERENCES vehiculos (id) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+    <constraint>
+        <name>ordenes_de_trabajo_fk3</name>
+        <type>FOREIGN KEY (id_centroautorizado) REFERENCES centrosautorizados (id) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+    <constraint>
+        <name>ordenes_de_trabajo_fk4</name>
+        <type>FOREIGN KEY (id_tacografo) REFERENCES tacografos (id) ON DELETE RESTRICT ON UPDATE CASCADE</type>
+    </constraint>
+
 </table>
