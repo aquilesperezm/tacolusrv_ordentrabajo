@@ -1,7 +1,8 @@
 Ext.define('MyApp.controller.UserInterfaceController', {
     extend: 'Ext.app.Controller',
 
-    views:[],
+    stores:['OrdenesDeTrabajoStore'],
+    views:['UserInterfaceManager'],
 
     init: function() {
         console.log('Initialized Users! This happens before ' +

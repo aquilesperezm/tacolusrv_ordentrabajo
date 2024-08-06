@@ -19,8 +19,8 @@ class Init extends InitClass
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
 
-        Kernel::addRoute('/api/3/mi-endpoint', 'ApiControllerPruebas', -1);
-        ApiRoot::addCustomResource('mi-endpoint');
+        Kernel::addRoute('/api/3/getusers', 'API_OrdenDeTrabajo', -1);
+        ApiRoot::addCustomResource('getusers');
 
 
     }

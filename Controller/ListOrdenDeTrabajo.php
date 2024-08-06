@@ -32,7 +32,7 @@ class ListOrdenDeTrabajo extends ListController
     protected function createViewsOrdenDeTrabajo(string $viewName = "ListOrdenDeTrabajo"): void
     {
 
-        $this->setTemplate('Test');
+        $this->setTemplate('OrdenesDeTrabajo');
 
        // $this->addView($viewName, "OrdenDeTrabajo", "Ordenes de Trabajo","fas fa-file-alt");
         
