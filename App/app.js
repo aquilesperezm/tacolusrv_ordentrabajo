@@ -1,30 +1,30 @@
 Ext.application({
-    name: 'MyApp',
-    appFolder: 'Plugins/OrdenDeTrabajo/App',
-    // The name of the initial view to create. With the classic toolkit this class
-    // will gain a "viewport" plugin if it does not extend Ext.Viewport. With the
-    // modern toolkit, the main view will be added to the Viewport.
-    //
-    //mainView: 'Main.view.main.Main'
-    controllers:['Users'],
-    models:[],
-    
-    launch: ()=>{
-        
-        Ext.create('Ext.container.Viewport', {
-            layout: 'border',
-            items: [{
-                region: 'north',
-                html: '<h1 class="x-panel-header">Ordenes de Trabajo</h1>',
-                border: false,
-                margin: '0 0 5 0'
-            }/*, {
+  name: "MyApp",
+  appFolder: "Plugins/OrdenDeTrabajo/App",
+  // The name of the initial view to create. With the classic toolkit this class
+  // will gain a "viewport" plugin if it does not extend Ext.Viewport. With the
+  // modern toolkit, the main view will be added to the Viewport.
+  //
+  //mainView: 'Main.view.main.Main'
+  controllers: ["UserInterfaceController"],
+  models: [],
+
+  launch: () => {
+    Ext.create("Ext.container.Viewport", {
+      layout: "border",
+      items: [
+        {
+          region: "north",
+          html: '<h1 class="x-panel-header">Ordenes de Trabajo</h1>',
+          border: false,
+          margin: "0 0 5 0",
+        } /*, {
                 region: 'west',
                 collapsible: true,
                 title: 'Navigation',
                 width: 150
                 // could use a TreePanel or AccordionLayout for navigational items
-            }*/, {
+            }, {
                 region: 'south',
                 title: 'Información',
                 collapsible: false,
@@ -38,17 +38,52 @@ Ext.application({
                 collapsible: true,
                 split: true,
                 width: 150
-            }, {
-                region: 'center',
-                xtype: 'tabpanel', // TabPanel itself has no title
-                activeTab: 0,      // First tab active by default
-                items: {
-                    title: 'Ordenes de Trabajo',
-                    html: 'The first tab\'s content. Others may be added dynamically'
-                }
-            }]
-        });
-        
-    }
+            }*/,
+        {
+          region: "center",
+          xtype: "tabpanel", // TabPanel itself has no title
+          activeTab: 0, // First tab active by default
+          items: {
+            title: "Ordenes de Trabajo",
+            items: [
+              {
+                xtype: "panel",
+                // title: "Grid",
 
+                items: [
+                  {
+                    xtype: "grid",
+                    title: "Tabla",
+                    columns: [
+                      {
+                        text: "No. Orden de Trabajo",
+                        flex: 1,
+                      },
+                      {
+                        text: "Centro Autorizado",
+                        flex: 1,
+                      },
+                      {
+                        text: "Cliente",
+                        flex: 1,
+                      },
+                      {
+                        text: "Vehículo",
+                        flex: 1,
+                      },
+                      {
+                        text: "No. Serie Tacografo",
+                        flex: 1,
+                      },
+                    ],
+                  },
+                ],
+              }
+             
+            ],
+          },
+        },
+      ],
+    });
+  },
 });

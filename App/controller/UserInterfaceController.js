@@ -1,5 +1,7 @@
-Ext.define('MyApp.controller.Users', {
+Ext.define('MyApp.controller.UserInterfaceController', {
     extend: 'Ext.app.Controller',
+
+    views:[],
 
     init: function() {
         console.log('Initialized Users! This happens before ' +
