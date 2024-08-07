@@ -6,6 +6,7 @@ use FacturaScripts\Core\Template\InitClass;
 use FacturaScripts\Core\Controller\ApiRoot;
 use FacturaScripts\Core\Kernel;
 
+use mysqli;
 
 /**
  * Los plugins pueden contener un archivo Init.php en el que se definen procesos a ejecutar
@@ -15,13 +16,15 @@ use FacturaScripts\Core\Kernel;
  */
 class Init extends InitClass
 {
+
+
     public function init(): void
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
 
         Kernel::addRoute('/api/3/getusers', 'API_OrdenDeTrabajo', -1);
         ApiRoot::addCustomResource('getusers');
-
+        
 
     }
 
@@ -33,5 +36,6 @@ class Init extends InitClass
     public function update(): void
     {
         // se ejecuta cada vez que se instala o actualiza el plugin
+
     }
 }
