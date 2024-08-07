@@ -56,10 +56,12 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                   {
                     text: "Vehículo",
                     flex: 1,
+                    dataIndex:'full_vehiculo'
                   },
                   {
                     text: "No. Serie Tacografo",
                     flex: 1,
+                    dataIndex:'no_serie_tacografo'
                   },
                 ],
               },

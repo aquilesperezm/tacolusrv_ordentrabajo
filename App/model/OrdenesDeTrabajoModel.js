@@ -14,8 +14,11 @@ Ext.define('MyApp.model.OrdenesDeTrabajoModel', {
             + " / " + data.nombre_cliente}},
         {name: 'full_centroautorizado', type: 'string', calculate: (data)=>{return data.codigo_centroautorizado
              + " - " + data.nombre_centroautorizado}},
-
-            
-
+        {name: 'no_chasis', type: 'string'},
+        {name: 'matricula', type: 'string'},
+        {name: 'full_vehiculo', type: 'string', calculate: (data)=>{return data.no_chasis
+            + " / " + data.matricula}},
+        {name: 'no_serie_tacografo', type: 'string'},    
+  
     ]
 });
