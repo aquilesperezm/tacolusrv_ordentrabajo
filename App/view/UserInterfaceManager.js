@@ -7,7 +7,7 @@ Ext.define("MyApp.view.UserInterfaceManager", {
       html: '<h1 class="x-panel-header">Ordenes de Trabajo</h1>',
       border: false,
       margin: "0 0 5 0",
-    }, 
+    },
     {
       region: "center",
       xtype: "container", // TabPanel itself has no title
@@ -36,32 +36,41 @@ Ext.define("MyApp.view.UserInterfaceManager", {
               {
                 xtype: "grid",
                 title: "Ordenes de Trabajo",
-                store:'OrdenesDeTrabajoStore',
+                store: "OrdenesDeTrabajoStore",
+                selModel: {
+                  type: "checkboxmodel",
+                  checkOnly: true,
+                },
                 columns: [
+                  {
+                    xtype: "rownumberer",
+                    flex:0.1,
+                    text:'#'
+                  },
                   {
                     text: "No. Orden de Trabajo",
                     flex: 1,
-                    dataIndex:'numero_orden'
+                    dataIndex: "numero_orden",
                   },
                   {
                     text: "Centro Autorizado",
                     flex: 1,
-                    dataIndex:'full_centroautorizado'
+                    dataIndex: "full_centroautorizado",
                   },
                   {
                     text: "Cliente",
                     flex: 1,
-                    dataIndex:'full_cliente'
+                    dataIndex: "full_cliente",
                   },
                   {
                     text: "Vehículo",
                     flex: 1,
-                    dataIndex:'full_vehiculo'
+                    dataIndex: "full_vehiculo",
                   },
                   {
                     text: "No. Serie Tacografo",
                     flex: 1,
-                    dataIndex:'no_serie_tacografo'
+                    dataIndex: "no_serie_tacografo",
                   },
                 ],
               },
