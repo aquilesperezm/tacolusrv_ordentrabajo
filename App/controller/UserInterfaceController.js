@@ -1,7 +1,7 @@
 Ext.define('MyApp.controller.UserInterfaceController', {
     extend: 'Ext.app.Controller',
 
-    stores:['OrdenesDeTrabajoStore'],
+    stores:['OrdenesDeTrabajoStore','IntervencionByIDOrdenStore'],
     views:['UserInterfaceManager'],
 
     init: function() {

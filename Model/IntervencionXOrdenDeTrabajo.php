@@ -32,7 +32,7 @@ class IntervencionXOrdenDeTrabajo extends ModelClass
 
     public static function tableName(): string
     {
-        return "intervenciones_vs_ordendetrabajo";
+        return "rel_tipodeintervencion_ordenesdetrabajo";
     }
 
     public function test(): bool

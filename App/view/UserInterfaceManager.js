@@ -10,13 +10,15 @@ Ext.define("MyApp.view.UserInterfaceManager", {
     },
     {
       region: "center",
-      xtype: "container", // TabPanel itself has no title
+      xtype: "container",
+      scrollable: true, // TabPanel itself has no title
       //activeTab: 0, // First tab active by default
       items: {
         // title: "Ordenes de Trabajo",
         items: [
           {
             xtype: "panel",
+            scrollable: true,
             // title: "Grid",
             tbar: [
               {
@@ -39,13 +41,13 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                 store: "OrdenesDeTrabajoStore",
                 selModel: {
                   type: "checkboxmodel",
-                  checkOnly: true,
+                  checkOnly: false,
                 },
                 columns: [
                   {
                     xtype: "rownumberer",
-                    flex:0.1,
-                    text:'#'
+                    flex: 0.1,
+                    text: "#",
                   },
                   {
                     text: "No. Orden de Trabajo",
@@ -70,18 +72,29 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                   {
                     text: "No. Serie Tacografo",
                     flex: 1,
-                    dataIndex: "no_serie_tacografo",
+                    dataIndex: "no_serie_tacografo"
                   },
                 ],
               },
               {
                 xtype: "grid",
+                height: 300,
                 title:
                   "Tipos de Intervenciones por Orden de Trabajo Seleccionada",
+                selModel: {
+                  type: "checkboxmodel",
+                  checkOnly: false
+                },
+                store: "IntervencionByIDOrdenStore",
                 columns: [
                   {
+                    xtype: "rownumberer",
+                    flex: 0.01,
+                    text: "#"
+                  },
+                  {
                     text: "Nombre de Intervención",
-                    flex: 1,
+                    flex: 1
                   },
                 ],
               },

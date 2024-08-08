@@ -8,6 +8,9 @@ use FacturaScripts\Core\Kernel;
 
 use mysqli;
 
+use FacturaScripts\Plugins\OrdenDeTrabajo\Model\OrdenDeTrabajo;
+use FacturaScripts\Plugins\OrdenDeTrabajo\Model\IntervencionXOrdenDeTrabajo;
+
 /**
  * Los plugins pueden contener un archivo Init.php en el que se definen procesos a ejecutar
  * cada vez que carga FacturaScripts o cuando se instala o actualiza el plugin.
@@ -22,10 +25,15 @@ class Init extends InitClass
     {
         // se ejecuta cada vez que carga FacturaScripts (si este plugin está activado).
 
-        Kernel::addRoute('/api/3/getusers', 'API_OrdenDeTrabajo', -1);
-        ApiRoot::addCustomResource('getusers');
-        
+        $orden = new OrdenDeTrabajo();
+        $rel_1 = new IntervencionXOrdenDeTrabajo();
 
+        Kernel::addRoute('/api/3/get_ordenesdetrabajo', 'API_OrdenDeTrabajo', -1);
+        ApiRoot::addCustomResource('get_ordenesdetrabajo');
+        
+        Kernel::addRoute('/api/3/get_intervencion_by_ordenid', 'API_IntervencionesByOrdenDeTrabajo', -1);
+        ApiRoot::addCustomResource('get_intervencion_by_ordenid');
+        
     }
 
     public function uninstall(): void

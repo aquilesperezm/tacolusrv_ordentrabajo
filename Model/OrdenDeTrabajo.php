@@ -44,7 +44,7 @@ class OrdenDeTrabajo extends ModelClass
 
     public static function tableName(): string
     {
-        return "ordenes_de_trabajo";
+        return "ordenesdetrabajo";
     }
 
     public function test(): bool

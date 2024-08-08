@@ -4,7 +4,7 @@ Ext.define("MyApp.store.OrdenesDeTrabajoStore", {
   proxy: {
     headers: {Token:'TacoLuServices2024**'},
     type: "ajax",
-    url: "/facturascripts/api/3/getusers",
+    url: "/facturascripts/api/3/get_ordenesdetrabajo",
     reader: {
       type: "json",
       rootProperty: "ordenes",
