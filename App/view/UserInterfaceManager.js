@@ -23,6 +23,7 @@ Ext.define("MyApp.view.UserInterfaceManager", {
             tbar: [
               {
                 text: "Adicionar Orden de Trabajo",
+                id:'Adicionar_Orden'
               },
               {
                 text: "Actualizar Orden de Trabajo",
@@ -76,7 +77,7 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                   },
                 ],
                 listeners:{
-                     selectionchange: (grid,records)=>{
+                     selectionchange: function(grid,records){
                       var store = Ext.data.StoreManager.lookup('IntervencionByIDOrdenStore');
                           
                         if(records.length == 1){
