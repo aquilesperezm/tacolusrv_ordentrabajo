@@ -75,6 +75,19 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                     dataIndex: "no_serie_tacografo"
                   },
                 ],
+                listeners:{
+                     selectionchange: (grid,records)=>{
+                      var store = Ext.data.StoreManager.lookup('IntervencionByIDOrdenStore');
+                          
+                        if(records.length == 1){
+                          store.load({
+                            params:{'id_orden':records[0].id}
+                          });
+                        } else {
+                          store.loadData([],false);
+                        }
+                     }
+                }
               },
               {
                 xtype: "grid",
@@ -94,7 +107,8 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                   },
                   {
                     text: "Nombre de Intervención",
-                    flex: 1
+                    flex: 1,
+                    dataIndex:'nombre_tipointervencion'
                   },
                 ],
               },

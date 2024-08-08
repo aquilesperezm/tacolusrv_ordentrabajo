@@ -6,7 +6,12 @@ use FacturaScripts\Plugins\OrdenDeTrabajo\Model\OrdenDeTrabajo;
 use FacturaScripts\Plugins\Nomencladores\Model\Vehiculo;
 use FacturaScripts\Plugins\Nomencladores\Model\CentroAutorizado;
 use FacturaScripts\Plugins\Nomencladores\Model\Tacografo;
+use FacturaScripts\Plugins\Nomencladores\Model\TipoIntervencion;
+
 use FacturaScripts\Core\Model\Cliente;
+
+use FacturaScripts\Core\DbQuery;
+
 
 class API_IntervencionesByOrdenDeTrabajo extends ApiController
 {
@@ -22,10 +27,30 @@ class API_IntervencionesByOrdenDeTrabajo extends ApiController
 
         if($this->request->isMethod('GET')){
             
-            
+            $id_orden = $_GET['id_orden'];
 
-           /* $result = [];
-            $u = new OrdenDeTrabajo();
+            $result = [];
+
+            $orden = new OrdenDeTrabajo();
+            $tipo_intervecion = new TipoIntervencion();
+
+            $intervenciones_hechas = DbQuery::table('rel_tipodeintervencion_ordenesdetrabajo')->whereEq('id_ordendetrabajo', $id_orden)->get();
+            
+            foreach($intervenciones_hechas as $intervencion){
+                $data = [];
+                
+               // var_dump($intervencion);
+               
+                $data['id_rel_int_ord'] = $intervencion['id'];
+                $data['id_tipointervencion'] = $intervencion['id_tipodeintervencion'];
+                $data['nombre_tipointervencion'] =  $tipo_intervecion->get($intervencion['id_tipodeintervencion'])->nombre;
+                array_push($result,$data);
+            }
+           
+            $data = ["intervenciones"=> $result];
+            $this->response->setContent(json_encode($data));
+
+            /*$u = new OrdenDeTrabajo();
             $ordenes = (array) $u->all();
 
                 foreach ($ordenes as $orden){
@@ -40,9 +65,9 @@ class API_IntervencionesByOrdenDeTrabajo extends ApiController
                     array_push($result,$orden);
                 }
 
-              $data = ["ordenes"=> $result];
+              $data = ["intervenciones"=> $result];*/
 
-            $this->response->setContent(json_encode($data));*/
+           // $this->response->setContent(json_encode($data));
 
         } else {
            // $this->response->setStatusCode(403);

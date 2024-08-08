@@ -10,5 +10,5 @@ Ext.define("MyApp.store.IntervencionByIDOrdenStore", {
         rootProperty: "intervenciones",
       },
     },
-    autoLoad: true,
+    autoLoad: false
   });
