@@ -4,7 +4,6 @@ namespace FacturaScripts\Plugins\OrdenDeTrabajo\Controller;
 
 use FacturaScripts\Core\Lib\ExtendedController\ListController;
 
-
 /**
  * Este es un controlador específico para listados. Permite una o varias pestañas.
  * Cada una con un listado de los registros de un modelo.
@@ -12,29 +11,25 @@ use FacturaScripts\Core\Lib\ExtendedController\ListController;
  *
  * https://facturascripts.com/publicaciones/listcontroller-232
  */
-class ListOrdenDeTrabajo extends ListController
+class ListVehiculoPorTacografo extends ListController
 {
     public function getPageData(): array
     {
         $pageData = parent::getPageData();
-        $pageData["title"] = "3. Ordenes de Trabajo";
+        $pageData["title"] = "2. Vehículos por Tacógrafos";
         $pageData["menu"] = "Ordenes de Trabajo";
-        $pageData["icon"] = "fas fa-file-alt";
+        $pageData["icon"] = "fas fa-atom";
         return $pageData;
     }
 
     protected function createViews(): void
     {
-        $this->createViewsOrdenDeTrabajo();
-        
+        $this->createViewsVehiculoPorTacografo();
     }
 
-    protected function createViewsOrdenDeTrabajo(string $viewName = "ListOrdenDeTrabajo"): void
+    protected function createViewsVehiculoPorTacografo(string $viewName = "ListVehiculoPorTacografo"): void
     {
-
-        $this->setTemplate('OrdenesDeTrabajo');
-
-       // $this->addView($viewName, "OrdenDeTrabajo", "Ordenes de Trabajo","fas fa-file-alt");
+        $this->addView($viewName, "VehiculoPorTacografo", "Vehiculos por Tacografos");
         
         // Esto es un ejemplo ... debe de cambiarlo según los nombres de campos del modelo
         // $this->addOrderBy($viewName, ["id"], "id", 2);
