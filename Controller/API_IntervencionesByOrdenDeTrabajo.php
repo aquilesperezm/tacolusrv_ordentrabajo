@@ -25,6 +25,7 @@ class API_IntervencionesByOrdenDeTrabajo extends ApiController
         $vehiculo = new Vehiculo();
         $tacografo = new Tacografo();
 
+        
         if($this->request->isMethod('GET')){
             
             $id_orden = $_GET['id_orden'];
@@ -42,6 +43,9 @@ class API_IntervencionesByOrdenDeTrabajo extends ApiController
                // var_dump($intervencion);
                
                 $data['id_rel_int_ord'] = $intervencion['id'];
+                
+                //$data['test'] = $this->request->getPathInfo();
+                
                 $data['id_tipointervencion'] = $intervencion['id_tipodeintervencion'];
                 $data['nombre_tipointervencion'] =  $tipo_intervecion->get($intervencion['id_tipodeintervencion'])->nombre;
                 array_push($result,$data);

@@ -17,7 +17,7 @@ class ListOrdenDeTrabajo extends ListController
     public function getPageData(): array
     {
         $pageData = parent::getPageData();
-        $pageData["title"] = "3. Ordenes de Trabajo";
+        $pageData["title"] = "Ordenes de Trabajo";
         $pageData["menu"] = "Ordenes de Trabajo";
         $pageData["icon"] = "fas fa-file-alt";
         return $pageData;

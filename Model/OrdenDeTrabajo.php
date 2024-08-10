@@ -18,9 +18,6 @@ class OrdenDeTrabajo extends ModelClass
     /** @var string */
     public $fecha_orden;
 
-    /** @var string */
-    public $codcliente;
-
     /** @var int */
     public $id_tacografo;
 

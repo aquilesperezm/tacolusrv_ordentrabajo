@@ -28,10 +28,16 @@ class API_OrdenDeTrabajo extends ApiController
 
                 foreach ($ordenes as $orden){
                     $orden = (array) $orden;
-                    $orden["codigo_centroautorizado"] = ($centroauth->get($orden['id_centroautorizado']))->codigo_centroautorizado;
-                    $orden["nombre_centroautorizado"] = ($centroauth->get($orden['id_centroautorizado']))->nombre_centroautorizado;
-                    $orden["nombre_cliente"] = ($cliente->get($orden['codcliente']))->nombre;
-                    $orden["cifnif_cliente"] = ($cliente->get($orden['codcliente']))->cifnif;
+                    
+                    // se obtiene por el id_vehiculo (vehiculo) -> id_centro_autorizado (centroautorizado)
+                    $orden["codigo_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->codigo_centroautorizado;
+                    $orden["nombre_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->nombre_centroautorizado;
+                   
+                    // se obtiene por el id_vehiculo (vehiculo) -> id_cliente (cliente)
+                    $orden["nombre_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->nombre;
+                    $orden["cifnif_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->cifnif;
+                    
+
                     $orden["no_chasis"] = ($vehiculo->get($orden['id_vehiculo']))->num_chasis;
                     $orden["matricula"] = ($vehiculo->get($orden['id_vehiculo']))->matricula;  
                     $orden["no_serie_tacografo"] = ($tacografo->get($orden['id_tacografo']))->numero_serie;  

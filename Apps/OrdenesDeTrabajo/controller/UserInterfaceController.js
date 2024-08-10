@@ -1,14 +1,42 @@
 Ext.define("MyApp.controller.UserInterfaceController", {
   extend: "Ext.app.Controller",
 
-  stores: ["OrdenesDeTrabajoStore", "IntervencionByIDOrdenStore"],
+  stores: ["OrdenesDeTrabajoStore", "IntervencionByIDOrdenStore",
+           "VehiculosStore"
+  ],
   views: ["UserInterfaceManager"],
 
   control: {
     "#Adicionar_Orden": {
       click: "onClick_Adicionar_Orden",
     },
+    "#card-0 > grid": {
+      select: "onSelectVehiculo_AddOrden"
+    },
+    '#CardPanel_AddOrden button[text="Siguiente"]': {
+      click: "FormAddOrden_Forward"
+    },
+    '#CardPanel_AddOrden button[text="Anterior"]': {
+      click: "FormAddOrden_Backward"
+    }
+
   },
+
+
+  FormAddOrden_Forward: function(btn,e){
+    this.doCardNavigation(1);
+  },
+
+  FormAddOrden_Backward: function(btn,e){
+    this.doCardNavigation(-1);
+  },
+
+  onSelectVehiculo_AddOrden: function(selmodel,record,index){
+    var btn = Ext.ComponentQuery.query('#CardPanel_AddOrden button[text="Siguiente"]')[0];
+    btn.setDisabled(false)
+
+  },
+
 
   init: function () {},
 
@@ -22,15 +50,21 @@ Ext.define("MyApp.controller.UserInterfaceController", {
     l.setActiveItem(next);
 
     card_panel.down("#card-prev").setDisabled(next === 0);
-    card_panel.down("#card-next").setDisabled(next === 5);
+    card_panel.down("#card-next").setDisabled(next === 1);
   },
 
   onClick_Adicionar_Orden: function () {
+    
+
+    var vehiculos_store = Ext.StoreManager.lookup('VehiculosStore');
+    vehiculos_store.load();
+  
+
     Ext.create("Ext.window.Window", {
       title: "Adicionar Orden de Trabajo",
       resizable:false,
-      height: "50%",
-      width: "30%",
+      height: "70%",
+      width: "70%",
       layout: "fit",
       items: [
         {
@@ -43,10 +77,11 @@ Ext.define("MyApp.controller.UserInterfaceController", {
             {
               id: "card-0",
               xtype:'panel',
-              title:'Selección del Centro Autorizado',
+              title:'Selección del Vehículo',
               items:[{
                 xtype:'grid',
-                title:'Centros Autorizados',
+                title:'Vehículos',
+                store:'VehiculosStore',
                 padding:10,
                 height:250,
                 selModel: {
@@ -59,11 +94,33 @@ Ext.define("MyApp.controller.UserInterfaceController", {
                   flex: 0.01,
                   text: "#"
                 },{
-                  text:'Código',
-                  flex:1
+                  text:'Matricula',
+                  flex:1,
+                  dataIndex:'matricula'
                 },{
-                  text:'Nombre',
-                  flex:5
+                  text:'Número de Chasis',
+                  flex:1,
+                  dataIndex:'num_chasis'
+                },{
+                  text:'Cliente',
+                  flex:1,
+                  dataIndex:'description_cliente'
+                },{
+                  text:'Marca',
+                  flex:1,
+                  dataIndex:'nombre_marca'
+                },{
+                  text:'Modelo',
+                  flex:1,
+                  dataIndex:'nombre_modelo'
+                },{
+                  text:'Tipo de vehículo',
+                  flex:1,
+                  dataIndex:'nombre_categoria'
+                },{
+                  text:'¿Tiene Tacógrafo?',
+                  flex:1,
+                  dataIndex:'tiene_tacografo_str'
                 }]
               },{
                 xtype:'form',
@@ -76,7 +133,12 @@ Ext.define("MyApp.controller.UserInterfaceController", {
                   padding:10
                 },{
                   xtype:'button',
-                  text:'Buscar',
+                  text:'Buscar Vehículo',
+                  margin:10
+                },{
+                  xtype:'button',
+                  disabled:true,
+                  text:'Vincular Tacógrafo',
                   margin:10
                 }]
               },]
@@ -84,31 +146,33 @@ Ext.define("MyApp.controller.UserInterfaceController", {
             {
               id: "card-1",
               xtype:'panel',
-              title:'Selección del Cliente',
+              title:'Selección de los tipos de Intervenciones',
               items:[{
-                xtype:'grid',
-                title:'Clientes',
+                xtype: "grid",
                 padding:10,
                 height:250,
+                //height: 300,
+                title:
+                  "Tipos de Intervenciones por Orden de Trabajo Seleccionada",
                 selModel: {
                   type: "checkboxmodel",
-                  checkOnly: false,
-                  mode:'SINGLE'
+                  checkOnly: false
                 },
-                columns:[{
-                  xtype: "rownumberer",
-                  flex: 0.01,
-                  text: "#"
-                },{
-                  text:'CIF / NIF',
-                  flex:1
-                },{
-                  text:'Nombre',
-                  flex:1
-                },{
-                  text:'E-Mail',
-                  flex:1
-                }]
+                store: Ext.create("MyApp.store.IntervencionByIDOrdenStore",{
+                  
+                }),
+                columns: [
+                  {
+                    xtype: "rownumberer",
+                    flex: 0.01,
+                    text: "#"
+                  },
+                  {
+                    text: "Nombre de Intervención",
+                    flex: 1,
+                    dataIndex:'nombre_tipointervencion'
+                  },
+                ],
               },{
                 xtype:'form',
                 title:'Buscar',
@@ -120,69 +184,10 @@ Ext.define("MyApp.controller.UserInterfaceController", {
                   padding:10
                 },{
                   xtype:'button',
-                  text:'Buscar',
+                  text:'Buscar Tipo de Intervención',
                   margin:10
                 }]
-              },]
-            },
-            {
-              id: "card-2",
-              xtype:'panel',
-              title:'Selección del Vehículo',
-              items:[{
-                xtype:'grid',
-                title:'Vehículos',
-                padding:10,
-                height:250,
-                selModel: {
-                  type: "checkboxmodel",
-                  checkOnly: false,
-                  mode:'SINGLE'
-                },
-                columns:[{
-                  xtype: "rownumberer",
-                  flex: 0.01,
-                  text: "#"
-                },{
-                  text:'CIF / NIF',
-                  flex:1
-                },{
-                  text:'Nombre',
-                  flex:1
-                },{
-                  text:'E-Mail',
-                  flex:1
-                }]
-              },{
-                xtype:'form',
-                title:'Buscar',
-                layout:'hbox',
-                padding:10,
-                items:[{
-                  xtype:'textfield',
-                  fieldLabel:'Criterio',
-                  padding:10
-                },{
-                  xtype:'button',
-                  text:'Buscar',
-                  margin:10
-                }]
-              },]
-            },
-            {
-              id: "card-3",
-              xtype:'panel',
-              title:'Selección del Tacógrafo'
-            },
-            {
-              id: "card-4",
-              xtype:'panel',
-              title:'Selección de los Tipos de Intervenciones'
-            },
-            {
-              id: "card-5",
-              xtype:'panel',
-              title:'Resumen'
+              }]
             }
 
           ],
@@ -191,21 +196,12 @@ Ext.define("MyApp.controller.UserInterfaceController", {
             {
               text: "Anterior",
               itemId: "card-prev",
-              disabled: true,
-              listeners: {
-                click: (e) => {
-                  this.doCardNavigation(-1);
-                },
-              },
+              disabled: true
             },
             {
               text: "Siguiente",
               itemId: "card-next",
-              listeners: {
-                click: (e) => {
-                  this.doCardNavigation(1);
-                },
-              },
+              disabled: true
             },
           ],
         },
