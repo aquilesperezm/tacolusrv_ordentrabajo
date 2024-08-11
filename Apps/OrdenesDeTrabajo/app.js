@@ -8,9 +8,9 @@ Ext.application({
   //mainView: 'Main.view.main.Main'
 
  
-  controllers: ["UserInterfaceController"],
+  controllers: ["DashBoardController"],
   
 
   launch: () => {
-      Ext.create('MyApp.view.UserInterfaceManager');
+      Ext.create('MyApp.view.DashBoardUI');
   }});
