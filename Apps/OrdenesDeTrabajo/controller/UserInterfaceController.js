@@ -54,8 +54,9 @@ Ext.define("MyApp.controller.UserInterfaceController", {
         tipos_intervenciones:Ext.encode(ids)
       },
       success: function (response, opts) {
-        var obj = Ext.decode(response.responseText);
-        console.dir(obj);
+        Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
+        Ext.StoreManager.lookup("VehiculosStore").load();
+        Ext.getCmp("CardPanel_AddOrden").up("window").close();
       },
 
       failure: function (response, opts) {
@@ -63,7 +64,7 @@ Ext.define("MyApp.controller.UserInterfaceController", {
       },
     });
 
-    Ext.getCmp("CardPanel_AddOrden").up("window").close();
+   
   },
 
   FormAddOrden_Forward: function (btn, e) {

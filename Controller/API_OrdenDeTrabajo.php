@@ -68,9 +68,7 @@ class API_OrdenDeTrabajo extends ApiController
               
             $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $id_vehiculo)->get();
             $tipos_intervenciones = json_decode($_POST['tipos_intervenciones']);
-            
-            //var_dump($tacografos);
-
+         
             $ordenTrabajo = new OrdenDeTrabajo();
             $ordenTrabajo->numero_orden = $no_orden;
             $ordenTrabajo->fecha_orden = $fecha_orden->format('Y-m-d');
@@ -85,7 +83,7 @@ class API_OrdenDeTrabajo extends ApiController
                 $ixt->save();
             }
 
-            $this->response->setContent(json_encode("ok"));
+            $this->response->setContent(json_encode(['success'=>true]));
         }
         //update orden de trabajo   
         elseif ($this->request->isMethod('PATCH')) {
