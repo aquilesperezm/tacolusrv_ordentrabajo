@@ -56,6 +56,13 @@ Ext.define("MyApp.view.UserInterfaceManager", {
                     dataIndex: "numero_orden",
                   },
                   {
+                    text: "Fecha",
+                    flex: 1,
+                    dataIndex: "fecha_orden",
+                    xtype: 'datecolumn',
+                    format:'d-m-Y'
+                  },
+                  {
                     text: "Centro Autorizado",
                     flex: 1,
                     dataIndex: "full_centroautorizado",

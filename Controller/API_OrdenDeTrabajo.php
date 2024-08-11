@@ -1,6 +1,7 @@
 <?php
-namespace FacturaScripts\Plugins\OrdenDeTrabajo\Controller;
 
+namespace FacturaScripts\Plugins\OrdenDeTrabajo\Controller;
+use DateTime;
 use FacturaScripts\Core\Template\ApiController;
 use FacturaScripts\Plugins\OrdenDeTrabajo\Model\OrdenDeTrabajo;
 use FacturaScripts\Plugins\Nomencladores\Model\Vehiculo;
@@ -8,51 +9,92 @@ use FacturaScripts\Plugins\Nomencladores\Model\CentroAutorizado;
 use FacturaScripts\Plugins\Nomencladores\Model\Tacografo;
 use FacturaScripts\Core\Model\Cliente;
 
+use FacturaScripts\Plugins\OrdenDeTrabajo\Model\IntervencionXOrdenDeTrabajo;
+
+use FacturaScripts\Core\DbQuery;
+
 class API_OrdenDeTrabajo extends ApiController
 {
     protected function runResource(): void
     {
         // tu código aquí
         //$this->response->setContent(json_encode(['hola' => 'mundo']));
-        
+
         $centroauth = new CentroAutorizado();
         $cliente = new Cliente();
         $vehiculo = new Vehiculo();
         $tacografo = new Tacografo();
+        $ordenTrabajo = new OrdenDeTrabajo();
 
-        if($this->request->isMethod('GET')){
-            
+        //get ordenes de trabajo
+        if ($this->request->isMethod('GET')) {
+
             $result = [];
-            $u = new OrdenDeTrabajo();
-            $ordenes = (array) $u->all();
+          
+            $ordenes = (array) $ordenTrabajo->all();
 
-                foreach ($ordenes as $orden){
-                    $orden = (array) $orden;
-                    
-                    // se obtiene por el id_vehiculo (vehiculo) -> id_centro_autorizado (centroautorizado)
-                    $orden["codigo_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->codigo_centroautorizado;
-                    $orden["nombre_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->nombre_centroautorizado;
-                   
-                    // se obtiene por el id_vehiculo (vehiculo) -> id_cliente (cliente)
-                    $orden["nombre_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->nombre;
-                    $orden["cifnif_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->cifnif;
-                    
+            foreach ($ordenes as $orden) {
+                $orden = (array) $orden;
+             
+                // se obtiene por el id_vehiculo (vehiculo) -> id_centro_autorizado (centroautorizado)
+                $orden["codigo_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->codigo_centroautorizado;
+                $orden["nombre_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->nombre_centroautorizado;
 
-                    $orden["no_chasis"] = ($vehiculo->get($orden['id_vehiculo']))->num_chasis;
-                    $orden["matricula"] = ($vehiculo->get($orden['id_vehiculo']))->matricula;  
-                    $orden["no_serie_tacografo"] = ($tacografo->get($orden['id_tacografo']))->numero_serie;  
-                    array_push($result,$orden);
-                }
+                // se obtiene por el id_vehiculo (vehiculo) -> id_cliente (cliente)
+                $orden["nombre_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->nombre;
+                $orden["cifnif_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->cifnif;
 
-              $data = ["ordenes"=> $result];
+
+                $orden["no_chasis"] = ($vehiculo->get($orden['id_vehiculo']))->num_chasis;
+                $orden["matricula"] = ($vehiculo->get($orden['id_vehiculo']))->matricula;
+                $orden["no_serie_tacografo"] = ($tacografo->get($orden['id_tacografo']))->numero_serie;
+
+                $orden['logged_user'] = $_COOKIE['fsNick'];
+                array_push($result, $orden);
+            }
+
+            $data = ["ordenes" => $result];
 
             $this->response->setContent(json_encode($data));
+        }
+        //create orden de trabajo
+        elseif ($this->request->isMethod('POST')) {
 
+            $no_orden = $_POST['no_orden'];
+            $fecha_orden = DateTime::createFromFormat('d-m-Y',$_POST['fecha_orden']);  
+
+            $id_vehiculo = $_POST['id_vehiculo'];
+        
+              
+            $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $id_vehiculo)->get();
+            $tipos_intervenciones = json_decode($_POST['tipos_intervenciones']);
+            
+            //var_dump($tacografos);
+
+            $ordenTrabajo = new OrdenDeTrabajo();
+            $ordenTrabajo->numero_orden = $no_orden;
+            $ordenTrabajo->fecha_orden = $fecha_orden->format('Y-m-d');
+            $ordenTrabajo->id_vehiculo = $id_vehiculo;
+            $ordenTrabajo->id_tacografo = $tacografos[0]['id'];
+            $ordenTrabajo->save();
+
+            foreach($tipos_intervenciones as $ti){
+                $ixt = new IntervencionXOrdenDeTrabajo();
+                $ixt->id_ordendetrabajo = $ordenTrabajo->id;
+                $ixt->id_tipodeintervencion = $ti;
+                $ixt->save();
+            }
+
+            $this->response->setContent(json_encode("ok"));
+        }
+        //update orden de trabajo   
+        elseif ($this->request->isMethod('PATCH')) {
+        }
+        //borrar orden de trabajo
+        elseif ($this->request->isMethod('DELETE')) {
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));
-
         }
-        
     }
 }

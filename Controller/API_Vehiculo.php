@@ -37,6 +37,9 @@ class API_Vehiculo extends ApiController
             foreach ($vehiculos as $vehiculo) {
                 $item = (array) $vehiculo;
 
+                $item['codigo_centroautorizado'] = $centroauth->get($item['id_centroautorizado'])->codigo_centroautorizado;
+                $item['nombre_centroautorizado'] = $centroauth->get($item['id_centroautorizado'])->nombre_centroautorizado;
+
                 $item['codcliente'] = $cliente->get($item['id_cliente'])->codcliente;
                 $item['nombre_cliente'] = $cliente->get($item['id_cliente'])->nombre;
                 $item['cifnif_cliente'] = $cliente->get($item['id_cliente'])->cifnif;
@@ -47,9 +50,18 @@ class API_Vehiculo extends ApiController
 
                 $item['nombre_categoria'] = $item['id_categoria'] == '1' ? 'Mercancia' : 'Viajeros';
 
-                $productos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $item['codcliente'])->get();
-                $item['tiene_tacografo'] = count($productos) > 0;
-                $item['tiene_tacografo_str'] = $item['tiene_tacografo'] ? 'Si' : 'No';
+                
+                $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $item['id'])->get();
+              
+                if(count($tacografos) > 0) {
+                $item['tiene_tacografo'] = count($tacografos) > 0;
+                $item['num_serie_tacografo'] = $tacografos[0]['numero_serie'];
+                $item['tiene_tacografo_str'] = 'Si';
+                } else
+                $item['tiene_tacografo_str'] = 'No';
+
+                $item['logged_user'] = $_COOKIE['fsNick'];
+
 
 
                 array_push($result, $item);

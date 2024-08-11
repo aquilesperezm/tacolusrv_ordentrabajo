@@ -33,11 +33,12 @@ class Init extends InitClass
         
         Kernel::addRoute('/api/3/get_intervencion_by_ordenid', 'API_IntervencionesByOrdenDeTrabajo', -1);
         ApiRoot::addCustomResource('get_intervencion_by_ordenid');
-        
-
 
         Kernel::addRoute('/api/3/get_vehiculos', 'API_Vehiculo', -1);
         ApiRoot::addCustomResource('get_vehiculos');
+
+        Kernel::addRoute('/api/3/get_tiposdeintervenciones', 'API_TipoIntervencion', -1);
+        ApiRoot::addCustomResource('get_tiposdeintervenciones');
         
     }
 

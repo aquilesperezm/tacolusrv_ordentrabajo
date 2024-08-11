@@ -7,7 +7,7 @@ Ext.define("MyApp.store.VehiculosStore", {
     url: "/facturascripts/api/3/get_vehiculos",
     reader: {
       type: "json",
-      rootProperty: "vehiculos",
+      rootProperty: "vehiculos"
     },
   },
   autoLoad: true,
