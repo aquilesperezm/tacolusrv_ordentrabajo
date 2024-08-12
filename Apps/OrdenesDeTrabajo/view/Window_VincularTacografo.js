@@ -6,9 +6,11 @@ Ext.define("MyApp.view.Window_VincularTacografo", {
   width: "50%",
   layout: "fit",
   scrollable:true,
+  resizable:false,
   items: {
     xtype: "grid",
     scrollable:true,
+    resizable:false,
     id: "Select_VincularTacografo",
     selModel: {
       type: "checkboxmodel",

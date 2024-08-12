@@ -4,9 +4,11 @@ Ext.define("MyApp.view.Window_VincularCliente", {
   title: "Clientes",
   height: "50%",
   width: "50%",
+  resizable:false,
   layout: "fit",
   items: {
     xtype: "grid",
+    resizable:false,
     id:'Select_VincularCliente',
     selModel: {
       type: "checkboxmodel",
