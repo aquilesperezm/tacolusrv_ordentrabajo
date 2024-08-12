@@ -43,11 +43,13 @@ class API_ClienteManager extends ApiController
             $data = ["clientes" => $result];
 
             $this->response->setContent(json_encode($data));
-        } elseif ($this->request->isMethod('POST')) {
-            
+
             //vincular un vehiculo
+        } elseif ($this->request->isMethod('POST')) {
+
+
             $id_cliente = $_POST['id_cliente'];
-            $id_vehiculo = $_POST['id_vehiculo'];        
+            $id_vehiculo = $_POST['id_vehiculo'];
 
             $vehiculo = new Vehiculo();
             $vehiculo = $vehiculo->get($id_vehiculo);
@@ -57,8 +59,6 @@ class API_ClienteManager extends ApiController
 
             $this->response->setStatusCode(200);
             $this->response->setContent(json_encode(['success' => True]));
-
-        
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));

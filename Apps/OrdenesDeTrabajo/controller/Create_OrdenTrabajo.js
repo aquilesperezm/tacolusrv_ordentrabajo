@@ -1,7 +1,7 @@
 Ext.define("MyApp.controller.Create_OrdenTrabajo", {
   extend: "Ext.app.Controller",
 
-  stores: ["ClientesStore"],
+  stores: ["ClientesStore", "TacografosStore"],
 
   views: [
     "GridPanel_OrdenesDeTrabajoUI",
@@ -9,6 +9,7 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
     "CardPanel_CreateOrdenTrabajoUI",
     "GridPanel_VehiculosUI",
     "Window_VincularCliente",
+    "Window_VincularTacografo",
   ],
 
   control: {
@@ -39,10 +40,18 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
     "#CreateOrdenTrabajo_VincularTacografo": {
       click: "onClick_VincularTacografo",
     },
+    "#Select_VincularTacografo": {
+      selectionchange: "onSelectChange_VincularTacografo",
+    },
+    "#Aceptar_VincularTacografo": {
+      click: "onClick_Aceptar_VincularTacografo",
+    },
   },
 
   //---------------------------------------- Vincular Cliente y Tacografo -----------------------------------
+  //vincular un cliente a un vehiculo
   onClick_VincularCliente: function (btn, e) {
+    Ext.StoreManager.lookup("ClientesStore").load();
     Ext.create("MyApp.view.Window_VincularCliente").show();
   },
 
@@ -53,11 +62,10 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
   },
 
   onClick_Aceptar_VincularClientes: function (btn, e) {
-    
     var grid_vehiculo = Ext.ComponentQuery.query("#card-0 > grid")[0];
     var grid_vehiculo_sm = grid_vehiculo.getSelectionModel();
 
-    var grid_cliente_vincular = Ext.getCmp('Select_VincularCliente');
+    var grid_cliente_vincular = Ext.getCmp("Select_VincularCliente");
     var grid_cliente_vincular_sm = grid_cliente_vincular.getSelectionModel();
 
     //console.log(grid_cliente_vincular_sm.getSelection())
@@ -68,11 +76,13 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
       method: "POST",
       params: {
         id_vehiculo: grid_vehiculo_sm.getSelection()[0].data.id,
-        id_cliente: grid_cliente_vincular_sm.getSelection()[0].data.codcliente
+        id_cliente: grid_cliente_vincular_sm.getSelection()[0].data.codcliente,
       },
       success: function (response, opts) {
         Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
         Ext.StoreManager.lookup("VehiculosStore").load();
+        Ext.StoreManager.lookup("ClientesStore").load();
+        Ext.StoreManager.lookup("TacografosStore").load();
         btn.up("window").close();
       },
 
@@ -80,10 +90,49 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
         console.log("server-side failure with status code " + response.status);
       },
     });
-    
   },
 
-  onClick_VincularTacografo: function (btn, e) {},
+  //vincular un tacografo a un vehiculo
+  onClick_VincularTacografo: function (btn, e) {
+    Ext.StoreManager.lookup("TacografosStore").load();
+    Ext.create("MyApp.view.Window_VincularTacografo").show();
+  },
+
+  onSelectChange_VincularTacografo: function (sm, records, index) {
+    if (sm.getSelection().length > 0) {
+      Ext.getCmp("Aceptar_VincularTacografo").setDisabled(false);
+    } else Ext.getCmp("Aceptar_VincularTacografo").setDisabled(true);
+  },
+  onClick_Aceptar_VincularTacografo: function (btn, e) {
+    var grid_vehiculo = Ext.ComponentQuery.query("#card-0 > grid")[0];
+    var grid_vehiculo_sm = grid_vehiculo.getSelectionModel();
+
+    var grid_tacografo_vincular = Ext.getCmp("Select_VincularTacografo");
+    var grid_tacografo_vincular_sm = grid_tacografo_vincular.getSelectionModel();
+
+    //console.log(grid_cliente_vincular_sm.getSelection())
+
+    Ext.Ajax.request({
+      headers: { Token: "TacoLuServices2024**" },
+      url: "/facturascripts/api/3/tacografo_manager",
+      method: "POST",
+      params: {
+        id_vehiculo: grid_vehiculo_sm.getSelection()[0].data.id,
+        id_tacografo: grid_tacografo_vincular_sm.getSelection()[0].data.id
+      },
+      success: function (response, opts) {
+        Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
+        Ext.StoreManager.lookup("VehiculosStore").load();
+        Ext.StoreManager.lookup("ClientesStore").load();
+        Ext.StoreManager.lookup("TacografosStore").load();
+        btn.up("window").close();
+      },
+
+      failure: function (response, opts) {
+        console.log("server-side failure with status code " + response.status);
+      },
+    });
+  },
 
   //------------------------------------- Fin Vincular Cliente y Tacografo ---------------------------------------
 
