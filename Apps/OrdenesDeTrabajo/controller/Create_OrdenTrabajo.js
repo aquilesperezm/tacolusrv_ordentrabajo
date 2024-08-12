@@ -108,7 +108,8 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
     var grid_vehiculo_sm = grid_vehiculo.getSelectionModel();
 
     var grid_tacografo_vincular = Ext.getCmp("Select_VincularTacografo");
-    var grid_tacografo_vincular_sm = grid_tacografo_vincular.getSelectionModel();
+    var grid_tacografo_vincular_sm =
+      grid_tacografo_vincular.getSelectionModel();
 
     //console.log(grid_cliente_vincular_sm.getSelection())
 
@@ -118,7 +119,7 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
       method: "POST",
       params: {
         id_vehiculo: grid_vehiculo_sm.getSelection()[0].data.id,
-        id_tacografo: grid_tacografo_vincular_sm.getSelection()[0].data.id
+        id_tacografo: grid_tacografo_vincular_sm.getSelection()[0].data.id,
       },
       success: function (response, opts) {
         Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
@@ -137,7 +138,9 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
   //------------------------------------- Fin Vincular Cliente y Tacografo ---------------------------------------
 
   //Constructor
-  init: function () {},
+  init: function () {
+    
+  },
 
   FormAddOrden_Forward: function (btn, e) {
     this.doCardNavigation(1);
@@ -207,9 +210,18 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
         tipos_intervenciones: Ext.encode(ids),
       },
       success: function (response, opts) {
-        Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
-        Ext.StoreManager.lookup("VehiculosStore").load();
-        Ext.getCmp("CardPanel_AddOrden").up("window").close();
+        
+        let response_server = Ext.decode(response.responseText);
+        if (response_server.success) {
+          Ext.StoreManager.lookup("OrdenesDeTrabajoStore").load();
+          Ext.StoreManager.lookup("VehiculosStore").load();
+          Ext.getCmp("CardPanel_AddOrden").up("window").close();
+        } else {
+          Ext.Msg.alert(
+            "Error",
+            "Ha existido un problema al crear la orden, contacte al administrador del sistema"
+          );
+        }
       },
 
       failure: function (response, opts) {

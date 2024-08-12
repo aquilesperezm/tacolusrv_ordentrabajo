@@ -74,7 +74,8 @@ class API_OrdenDeTrabajo extends ApiController
             $ordenTrabajo->fecha_orden = $fecha_orden->format('Y-m-d');
             $ordenTrabajo->id_vehiculo = $id_vehiculo;
             $ordenTrabajo->id_tacografo = $tacografos[0]['id'];
-            $ordenTrabajo->save();
+            
+            $save_ordentrabajo = $ordenTrabajo->save();
 
             foreach($tipos_intervenciones as $ti){
                 $ixt = new IntervencionXOrdenDeTrabajo();
@@ -83,7 +84,9 @@ class API_OrdenDeTrabajo extends ApiController
                 $ixt->save();
             }
 
+            if($save_ordentrabajo)
             $this->response->setContent(json_encode(['success'=>true]));
+            else $this->response->setContent(json_encode(['success'=>false]));
         }
         //update orden de trabajo   
         elseif ($this->request->isMethod('PATCH')) {

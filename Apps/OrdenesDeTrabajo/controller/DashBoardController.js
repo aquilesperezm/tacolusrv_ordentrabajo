@@ -13,6 +13,9 @@ Ext.define("MyApp.controller.DashBoardController", {
     "#Adicionar_Orden": {
       click: "onClick_Adicionar_Orden",
     },
+    '#Imprimir_Orden': {
+      click: 'onClick_Imprimir_Orden'
+    }
   },
 
   onClick_Adicionar_Orden: function () {
@@ -39,4 +42,19 @@ Ext.define("MyApp.controller.DashBoardController", {
       vehiculos_store.load();
     }
   },
+  onClick_Imprimir_Orden: function(btn,e){
+    
+    var grid_ordenes = Ext.getCmp('ID_Grid_OrdenesDeTrabajo');
+    var selected_record = grid_ordenes.getSelectionModel().getSelection();
+    var id_selected_record = selected_record[0].data.id
+
+    Ext.getCmp('Print_Form_OrdenTrabajo').getForm().submit({
+      target:'_blank',
+      params:{
+        id:id_selected_record
+      }
+    });
+
+  }
+  
 });

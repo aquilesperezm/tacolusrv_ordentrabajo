@@ -23,14 +23,33 @@ Ext.define("MyApp.view.CenterPanelUI", {
           },
           {
             text: "Imprimir Orden de Trabajo",
+            id: "Imprimir_Orden",
+            disabled:true,
+            /*href:"/facturascripts/OrdenDeTrabajoReporte",
+            params:{
+                ordendetrabajo:1
+            }*/
           },
+          {
+            xtype:'form',
+            id:'Print_Form_OrdenTrabajo',
+            hidden:true,
+            standardSubmit:true,
+            method:'POST',
+            url:'/facturascripts/OrdenDeTrabajoReporte',
+            target:'_blank',
+            baseParams:{
+             // id:561
+            }
+          }
+          ,
         ],
         items: [
           {
-            xtype:'gridpanel_ordenesdetrabajo_ui'
+            xtype: "gridpanel_ordenesdetrabajo_ui",
           },
           {
-            xtype:'gridpanel_tipointervencion_ui'
+            xtype: "gridpanel_tipointervencion_ui",
           },
           {
             xtype: "form",
