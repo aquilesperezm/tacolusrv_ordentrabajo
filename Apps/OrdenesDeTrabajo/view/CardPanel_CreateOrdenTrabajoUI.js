@@ -16,7 +16,7 @@ Ext.define("MyApp.view.CardPanel_CreateOrdenTrabajoUI", {
         },
         {
           xtype: "form",
-          title: "Buscar",
+          title: "Buscar Vehículo en la Base de Datos",
           layout: "hbox",
           padding: 10,
           items: [
@@ -33,7 +33,14 @@ Ext.define("MyApp.view.CardPanel_CreateOrdenTrabajoUI", {
             {
               xtype: "button",
               disabled: true,
+              text: "Vincular Cliente",
+              id:'CreateOrdenTrabajo_VincularCliente',
+              margin: 10,
+            },{
+              xtype: "button",
+              disabled: true,
               text: "Vincular Tacógrafo",
+              id:'CreateOrdenTrabajo_VincularTacografo',
               margin: 10,
             },
           ],
@@ -66,7 +73,7 @@ Ext.define("MyApp.view.CardPanel_CreateOrdenTrabajoUI", {
         },
         {
           xtype: "form",
-          title: "Buscar",
+          title: "Buscar Tipo de Intervención en la Base de Datos",
           layout: "hbox",
           padding: 10,
           items: [

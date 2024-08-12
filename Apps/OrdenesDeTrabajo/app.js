@@ -8,7 +8,7 @@ Ext.application({
   //mainView: 'Main.view.main.Main'
 
  
-  controllers: ["DashBoardController"],
+  controllers: ["DashBoardController",'Create_OrdenTrabajo'],
   
 
   launch: () => {

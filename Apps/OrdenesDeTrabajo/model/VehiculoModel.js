@@ -6,6 +6,7 @@ Ext.define("MyApp.model.VehiculoModel", {
     { name: "num_chasis", type: "string" },
 
     { name: "id_cliente", type: "int" },
+    { name: "tiene_cliente", type: "bool" },
     { name: "codcliente", type: "string" },
     { name: "nombre_cliente", type: "string" },
     { name: "cifnif_cliente", type: "string" },

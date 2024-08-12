@@ -40,6 +40,12 @@ class Init extends InitClass
         Kernel::addRoute('/api/3/get_tiposdeintervenciones', 'API_TipoIntervencion', -1);
         ApiRoot::addCustomResource('get_tiposdeintervenciones');
         
+        Kernel::addRoute('/api/3/cliente_manager', 'API_ClienteManager', -1);
+        ApiRoot::addCustomResource('cliente_manager');
+
+        Kernel::addRoute('/api/3/tacografo_manager', 'API_TacografoManager', -1);
+        ApiRoot::addCustomResource('tacografo_manager');
+        
     }
 
     public function uninstall(): void
