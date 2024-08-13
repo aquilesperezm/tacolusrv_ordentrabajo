@@ -6,6 +6,9 @@
 * Date:    2023-06-25                                                          *
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
+namespace FacturaScripts\Plugins\OrdenDeTrabajo\Library\PDF;
+
+use Exception;
 
 class FPDF
 {
