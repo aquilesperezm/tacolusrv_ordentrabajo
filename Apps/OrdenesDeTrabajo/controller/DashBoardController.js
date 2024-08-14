@@ -51,7 +51,7 @@ Ext.define("MyApp.controller.DashBoardController", {
     Ext.getCmp('Print_Form_OrdenTrabajo').getForm().submit({
       target:'_blank',
       params:{
-        id:id_selected_record
+        id_orden:id_selected_record
       }
     });
 

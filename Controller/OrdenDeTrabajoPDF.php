@@ -13,7 +13,7 @@ class OrdenDeTrabajoPDF extends FPDF {
         // Move to the right
        // $this->Cell(80);
         // Framed title
-        $this->Cell(0,10,utf8_decode('Pagina: ').$this->PageNo().'/{nb}',0,0,'R');
+        $this->Cell(0,10,utf8_decode('Página: ').$this->PageNo().'/{nb}',0,0,'R');
         // Line break
         $this->Ln(20);
     }
