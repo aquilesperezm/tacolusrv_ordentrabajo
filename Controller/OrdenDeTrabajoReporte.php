@@ -302,6 +302,10 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->showTable_DisponePrecintos();
 
         $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+
+        $pdf->showTable_IdentificacionVU();
 
        // $pdf->Text(112,$pdf->getY()+3,utf8_decode('(7.) Velocidad Limitador:'));
 

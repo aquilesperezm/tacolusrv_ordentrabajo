@@ -147,9 +147,59 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(3, 3, '', 1, 0);
     }
 
-    function comprobacion_VU(){
+    function showTable_IdentificacionVU()
+    {
+        $this->SetLineWidth(0.3);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(0, 5, utf8_decode('Identificación VU'), 0, 1);
 
+        $this->Cell(0, 5, utf8_decode('Fecha de activación de la unidad instalada'), 'LTR', 1);
+        $this->Cell(0, 5, '', 'LRB', 1);
+
+        $this->Cell(0, 5, utf8_decode('¿Unidad adecuada según reglamento UE No. 2014/45 según fecha de activación?'), 'LTR', 1);
+        for ($i = 0; $i < 38; $i++) {
+
+            if ($i == 0) {
+                $this->Cell(5, 5, '', 'L', 0);
+                continue;
+            }
+            if ($i == 5) {
+                $this->Cell(5, 5, 'Si', 0, 0);
+                continue;
+            }
+            if ($i == 4) {
+                $this->Cell(5, 5, '', 1, 0);
+                continue;
+            }
+
+            if ($i == 9) {
+                $this->Cell(5, 5, 'No', 0, 0);
+                continue;
+            }
+            if ($i == 8) {
+                $this->Cell(5, 5, '', 1, 0);
+                continue;
+            }
+
+            $this->Cell(5, 5, '', 0, 0);
+        }
+
+        $this->Cell(0, 5, '', 'R', 1);
+        $this->Cell(0, 5, '', 'LRB', 0);
         
+        $this->setXY(9, $this->GetY()-25);
+
+        $this->SetLineWidth(0.3);
+        $this->SetDrawColor(234, 234, 234);
+        // $this->SetDrawColor(0, 0, 0);
+        $this->Cell(198, 31, '', 1, 0);
+
+    }
+
+    function showTable_ComprobacionVU(){
+
+
+
     }
 
 }
