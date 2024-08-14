@@ -195,13 +195,13 @@ class OrdenDeTrabajoReporte extends Controller
 
         // Seccion Marca con una X las intervenciones -------------------------------------------------------
 
-        $pdf->Cell(0, 48, '', 1);
+        $pdf->Cell(0, 44, '', 1);
 
-        $pdf->SetXY($pdf->GetX()-195, $pdf->getY()+1);
+        $pdf->SetXY($pdf->GetX() - 195, $pdf->getY() + 1);
         $pdf->Cell(35, 5, '(1.) Marca con una', 0);
-         $pdf->SetXY($pdf->GetX()-217, $pdf->getY()+1);
+        $pdf->SetXY($pdf->GetX() - 217, $pdf->getY() + 1);
         $pdf->Cell(4, 4, 'X', 1);
-         $pdf->SetXY($pdf->GetX()-215, $pdf->getY()-1);
+        $pdf->SetXY($pdf->GetX() - 215, $pdf->getY() - 1);
         $pdf->Cell(0, 5, 'las intervenciones realizadas:', 0);
         $pdf->Ln();
 
@@ -211,7 +211,7 @@ class OrdenDeTrabajoReporte extends Controller
         $tipointervencion = new TipoIntervencion();
         $items = $tipointervencion->all();
 
-       
+
 
         function existInArray(array $array, int  $n): bool
         {
@@ -283,9 +283,29 @@ class OrdenDeTrabajoReporte extends Controller
 
         //--------------------------------------------------------------------------
 
+        $pdf->Ln();
+        $pdf->Ln();
+        $pdf->Ln();
+
+        $pdf->showTable_DatosVehiculo();
+
+        $pdf->Ln();
+       
+        $pdf->showTable_PresionNeumaticos();
+
+        $pdf->Ln();
+
+        $pdf->showTable_InstalacionTacografo();
+
+        $pdf->Ln();
+       
+        $pdf->showTable_DisponePrecintos();
+
+        $pdf->Ln();
+
+       // $pdf->Text(112,$pdf->getY()+3,utf8_decode('(7.) Velocidad Limitador:'));
 
 
-        
         $pdf->Output('', '', true);
 
         // tu código aquí
