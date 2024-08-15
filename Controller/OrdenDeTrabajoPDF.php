@@ -7,6 +7,8 @@ use FacturaScripts\Plugins\OrdenDeTrabajo\Library\PDF\FPDF;
 class OrdenDeTrabajoPDF extends FPDF
 {
 
+
+
     function Header()
     {
         // Select Arial bold 15
@@ -186,20 +188,186 @@ class OrdenDeTrabajoPDF extends FPDF
 
         $this->Cell(0, 5, '', 'R', 1);
         $this->Cell(0, 5, '', 'LRB', 0);
-        
-        $this->setXY(9, $this->GetY()-25);
+
+        $this->setXY(9, $this->GetY() - 25);
 
         $this->SetLineWidth(0.3);
         $this->SetDrawColor(234, 234, 234);
         // $this->SetDrawColor(0, 0, 0);
         $this->Cell(198, 31, '', 1, 0);
-
     }
 
-    function showTable_ComprobacionVU(){
+    private function show_SiNO_Derecha($total_cell, $pos_si, $pos_no, $square_size)
+    {
 
+        for ($i = 0; $i < $total_cell; $i++) {
 
+            if ($i == $pos_si - 1) {
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
 
+            if ($i == $pos_si) {
+                $this->Cell($square_size, $square_size, 'Si', 0, 0);
+                continue;
+            }
+
+            if ($i == $pos_no - 1) {
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
+
+            if ($i == $pos_no) {
+                $this->Cell($square_size, $square_size, 'No', 0, 0);
+                continue;
+            }
+
+            $this->Cell($square_size, $square_size, '', 0, 0);
+        }
+        $this->Cell(0, $square_size, '', 'R', 1);
     }
 
+    private function show_SINO_Fullline($cell_count = 39, $square_size  = 5, $pos_si = 4, $pos_no = 12, $margin_size = 2, $show_borders = false)
+    {
+
+        $this->Cell(0, $margin_size, '', 'LR', 1);
+        for ($i = 0; $i < $cell_count; $i++) {
+
+            if($i == 0){
+                $this->Cell($square_size, $square_size, '', 'L', 0);
+                continue;
+            }
+
+            if($i == $pos_si - 1){
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
+
+            if($i == $pos_si){
+                $this->Cell($square_size, $square_size, 'Si', 0, 0);
+                continue;
+            }
+
+
+            if($i == $pos_no - 1){
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
+
+            if($i == $pos_no){
+                $this->Cell($square_size, $square_size, 'No', 0, 0);
+                continue;
+            }
+
+            $this->Cell($square_size, $square_size, '', $show_borders, 0);
+        }
+
+        //complete squares
+        $this->Cell(0, $square_size, '', 'R', 1);
+        $this->Cell(0,  $margin_size, '', 'LRB', 1);
+    }
+
+    private function show_SiNO_Izquierda($total_cell, $pos_si, $pos_no, $square_size, $border = 0)
+    {
+
+        for ($i = 0; $i < $total_cell - 1; $i++) {
+
+            if ($i == $pos_si - 1) {
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
+
+            if ($i == $pos_si) {
+                $this->Cell($square_size, $square_size, 'Si', 0, 0);
+                continue;
+            }
+
+            if ($i == $pos_no - 1) {
+                $this->Cell($square_size, $square_size, '', 1, 0);
+                continue;
+            }
+
+            if ($i == $pos_no) {
+                $this->Cell($square_size, $square_size, 'No', 0, 0);
+                continue;
+            }
+
+            if ($i == 0) {
+                $this->Cell($square_size, $square_size, '', 'L', 0);
+                continue;
+            }
+
+            $this->Cell($square_size, $square_size, '', $border, 0);
+        }
+        $L = $this->GetPageWidth() / 2 - 4;
+        $LC = ($total_cell - 1)  * $square_size;
+
+        $this->Cell($L - $LC, $square_size, '', 'R', 0);
+    }
+
+    function showTable_ComprobacionVU()
+    {
+
+        $this->SetLineWidth(0.3);
+        $this->SetDrawColor(0, 0, 0);
+
+        $this->Cell(0,5,utf8_decode('Comprovación VU'),1,1);
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 5, utf8_decode('(14. ) No. serie de la placa'), 'LTR', 0);
+        $this->Cell(0, 5, utf8_decode('(15. ) Coincide con no. serie del tacógrafo'), 'RTL', 1);
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 5, '', 'LR', 0);
+        for ($i = 0; $i < 17; $i++) {
+
+            if ($i == 3) {
+                $this->Cell(5, 5, '', 1, 0);
+                continue;
+            }
+
+            if ($i == 4) {
+                $this->Cell(5, 5, 'Si', 0, 0);
+                continue;
+            }
+
+            if ($i == 6) {
+                $this->Cell(5, 5, '', 1, 0);
+                continue;
+            }
+
+            if ($i == 7) {
+                $this->Cell(5, 5, 'No', 0, 0);
+                continue;
+            }
+
+            $this->Cell(5, 5, '', 0, 0);
+        }
+        $this->Cell(0, 5, '', 'R', 1);
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 5, '', 'LRB', 0);
+        $this->Cell(0, 5, '', 'LRB', 1);
+
+        //-------------------------------------------------------
+
+       
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 5, utf8_decode('(16.) Todos los componentes funcionan correctamente IMPRESORA,'), 'LTR', 0);
+        $this->Cell(0, 5, utf8_decode('Se ha sustituido la pila del tacógrafo'), 'LTR', 1);
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 5, utf8_decode('PANTALLA, TECLADO, LECTORES TARJETA, GNSS, DSRC, Bluetooth'), 'LR', 0);
+        $this->Cell(0, 5, '', 'LR', 1);
+
+        $this->show_SiNO_Izquierda(21, 4, 12, 4, 0);
+
+        $this->show_SiNO_Derecha(17, 4, 12, 4);
+
+        $this->Cell($this->GetPageWidth() / 2 - 4, 2, '', 'LRB', 0);
+        $this->Cell(0, 2, '', 'LRB', 1);
+
+        $this->Cell(0, 5, utf8_decode('(17.) Desviaciones inferiores a ±2% de la distancia y ±1 Km/h de la velocidad'), 1, 1);
+
+        $this->show_SINO_Fullline();
+
+        //$this->Cell(0, 5, '', 1, 1);
+        // $this->Cell(0, 3, '', 1, 1,'',true);
+    }
 }

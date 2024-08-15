@@ -309,6 +309,11 @@ class OrdenDeTrabajoReporte extends Controller
 
        // $pdf->Text(112,$pdf->getY()+3,utf8_decode('(7.) Velocidad Limitador:'));
 
+        $pdf->Ln();
+        $pdf->Ln(2);
+
+
+        $pdf->showTable_ComprobacionVU();
 
         $pdf->Output('', '', true);
 
