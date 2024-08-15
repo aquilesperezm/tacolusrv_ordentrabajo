@@ -290,7 +290,7 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->showTable_DatosVehiculo();
 
         $pdf->Ln();
-       
+
         $pdf->showTable_PresionNeumaticos();
 
         $pdf->Ln();
@@ -298,7 +298,7 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->showTable_InstalacionTacografo();
 
         $pdf->Ln();
-       
+
         $pdf->showTable_DisponePrecintos();
 
         $pdf->Ln();
@@ -307,13 +307,110 @@ class OrdenDeTrabajoReporte extends Controller
 
         $pdf->showTable_IdentificacionVU();
 
-       // $pdf->Text(112,$pdf->getY()+3,utf8_decode('(7.) Velocidad Limitador:'));
+        // $pdf->Text(112,$pdf->getY()+3,utf8_decode('(7.) Velocidad Limitador:'));
 
         $pdf->Ln();
         $pdf->Ln(2);
 
-
         $pdf->showTable_ComprobacionVU();
+
+        $pdf->Cell(0, 1, utf8_decode(''), 0, 1);
+
+        $pdf->showTable_SensorMovimiento();
+
+        $pdf->Cell(0, 1, utf8_decode(''), 0, 1);
+
+        $pdf->showList_with_Checkbox();
+
+        $pdf->ShowCheckboxCounter('DISPOSITIVO RECEPTOR GNSS');
+        $pdf->ShowCheckboxCounter('DISPOSITIVO DE TELECOMUNICACIONES DSRC');
+
+        //$data = [];
+        //$data['row'] = ['test 1 ', 'test 2'];
+        //$data['row'] = ['test 3 ', 'test 4'];
+
+        $pdf->ShowTable_ByCells(
+            $title = 'Mediciones',
+            [
+                '(24.) Circunferencia neumáticos (Factor L en mm) ',
+                '(25.) Coeficiente característico (Factor W en imp/km)'
+            ]
+        );
+
+        //-------------------------------------------------------------------
+        $pdf->Cell(0, 2, '', 0, 1);
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(0, 4, utf8_decode('Ajuste Fecha/Hora (Formato: ±dd-hh-mm)'), 1, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(0, 4, '', 1, 1);
+        $pdf->Cell(0, 2, '', 0, 1);
+        //--------------------------------------------------------------
+
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(0, 4, utf8_decode('Determinación de Errores (con 1 decimal)'), 1, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, '', 1, 0);
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, utf8_decode('(28.) Tacógrafo'), 1, 0);
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, utf8_decode('(29.) Banco'), 1, 0);
+        $pdf->Cell(0, 4, utf8_decode('(30. ) Error en %'), 1, 1);
+
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, 'Distancia Recorrida', 1, 0);
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, '', 1, 0);
+        $pdf->Cell($pdf->GetPageWidth() / 4, 4, '', 1, 0);
+        $pdf->Cell(0, 4, '', 1, 1);
+
+        $pdf->Cell(0, 2, '', 0, 1);
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->Cell(0, 5, utf8_decode('Reconocimiento final del sensor'), 1, 1);
+        $pdf->SetFont('Arial', '', 8);
+        $pdf->Cell(0, 5, utf8_decode('(31.) No. de serie del sensor correcto'), 1, 1);
+        $pdf->show_SINO_Fullline();
+        // $pdf->Cell(0,2,'',0,1);
+        //-----------------------------------------------------------------------------------
+
+        $pdf->ShowTable_ByCells(
+            $title = 'Calibración',
+            [
+                '(32.) Factor W (imp/km)',
+                '(35.) Tamaño neumáticos'
+            ]
+        );
+        $pdf->ShowTable_ByCells(
+            '',
+            [
+                '(33.) Factor K (imp/km)',
+                '(36.) Velocidad limitador (km/h)'
+            ]
+        );
+        $pdf->ShowTable_ByCells(
+            '',
+            [
+                '(34.) Factor L (mm)',
+                '(37.) Lectura cuentakilómetros'
+            ]
+        );
+        //-----------------------------------------------------------------
+        $pdf->ShowTable_ByCells(
+            $title = 'Equipos utilizados',
+            [
+                '(45.) Banco de rodillos',
+                '(47.) Cronómetro'
+            ]
+        );
+        $pdf->ShowTable_ByCells(
+            '',
+            [
+                '(46.) Manómetro',
+                '(48.) Equipo de calibrado'
+            ]
+        );
+        //---------------------------------------------------------------------------------------------------------
+    
+        $pdf->show_Tickets_By_Data();
+
+        $pdf->ShowTable_PrecintadoTacografo();
+
+        $pdf->resultado_global();
 
         $pdf->Output('', '', true);
 

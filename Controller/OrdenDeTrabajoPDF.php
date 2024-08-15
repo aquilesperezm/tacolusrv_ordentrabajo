@@ -227,34 +227,34 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(0, $square_size, '', 'R', 1);
     }
 
-    private function show_SINO_Fullline($cell_count = 39, $square_size  = 5, $pos_si = 4, $pos_no = 12, $margin_size = 2, $show_borders = false)
+    public function show_SINO_Fullline($cell_count = 39, $square_size  = 5, $pos_si = 4, $pos_no = 12, $margin_size = 2, $show_borders = false)
     {
 
         $this->Cell(0, $margin_size, '', 'LR', 1);
         for ($i = 0; $i < $cell_count; $i++) {
 
-            if($i == 0){
+            if ($i == 0) {
                 $this->Cell($square_size, $square_size, '', 'L', 0);
                 continue;
             }
 
-            if($i == $pos_si - 1){
+            if ($i == $pos_si - 1) {
                 $this->Cell($square_size, $square_size, '', 1, 0);
                 continue;
             }
 
-            if($i == $pos_si){
+            if ($i == $pos_si) {
                 $this->Cell($square_size, $square_size, 'Si', 0, 0);
                 continue;
             }
 
 
-            if($i == $pos_no - 1){
+            if ($i == $pos_no - 1) {
                 $this->Cell($square_size, $square_size, '', 1, 0);
                 continue;
             }
 
-            if($i == $pos_no){
+            if ($i == $pos_no) {
                 $this->Cell($square_size, $square_size, 'No', 0, 0);
                 continue;
             }
@@ -311,7 +311,7 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->SetLineWidth(0.3);
         $this->SetDrawColor(0, 0, 0);
 
-        $this->Cell(0,5,utf8_decode('Comprovación VU'),1,1);
+        $this->Cell(0, 5, utf8_decode('Comprovación VU'), 1, 1);
 
         $this->Cell($this->GetPageWidth() / 2 - 4, 5, utf8_decode('(14. ) No. serie de la placa'), 'LTR', 0);
         $this->Cell(0, 5, utf8_decode('(15. ) Coincide con no. serie del tacógrafo'), 'RTL', 1);
@@ -348,7 +348,7 @@ class OrdenDeTrabajoPDF extends FPDF
 
         //-------------------------------------------------------
 
-       
+
 
         $this->Cell($this->GetPageWidth() / 2 - 4, 5, utf8_decode('(16.) Todos los componentes funcionan correctamente IMPRESORA,'), 'LTR', 0);
         $this->Cell(0, 5, utf8_decode('Se ha sustituido la pila del tacógrafo'), 'LTR', 1);
@@ -366,8 +366,274 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(0, 5, utf8_decode('(17.) Desviaciones inferiores a ±2% de la distancia y ±1 Km/h de la velocidad'), 1, 1);
 
         $this->show_SINO_Fullline();
+    }
 
-        //$this->Cell(0, 5, '', 1, 1);
-        // $this->Cell(0, 3, '', 1, 1,'',true);
+    function showTable_SensorMovimiento()
+    {
+
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0, 5, 'Sensor de Movimiento', 1, 1);
+
+        $this->SetFont('Arial', '', 8);
+        $this->Cell($this->GetPageWidth() / 3, 5, utf8_decode('(18.) No. Serie del Sensor'), 'LTR', 0);
+        $this->Cell($this->GetPageWidth() / 3, 5, utf8_decode('(19.) No. Homologación del Sensor'), 'LTR', 0);
+        $this->Cell(0, 5, utf8_decode('(20.) Fecha de Instalación del Sensor'), 'LTR', 1);
+
+        $this->Cell($this->GetPageWidth() / 3, 5, utf8_decode(''), 'LBR', 0);
+        $this->Cell($this->GetPageWidth() / 3, 5, utf8_decode(''), 'LBR', 0);
+        $this->Cell(0, 5, utf8_decode(''), 'LBR', 1);
+
+        $this->Cell(0, 5, utf8_decode('(21.) Hay dispositivos que generan campos magnéticos que afectan al sensor'), 1, 1);
+        $this->show_SINO_Fullline();
+
+        $this->Cell(0, 5, utf8_decode('(22.) Le afectan corrientes eléctricas'), 1, 1);
+        $this->show_SINO_Fullline();
+    }
+
+    function showList_with_Checkbox()
+    {
+
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(0, 2, '', 'LTR', 1);
+        $this->Cell(10, 5, '', 'L', 0);
+        $this->Cell(5, 5, '', 0, 0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(5, 5, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(15, 5, 'TICKET 4:', 0, 0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0, 5, utf8_decode('DATOS TÉCNICOS'), 'R', 1);
+        $this->Cell(0, 2, '', 'LBR', 1);
+
+        $this->Cell(0, 2, '', 0, 1);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(0, 5, utf8_decode('(23.) No. de serie es el mismo que el de la intervención previa a la actual'), 1, 1);
+        $this->show_SINO_Fullline();
+    }
+
+    function ShowCheckboxCounter($titulo)
+    {
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0, 2, '', 0, 1);
+        $this->Cell(0, 4, utf8_decode($titulo), 1, 1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell($this->GetPageWidth() / 2, 4, '', 'L', 0);
+        $this->Cell(0, 4, 'No. SERIE', 'LTR', 1);
+
+        $this->Cell(3, 4, '', 'L', 0);
+        $this->Cell(3, 4, '', 1, 0);
+        $this->Cell(3, 4, '', 0, 0);
+        $this->Cell(20, 4, 'INTERNO', 0, 0);
+
+        $this->Cell(3, 4, '', 1, 0);
+        $this->Cell(3, 4, '', 0, 0);
+        $this->Cell(20, 4, 'EXTERNO', 0, 0);
+
+        $this->Cell(3, 4, '', 1, 0);
+        $this->Cell(3, 4, '', 0, 0);
+        $this->Cell(47, 4, 'NO DISPONE', 'R', 0);
+
+        $this->Cell(0, 4, '', 'R', 1);
+
+        $this->Cell($this->GetPageWidth() / 2, 2, '', 'LBR', 0);
+        $this->Cell(0, 2, '', 'BR', 1);
+    }
+
+    function ShowTable_ByCells($title = '', $array = [])
+    {
+        //margin
+        if ($title != '') {
+            $this->Cell(0, 2, '', 0, 1);
+            $this->SetFont('Arial', 'B', 8);
+            $this->Cell(0, 4, utf8_decode($title), 1, 1);
+        }
+
+        $this->SetFont('Arial', '', 8);
+        
+            $this->Cell($this->GetPageWidth() / 2, 4, utf8_decode($array[0]), 'LTR', 0);
+            $this->Cell(0, 4, utf8_decode($array[1]), 'LTR', 1);
+            $this->Cell($this->GetPageWidth() / 2, 4, '', 'LBR', 0);
+            $this->Cell(0, 4, '', 'LBR', 1);
+        
+    }
+
+    function show_Tickets_By_Data(){
+
+        $this->Cell(0, 2, '', 0, 1);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(0, 2, '', 'LTR', 1);
+
+        $this->Cell(3,3,'','L',0);
+
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(15,3,'TICKET 5:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('24 HORAS TARJETA TÉCNICO'),'R',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->Cell(3,3,'','L',0);
+
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(15,3,'TICKET 6:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('DATOS TÉCNICOS'),'R',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->Cell(3,3,'','L',0);
+         $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(15,3,'TICKET 7:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('SOBREVELOCIDAD'),'R',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0,3,'DESCARGA VU','LR',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->Cell(3,3,'','L',0);
+        $this->Cell(3,3,'',0,0);
+        $this->Cell(3,3,'',0,0);
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+        //$this->Cell(15,3,'TICKET 7:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('FICHERO DATOS TÉCNICOS'),'R',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->Cell(3,3,'','L',0);
+        $this->Cell(3,3,'',0,0);
+        $this->Cell(3,3,'',0,0);
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+        //$this->Cell(15,3,'TICKET 7:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('FICHERO EVENTOS Y FALLOS'),'R',1);
+        $this->Cell(0,3,'','LR',1);
+
+        $this->Cell(3,3,'','L',0);
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(3,3,'',1,0);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(3,3,'',0,0);
+
+        $this->SetFont('Arial', 'B', 8);
+       // $this->Cell(15,3,'TICKET 7:',0,0);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,3,utf8_decode('FICHERO GNSS/DSRC'),'R',1);
+        $this->Cell(0,3,'','LBR',1);
+
+       // $this->Cell(0, 2, '', 'LBR', 1);
+       // $this->Cell(0, 2, '', 0, 1);
+    }
+
+    function ShowTable_PrecintadoTacografo(){
+        $this->Cell(0, 2, '', 0, 1);
+        $this->SetDrawColor(0,0,0);
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0,4,utf8_decode('Precintado de tacógrafo'),0,1);
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(0,4,utf8_decode('No. precintos instalados'),1,1);
+        $this->Cell(0,4,utf8_decode('No. de serie de los precintos instalados'),'LTR',1);
+        $this->Cell(0,4,utf8_decode(''),'LBR',1);
+    }
+
+    function resultado_global(){
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(0, 2, '', 0, 1);
+        $this->Cell($this->GetPageWidth() / 3, 4, '(50.) RESULTADO GLOBAL', 'LTR', 0);
+        $this->Cell($this->GetPageWidth() / 3, 4, 'En caso desfavorable indicar la causa:', 'LTR', 0);
+        $this->Cell(0, 4, 'FECHA:', 'LTR', 1);
+        
+        $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
+        $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
+        $this->Cell(0, 4, '', 'LR', 1);
+       
+        
+        $this->Cell(4, 4, '', 'L', 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, 'F', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, 'D', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 'R', 0);
+        $this->Cell($this->GetPageWidth() / 3, 4, '', 0, 0);
+        $this->Cell(0, 4, '', 'LR', 1);
+
+        $this->Cell(4, 4, '', 'L', 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(4, 4, '', 'R', 0);
+        $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
+        $this->Cell(0, 4, 'Fdo.:', 'LR', 1);
+       
+        $this->Cell($this->GetPageWidth() / 3, 2, '', 'LRB', 0);
+        $this->Cell($this->GetPageWidth() / 3, 2, '', 'LRB', 0);
+        $this->Cell(0, 2, '', 'LRB', 1);
+
+        $this->Cell(0, 2, '', 0, 1);
+       
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(0, 2, '', 'LTR', 1);
+
+        $this->Cell(4, 4, '', 'L', 0); 
+        $this->SetDrawColor(0,0,0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->SetDrawColor(255,0,0);
+        $this->Cell(4, 4, '', 0, 0);
+        $this->Cell(0, 4, utf8_decode('DESCARGA TARJETA CENTRO TÉCNICO'), 'R', 1);  
+
+        $this->Cell(0, 2, '', 'LBR', 1);
+
     }
 }
