@@ -80,6 +80,7 @@ class API_Vehiculo extends ApiController
             $data = ["vehiculos" => $result];
 
             $this->response->setContent(json_encode($data));
+            
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));

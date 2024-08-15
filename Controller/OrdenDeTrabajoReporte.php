@@ -3,7 +3,7 @@
 namespace FacturaScripts\Plugins\OrdenDeTrabajo\Controller;
 
 use FacturaScripts\Core\Base\Controller;
-use FacturaScripts\Plugins\OrdenDeTrabajo\Controller\OrdenDeTrabajoPDF;
+use FacturaScripts\Plugins\OrdenDeTrabajo\Classes\OrdenDeTrabajoPDF;
 
 use FacturaScripts\Plugins\OrdenDeTrabajo\Model\OrdenDeTrabajo;
 use FacturaScripts\Plugins\OrdenDeTrabajo\Model\IntervencionXOrdenDeTrabajo;

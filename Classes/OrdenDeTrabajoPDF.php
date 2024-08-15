@@ -1,6 +1,6 @@
 <?php
 
-namespace FacturaScripts\Plugins\OrdenDeTrabajo\Controller;
+namespace FacturaScripts\Plugins\OrdenDeTrabajo\Classes;
 
 use FacturaScripts\Plugins\OrdenDeTrabajo\Library\PDF\FPDF;
 
