@@ -72,7 +72,7 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
 
     Ext.Ajax.request({
       headers: { Token: "TacoLuServices2024**" },
-      url: "/facturascripts/api/3/cliente_manager",
+      url: "/facturas/api/3/cliente_manager",
       method: "POST",
       params: {
         id_vehiculo: grid_vehiculo_sm.getSelection()[0].data.id,
@@ -115,7 +115,7 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
 
     Ext.Ajax.request({
       headers: { Token: "TacoLuServices2024**" },
-      url: "/facturascripts/api/3/tacografo_manager",
+      url: "/facturas/api/3/tacografo_manager",
       method: "POST",
       params: {
         id_vehiculo: grid_vehiculo_sm.getSelection()[0].data.id,
@@ -201,7 +201,7 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
 
     Ext.Ajax.request({
       headers: { Token: "TacoLuServices2024**" },
-      url: "/facturascripts/api/3/get_ordenesdetrabajo",
+      url: "/facturas/api/3/get_ordenesdetrabajo",
       method: "POST",
       params: {
         no_orden: Ext.getCmp("resumen_numero_orden").getValue(),

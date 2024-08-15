@@ -4,7 +4,7 @@ Ext.define("MyApp.store.TacografosStore", {
   proxy: {
     headers: {Token:'TacoLuServices2024**'},
     type: "ajax",
-    url: "/facturascripts/api/3/tacografo_manager",
+    url: "/facturas/api/3/tacografo_manager",
     reader: {
       type: "json",
       rootProperty: "tacografos"

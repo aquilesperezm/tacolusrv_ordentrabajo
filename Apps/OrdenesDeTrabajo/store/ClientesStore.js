@@ -4,7 +4,7 @@ Ext.define("MyApp.store.ClientesStore", {
   proxy: {
     headers: {Token:'TacoLuServices2024**'},
     type: "ajax",
-    url: "/facturascripts/api/3/cliente_manager",
+    url: "/facturas/api/3/cliente_manager",
     reader: {
       type: "json",
       rootProperty: "clientes"
