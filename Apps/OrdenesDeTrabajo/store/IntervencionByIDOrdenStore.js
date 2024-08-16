@@ -4,7 +4,7 @@ Ext.define("MyApp.store.IntervencionByIDOrdenStore", {
     proxy: {
       headers: {Token:'TacoLuServices2024**'},
       type: "ajax",
-      url: "/facturas/api/3/get_intervencion_by_ordenid",
+      url: "api/3/get_intervencion_by_ordenid",
       reader: {
         type: "json",
         rootProperty: "intervenciones",

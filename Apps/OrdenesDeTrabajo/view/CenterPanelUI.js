@@ -25,7 +25,7 @@ Ext.define("MyApp.view.CenterPanelUI", {
             text: "Imprimir Orden de Trabajo",
             id: "Imprimir_Orden",
             disabled:true,
-            /*href:"/facturas/OrdenDeTrabajoReporte",
+            /*href:"/OrdenDeTrabajoReporte",
             params:{
                 ordendetrabajo:1
             }*/
@@ -36,7 +36,7 @@ Ext.define("MyApp.view.CenterPanelUI", {
             hidden:true,
             standardSubmit:true,
             method:'POST',
-            url:'/facturas/OrdenDeTrabajoReporte',
+            url:'OrdenDeTrabajoReporte',
             target:'_blank',
             baseParams:{
              // id:561

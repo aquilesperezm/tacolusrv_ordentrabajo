@@ -7,10 +7,10 @@ Ext.application({
   //
   //mainView: 'Main.view.main.Main'
 
- 
-  controllers: ["DashBoardController",'Create_OrdenTrabajo'],
-  
+  controllers: ["DashBoardController", "Create_OrdenTrabajo"],
 
   launch: () => {
-      Ext.create('MyApp.view.DashBoardUI');
-  }});
+    Ext.create("MyApp.view.DashBoardUI");
+  }
+   
+});
