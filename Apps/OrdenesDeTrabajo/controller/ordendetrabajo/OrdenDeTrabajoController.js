@@ -10,7 +10,9 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   } },
 
   onKeyUp_CounterPages: function(cmp){
-    console.log('render numberfield',cmp)
+    var store = Ext.ComponentQuery.query('ordendetrabajo_grid')[0].getStore();
+    store.setPageSize(cmp.getValue());
+    store.loadPage(1);
   },
 
   //this method is called before the app boots

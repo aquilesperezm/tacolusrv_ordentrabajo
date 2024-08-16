@@ -57,7 +57,7 @@ class API_OrdenDeTrabajo extends ApiController
             $start = $_GET['start'];
             $limit = $_GET['limit'];
 
-            $data = ["ordenes" => array_slice($result,$start,$page * $limit),"total" => count($result)];
+            $data = ["ordenes" => array_slice($result,$start,$limit),"total" => count($result)];
             
 
             $this->response->setContent(json_encode($data));
