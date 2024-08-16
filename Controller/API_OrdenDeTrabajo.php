@@ -53,7 +53,12 @@ class API_OrdenDeTrabajo extends ApiController
                 array_push($result, $orden);
             }
 
-            $data = ["ordenes" => $result];
+            $page = $_GET['page'];
+            $start = $_GET['start'];
+            $limit = $_GET['limit'];
+
+            $data = ["ordenes" => array_slice($result,$start,$page * $limit),"total" => count($result)];
+            
 
             $this->response->setContent(json_encode($data));
         }

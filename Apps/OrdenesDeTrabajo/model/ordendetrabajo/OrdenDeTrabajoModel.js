@@ -1,4 +1,4 @@
-Ext.define('MyApp.model.OrdenesDeTrabajoModel', {
+Ext.define('MyApp.model.ordendetrabajo.OrdenDeTrabajoModel', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id',  type: 'int'},

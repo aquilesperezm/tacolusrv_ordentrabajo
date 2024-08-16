@@ -1,4 +1,4 @@
-Ext.define("MyApp.view.DashBoardUI", {
+Ext.define("MyApp.view.dashboard.DashBoardView", {
   extend: "Ext.container.Viewport",
   layout: "border",
   items: [
@@ -8,7 +8,7 @@ Ext.define("MyApp.view.DashBoardUI", {
       border: false,
       margin: "0 0 5 0",
     },{
-      xtype:'centerpanel_ui'
+      xtype:'centerpanel_view'
     }
   ],
 });

@@ -1,6 +1,6 @@
-Ext.define("MyApp.store.OrdenesDeTrabajoStore", {
+Ext.define("MyApp.store.ordendetrabajo.OrdenDeTrabajoStore", {
   extend: "Ext.data.Store",
-  model: "MyApp.model.OrdenesDeTrabajoModel",
+  model: "MyApp.model.ordendetrabajo.OrdenDeTrabajoModel",
   proxy: {
     headers: {Token:'TacoLuServices2024**'},
     type: "ajax",
@@ -8,7 +8,9 @@ Ext.define("MyApp.store.OrdenesDeTrabajoStore", {
     reader: {
       type: "json",
       rootProperty: "ordenes",
+      totalProperty: "total"
     },
   },
+  pageSize:15,
   autoLoad: true,
 });

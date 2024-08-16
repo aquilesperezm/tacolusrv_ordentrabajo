@@ -1,15 +1,18 @@
-Ext.define("MyApp.controller.DashBoardController", {
+Ext.define("MyApp.controller.dashboard.DashBoardController", {
   extend: "Ext.app.Controller",
 
   stores: [
-    "OrdenesDeTrabajoStore",
+   /* "OrdenesDeTrabajoStore",
     "IntervencionByIDOrdenStore",
     "VehiculosStore",
-    "TipoIntervencionStore",
+    "TipoIntervencionStore",*/
   ],
-  views: ["DashBoardUI", "CenterPanelUI"],
+  views: [
+    "dashboard.DashBoardView",
+     //"CenterPanelUI"
+    ],
 
-  control: {
+  /*control: {
     "#Adicionar_Orden": {
       click: "onClick_Adicionar_Orden",
     },
@@ -55,6 +58,6 @@ Ext.define("MyApp.controller.DashBoardController", {
       }
     });
 
-  }
+  }*/
   
 });

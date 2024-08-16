@@ -1,10 +1,13 @@
-Ext.define("MyApp.view.CenterPanelUI", {
+Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   extend: "Ext.container.Container",
   region: "center",
-  xtype: "centerpanel_ui",
-  scrollable: true, // TabPanel itself has no title
+  xtype: "centerpanel_view",
+  items: [{
+    xtype:'ordendetrabajo_grid'
+  }],
+
   //activeTab: 0, // First tab active by default
-  items: {
+  /* items: {
     // title: "Ordenes de Trabajo",
     items: [
       {
@@ -24,33 +27,32 @@ Ext.define("MyApp.view.CenterPanelUI", {
           {
             text: "Imprimir Orden de Trabajo",
             id: "Imprimir_Orden",
-            disabled:true,
+            disabled: true,
             /*href:"/OrdenDeTrabajoReporte",
             params:{
                 ordendetrabajo:1
-            }*/
+            }
           },
           {
-            xtype:'form',
-            id:'Print_Form_OrdenTrabajo',
-            hidden:true,
-            standardSubmit:true,
-            method:'POST',
-            url:'OrdenDeTrabajoReporte',
-            target:'_blank',
-            baseParams:{
-             // id:561
-            }
-          }
-          ,
+            xtype: "form",
+            id: "Print_Form_OrdenTrabajo",
+            hidden: true,
+            standardSubmit: true,
+            method: "POST",
+            url: "OrdenDeTrabajoReporte",
+            target: "_blank",
+            baseParams: {
+              // id:561
+            },
+          },
         ],
         items: [
           {
-            xtype: "gridpanel_ordenesdetrabajo_ui",
+           // xtype: "gridpanel_ordenesdetrabajo_ui",
           },
           {
-            xtype: "gridpanel_tipointervencion_ui",
-          },
+           // xtype: "gridpanel_tipointervencion_ui",
+          }/*,
           {
             xtype: "form",
             title: "Formulario para Orden de Trabajo",
@@ -58,5 +60,5 @@ Ext.define("MyApp.view.CenterPanelUI", {
         ],
       },
     ],
-  },
+  },*/
 });
