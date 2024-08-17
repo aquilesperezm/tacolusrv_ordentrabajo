@@ -13,6 +13,7 @@ Ext.application({
     "ordendetrabajo.OrdenDeTrabajoController",
     "vehiculo.VehiculoController",
     "tipointervencion.TipoIntervencionController",
+    "tacografo.TacografoController",
   ],
 
   launch: () => {

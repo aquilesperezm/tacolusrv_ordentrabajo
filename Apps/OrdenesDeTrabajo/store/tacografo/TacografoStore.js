@@ -1,6 +1,6 @@
-Ext.define("MyApp.store.TacografosStore", {
+Ext.define("MyApp.store.tacografo.TacografoStore", {
   extend: "Ext.data.Store",
-  model: "MyApp.model.TacografoModel",
+  model: "MyApp.model.tacografo.TacografoModel",
   proxy: {
     headers: {Token:'TacoLuServices2024**'},
     type: "ajax",
