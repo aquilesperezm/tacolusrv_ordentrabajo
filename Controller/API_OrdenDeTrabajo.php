@@ -45,7 +45,7 @@ class API_OrdenDeTrabajo extends ApiController
                 $ordenes = DBQuery::table('ordenesdetrabajo')->where(
                     [
                         Where::orLike('numero_orden', $criteria_str)
-                       // Where::orLike('numero_orden', $criteria_str)
+                        // Where::orLike('numero_orden', $criteria_str)
                     ]
                 )->get();
 
@@ -63,13 +63,25 @@ class API_OrdenDeTrabajo extends ApiController
                 $orden["nombre_centroautorizado"] = $centroauth->get(($vehiculo->get($orden['id_vehiculo']))->id_centroautorizado)->nombre_centroautorizado;
 
                 // se obtiene por el id_vehiculo (vehiculo) -> id_cliente (cliente)
-                $orden["nombre_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->nombre;
-                $orden["cifnif_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->cifnif;
 
+                //var_dump($vehiculo->get($orden['id_vehiculo']));
+
+                // Clientes 
+                if ($vehiculo->get($orden['id_vehiculo'])->id_cliente) {
+                    $orden["nombre_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->nombre;
+                    $orden["cifnif_cliente"] = $cliente->get(($vehiculo->get($orden['id_vehiculo']))->id_cliente)->cifnif;
+                } else {
+                    $orden["nombre_cliente"] = "No Asignado";
+                    $orden["cifnif_cliente"] = "No Asignado";
+                }
 
                 $orden["no_chasis"] = ($vehiculo->get($orden['id_vehiculo']))->num_chasis;
                 $orden["matricula"] = ($vehiculo->get($orden['id_vehiculo']))->matricula;
+
+
+                //tacografos
                 $orden["no_serie_tacografo"] = ($tacografo->get($orden['id_tacografo']))->numero_serie;
+                
 
                 $orden['logged_user'] = $_COOKIE['fsNick'];
                 array_push($result, $orden);

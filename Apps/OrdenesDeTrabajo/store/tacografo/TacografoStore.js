@@ -7,7 +7,8 @@ Ext.define("MyApp.store.tacografo.TacografoStore", {
     url: "api/3/tacografo_manager",
     reader: {
       type: "json",
-      rootProperty: "tacografos"
+      rootProperty: "tacografos",
+      totalProperty: "total"
     },
   },
   autoLoad: true,

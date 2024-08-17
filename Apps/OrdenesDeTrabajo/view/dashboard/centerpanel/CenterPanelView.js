@@ -2,12 +2,46 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   extend: "Ext.container.Container",
   region: "center",
   xtype: "centerpanel_view",
-  padding:15,
-  items: [{
-    xtype:'ordendetrabajo_grid'
-  },{
-    xtype:'tacografo_grid'
-  }],
+  padding: 15,
+  items: [
+    {
+      xtype: "ordendetrabajo_grid",
+    },
+    {
+      xtype: "tipointervencion_grid",
+      margin: "10 0 0 0",
+      listeners: {
+        beforerender: function (cmp) {
+          var t = cmp.down("toolbar");
+          var i = t.query('button');
+          var s = t.query('tbspacer')
+          var p = t.query('tbseparator')
+          
+          i[0].setVisible(false)
+          i[1].setVisible(false)
+          i[2].setVisible(false)
+          i[3].setVisible(false)
+
+          s[0].setVisible(false)
+          s[1].setVisible(false)
+          s[2].setVisible(false)
+          s[3].setVisible(false)
+          s[4].setVisible(false)
+          s[5].setVisible(false)
+          s[6].setVisible(false)
+         // s[7].setVisible(false)
+
+          p[0].setVisible(false)
+          p[1].setVisible(false)
+          p[2].setVisible(false)
+          p[3].setVisible(false)
+  
+
+
+        },
+      },
+    },
+  ],
 
   //activeTab: 0, // First tab active by default
   /* items: {

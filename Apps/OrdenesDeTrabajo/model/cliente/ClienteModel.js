@@ -1,4 +1,4 @@
-Ext.define("MyApp.model.ClienteModel", {
+Ext.define("MyApp.model.cliente.ClienteModel", {
   extend: "Ext.data.Model",
   fields: [
     { name: "id", type: "int" },

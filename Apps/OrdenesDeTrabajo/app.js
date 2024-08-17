@@ -14,6 +14,7 @@ Ext.application({
     "vehiculo.VehiculoController",
     "tipointervencion.TipoIntervencionController",
     "tacografo.TacografoController",
+    "cliente.ClienteController"
   ],
 
   launch: () => {

@@ -1,9 +1,9 @@
-Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
+Ext.define("MyApp.view.cliente.ClienteView_Grid", {
   extend: "Ext.grid.Panel",
-  xtype: "ordendetrabajo_grid",
-  title: "Ordenes de Trabajo",
+  xtype: "cliente_grid",
+  title: "Clientes",
   //id: "IdGridOrdenDeTrabajo",
-  store: "ordendetrabajo.OrdenDeTrabajoStore",
+  store: "cliente.ClienteStore",
   scrollable: true,
   height:
     Math.max(
@@ -14,7 +14,7 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       document.documentElement.offsetHeight
     ) /
       2 -
-    50,
+    30,
   selModel: {
     type: "checkboxmodel",
     checkOnly: false,
@@ -22,40 +22,28 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
   columns: [
     {
       xtype: "rownumberer",
-      flex: 0.1,
+      flex: 0.01,
       text: "#",
     },
     {
-      text: "No. Orden de Trabajo",
+      text: "Código",
+      dataIndex: "codcliente",
       flex: 1,
-      dataIndex: "numero_orden",
     },
     {
-      text: "Fecha",
-      flex: 0.5,
-      dataIndex: "fecha_orden",
-     // xtype: "datecolumn",
-     // format: "d-m-Y",
-    },
-    {
-      text: "Centro Autorizado",
+      text: "CIF/NIF",
+      dataIndex: "cifnif",
       flex: 1,
-      dataIndex: "full_centroautorizado",
     },
     {
-      text: "Cliente",
+      text: "Nombre",
+      dataIndex: "nombre",
       flex: 1,
-      dataIndex: "full_cliente",
     },
     {
-      text: "Vehículo",
-      flex: 1.5,
-      dataIndex: "full_vehiculo",
-    },
-    {
-      text: "No. Serie Tacografo",
-      flex: 1.5,
-      dataIndex: "no_serie_tacografo",
+      text: "E-Mail",
+      dataIndex: "email",
+      flex: 1,
     },
   ],
   tbar: [
@@ -66,49 +54,60 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-file.ico'
-     // iconCls: "tbar-add",
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-file.ico",
+      // iconCls: "tbar-add",
     }, // same as {xtype: 'tbtext', text: 'text1'} to create Ext.toolbar.TextItem
-    { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // same as ' ' to create Ext.toolbar.Spacer
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" }, // same as ' ' to create Ext.toolbar.Spacer
     {
       text: "Actualizar",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico'
-     // iconCls: "tbar-update",
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico",
+      // iconCls: "tbar-update",
     },
-    { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // add a 50px space
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" }, // add a 50px space
     {
       text: "Eliminar",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico',
-    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico",
+    },
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" },
     {
       text: "Imprimir",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico',
-    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico",
+    },
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" },
     {
-      xtype: 'textfield',
-      fieldLabel:'<b>Criterio</b>',
-      labelPad:0,
-      labelWidth:50,
-      enableKeyEvents:true,
-      emptyText:'Número de Orden' 
+      xtype: "textfield",
+      fieldLabel: "<b>Criterio</b>",
+      width: 300,
+      labelPad: 0,
+      labelWidth: 50,
+      enableKeyEvents: true,
+      emptyText: "Matrícula o Número de Chasis ",
     }, // add a 50px space
     {
       text: "Buscar",
@@ -117,8 +116,8 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
-    }
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
+    },
   ],
 
   bbar: {
@@ -128,9 +127,10 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
     plugins: {
       "ux-progressbarpager": true,
     },
-    items: [  
-      {xtype:'tbseparator'},{
-        enableKeyEvents:true,
+    items: [
+      { xtype: "tbseparator" },
+      {
+        enableKeyEvents: true,
         xtype: "numberfield",
         fieldLabel: "Items por Página",
         labelWidth: 120,

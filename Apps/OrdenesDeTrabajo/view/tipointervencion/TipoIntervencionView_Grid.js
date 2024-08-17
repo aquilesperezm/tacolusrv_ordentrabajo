@@ -14,7 +14,7 @@ Ext.define("MyApp.view.tipointervencion.TipoIntervencionView_Grid", {
       document.documentElement.offsetHeight
     ) /
       2 -
-    30,
+    50,
   selModel: {
     type: "checkboxmodel",
     checkOnly: false,
