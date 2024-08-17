@@ -3,7 +3,8 @@ Ext.define('MyApp.model.ordendetrabajo.OrdenDeTrabajoModel', {
     fields: [
         {name: 'id',  type: 'int'},
         {name: 'numero_orden',   type: 'string'},
-        {name: 'fecha_orden', type: 'date', dateFormat: 'd-m-Y'},
+        //{name: 'fecha_orden', type: 'date', dateFormat: 'd-m-Y'},
+        {name: 'fecha_orden', type: 'string'},
         {name: 'id_centroautorizado',   type: 'int'},
         {name: 'codigo_centroautorizado', type: 'string'},
         {name: 'nombre_centroautorizado', type: 'string'},

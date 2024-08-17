@@ -34,8 +34,8 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       text: "Fecha",
       flex: 0.5,
       dataIndex: "fecha_orden",
-      xtype: "datecolumn",
-      format: "d-m-Y",
+     // xtype: "datecolumn",
+     // format: "d-m-Y",
     },
     {
       text: "Centro Autorizado",
@@ -106,7 +106,9 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       xtype: 'textfield',
       fieldLabel:'<b>Criterio</b>',
       labelPad:0,
-      labelWidth:50
+      labelWidth:50,
+      enableKeyEvents:true,
+      emptyText:'Número de Orden' 
     }, // add a 50px space
     {
       text: "Buscar",
