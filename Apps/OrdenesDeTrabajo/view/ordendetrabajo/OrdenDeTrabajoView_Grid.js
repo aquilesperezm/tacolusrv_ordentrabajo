@@ -66,27 +66,41 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      iconCls: "tbar-add",
+      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-file.ico'
+     // iconCls: "tbar-add",
     }, // same as {xtype: 'tbtext', text: 'text1'} to create Ext.toolbar.TextItem
     { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // same as ' ' to create Ext.toolbar.Spacer
     {
       text: "Actualizar",
       xtype: "button",
       scale: "medium",
+      disabled:true,
       style: {
         textDecoration: "none",
       },
-      iconCls: "tbar-update",
+      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico'
+     // iconCls: "tbar-update",
     },
     { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // add a 50px space
     {
       text: "Eliminar",
       xtype: "button",
       scale: "medium",
+      disabled:true,
       style: {
         textDecoration: "none",
       },
-      iconCls: "tbar-delete",
+      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico',
+    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
+    {
+      text: "Imprimir",
+      xtype: "button",
+      scale: "medium",
+      disabled:true,
+      style: {
+        textDecoration: "none",
+      },
+      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico',
     },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
     {
       xtype: 'textfield',
@@ -101,7 +115,7 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      iconCls: "tbar-search",
+      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
     }
   ],
 

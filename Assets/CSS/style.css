@@ -48,3 +48,10 @@
   content: "\f06e";
   text-decoration: none;
 }
+
+.tbar-print:before {
+  font: 18px/1 "Font Awesome 6 Free";
+  color: #9554af;
+  content: "\f70e";
+  text-decoration: none;
+}

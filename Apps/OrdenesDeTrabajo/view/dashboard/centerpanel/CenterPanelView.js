@@ -2,6 +2,7 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   extend: "Ext.container.Container",
   region: "center",
   xtype: "centerpanel_view",
+  padding:15,
   items: [{
     xtype:'ordendetrabajo_grid'
   }],
