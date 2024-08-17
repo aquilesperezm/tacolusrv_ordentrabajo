@@ -1,21 +1,22 @@
-Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
+Ext.define("MyApp.controller.vehiculo.VehiculoController", {
   extend: "Ext.app.Controller",
 
-  stores: ["ordendetrabajo.OrdenDeTrabajoStore"],
-  views: ["ordendetrabajo.OrdenDeTrabajoView_Grid"],
+  views: ["vehiculo.VehiculoView_Grid"],
+
+  stores: ["vehiculo.VehiculoStore"],
 
   control: {
     // cuando cambiamos el valor del selector de cantidad de items que se muestran en la tabla
-    'ordendetrabajo_grid toolbar[dock="bottom"] > numberfield[fieldLabel="Items por Página"]':
+    'vehiculo_grid toolbar[dock="bottom"] > numberfield[fieldLabel="Items por Página"]':
       {
         keyup: "onKeyUp_CounterPages",
       },
     // cuando damos ENTER en el campo de texto de la busqueda
-    'ordendetrabajo_grid toolbar[dock="top"] > textfield': {
+    'vehiculo_grid toolbar[dock="top"] > textfield': {
       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
-    'ordendetrabajo_grid toolbar[dock="top"] > button[text="Buscar"]': {
+    'vehiculo_grid toolbar[dock="top"] > button[text="Buscar"]': {
       click: "onClick_ButtonSearch",
     },
   },
@@ -28,10 +29,10 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
 
   onClick_ButtonSearch: function (cmp, e) {
     var textfield = Ext.ComponentQuery.query(
-      'ordendetrabajo_grid toolbar[dock="top"] > textfield'
+      'vehiculo_grid toolbar[dock="top"] > textfield'
     )[0];
     var store_ordenes = Ext.ComponentQuery.query(
-      "ordendetrabajo_grid"
+      "vehiculo_grid"
     )[0].getStore();
     store_ordenes.load({
       params: {
@@ -39,6 +40,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       },
     });
   },
+
   /**
    * @abstract Funcion encargada de controlar el contador de la cantidad de items a mostrar
    *           el componente se encuentra despues del paginado.
@@ -46,13 +48,10 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
    * @event keyup
    */
   onKeyUp_CounterPages: function (cmp) {
-    var store = Ext.ComponentQuery.query("ordendetrabajo_grid")[0].getStore();
+    var store = Ext.ComponentQuery.query("vehiculo_grid")[0].getStore();
     store.setPageSize(cmp.getValue());
     store.loadPage(1);
   },
 
-  //this method is called before the app boots
-  init: function () {
-    //console.log('controller orden de trabajo init')
-  },
+  init: function () {},
 });

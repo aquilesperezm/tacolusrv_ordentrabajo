@@ -11,7 +11,9 @@ use FacturaScripts\Plugins\Nomencladores\Model\MarcaVehiculo;
 use FacturaScripts\Plugins\Nomencladores\Model\ModeloVehiculo;
 
 use FacturaScripts\Core\Model\Cliente;
+
 use FacturaScripts\Core\DbQuery;
+use FacturaScripts\Core\Where;
 
 
 class API_Vehiculo extends ApiController
@@ -28,12 +30,29 @@ class API_Vehiculo extends ApiController
         $marca = new MarcaVehiculo();
         $modelo = new ModeloVehiculo();
 
+        $criteria_str = "";
+        $criteria_exits = isset($_GET['criteria']);
+        if ($criteria_exits)
+            $criteria_str = $_GET['criteria'];
+
+
         if ($this->request->isMethod('GET')) {
 
             $result = [];
             //$u = new OrdenDeTrabajo();
-            $vehiculos = (array) $vehiculo->all();
+            if (!$criteria_exits && empty($criteria_str))
+                $vehiculos = (array) $vehiculo->all();
+            else {
 
+                $vehiculos = DBQuery::table('vehiculos')->where(
+                    [
+                        Where::orLike('matricula', $criteria_str),
+                        Where::orLike('num_chasis', $criteria_str)
+                    ]
+                )->get();
+
+                // var_dump($ordenes);
+            }
             foreach ($vehiculos as $vehiculo) {
                 $item = (array) $vehiculo;
 
@@ -77,9 +96,15 @@ class API_Vehiculo extends ApiController
                 array_push($result, $item);
             }
 
-            $data = ["vehiculos" => $result];
 
+            $start = $_GET['start'];
+            $limit = $_GET['limit'];
+
+            $data = ["vehiculos" => array_slice($result, $start, $limit), "total" => count($result)];
             $this->response->setContent(json_encode($data));
+
+           // $data = ["vehiculos" => $result];
+           //$this->response->setContent(json_encode($data));
             
         } else {
             $this->response->setStatusCode(403);

@@ -5,6 +5,8 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   padding:15,
   items: [{
     xtype:'ordendetrabajo_grid'
+  },{
+    xtype:'vehiculo_grid'
   }],
 
   //activeTab: 0, // First tab active by default
