@@ -6,7 +6,7 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   items: [{
     xtype:'ordendetrabajo_grid'
   },{
-    xtype:'vehiculo_grid'
+    xtype:'tipointervencion_grid'
   }],
 
   //activeTab: 0, // First tab active by default

@@ -11,7 +11,8 @@ Ext.application({
     "dashboard.DashBoardController",
     "dashboard.centerpanel.CenterPanelController",
     "ordendetrabajo.OrdenDeTrabajoController",
-    "vehiculo.VehiculoController"
+    "vehiculo.VehiculoController",
+    "tipointervencion.TipoIntervencionController",
   ],
 
   launch: () => {

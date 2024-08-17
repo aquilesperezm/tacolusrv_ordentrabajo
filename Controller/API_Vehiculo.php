@@ -53,6 +53,8 @@ class API_Vehiculo extends ApiController
 
                 // var_dump($ordenes);
             }
+
+            
             foreach ($vehiculos as $vehiculo) {
                 $item = (array) $vehiculo;
 
