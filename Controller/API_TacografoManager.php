@@ -35,6 +35,9 @@ class API_TacografoManager extends ApiController
         $modelo = new ModeloTacografo();
         $categoria = new CategoriaTacografo();
 
+        $flag_tacografos_disponibles = null;
+        if (isset($_GET['tacografos_disponibles']))
+            $flag_tacografos_disponibles = $_GET['tacografos_disponibles'];
 
         $criteria_str = "";
         $criteria_exits = isset($_GET['criteria']);
@@ -60,14 +63,15 @@ class API_TacografoManager extends ApiController
                 // var_dump($ordenes);
             }
 
-            //$tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
+            if($flag_tacografos_disponibles)
+               $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
 
             foreach ($tacografos as $tacografo) {
                 $item = (array) $tacografo;
 
                 $item['modelo'] = $modelo->get($item['id_modelo'])->modelo_tacografo;
                 $item['categoria'] = $categoria->get($item['id_categoria'])->nombre_categoriatacografo;
-                
+
                 array_push($result, $item);
             }
 
@@ -80,6 +84,7 @@ class API_TacografoManager extends ApiController
             //$data = ["tacografos" => $result];
             //$this->response->setContent(json_encode($data));
 
+            //vincular un tacografo con un vehiculo
         } elseif ($this->request->isMethod('POST')) {
 
 

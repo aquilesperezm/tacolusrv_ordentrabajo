@@ -28,9 +28,318 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     'window[title="Adicionar una nueva Orden de Trabajo"] > grid': {
       selectionchange: "onSelectChange_CreateOrden_Vehiculo",
     },
+    //---------------------------------------------- Vinculate Client and Tachograph -------------------------------
+    // Vinculate Client
+    'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Cliente"]':
+      {
+        click: "OnClickButton_VincularCliente",
+      },
+
+    'window[title="Vincular un Cliente a un Vehículo"] > grid': {
+      selectionchange: "onSelectionChange_GridVincularCliente",
+    },
+
+    'window[title="Vincular un Cliente a un Vehículo"] button[text="Vincular Cliente"]':
+      {
+        click: "onClick_VincularCliente",
+      },
+
+    // Vinculate Tachograph
+    'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Tacógrafo"]':
+      {
+        click: "OnClickButton_VincularTacografo",
+      },
+
+    'window[title="Vincular un Tacógrafo a un Vehículo"] > grid': {
+      selectionchange: "onSelectionChange_GridVincularTacografo",
+    },
+
+    'window[title="Vincular un Tacógrafo a un Vehículo"] button[text="Vincular Tacógrafo"]':
+      {
+        click: "onClick_VincularTacografo",
+      },
+
+    //---------------------------------------------- End Vinculate Client and Tachograph -------------------------------
+
     //------------------------------------------- CRUD Functions ---------------------------------------------
 
     //----------------------------------------- CRUD Functions -----------------------------------------------------
+
+    //--------------------------- Navigation from Form "Adicionar Orden" -------------------------------------------
+      'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Siguiente"]':{
+        click: function(btn,e){
+          this.showNext(btn);
+        }
+      },
+      'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Anterior"]':{
+        click: function(btn,e){
+          this.showPrevious(btn)
+        }
+      }
+   
+    // ------------------------------------------------ End Navigation --------------------------------------------------------
+  },
+
+  //-------------------------------------- Nav Methods -----------------------------------------------------------------
+  showNext: function () {
+    this.doCardNavigation(1);
+  },
+
+  showPrevious: function (btn) {
+    this.doCardNavigation(-1);
+  },
+
+  doCardNavigation: function (incr) {
+    var win = Ext.ComponentQuery.query(
+      'window[title="Adicionar una nueva Orden de Trabajo"]'
+    )[0];
+
+    //var me = this,
+      l = win.getLayout(),
+      i = l.activeItem.id.split("createordenform_card-")[1],
+      next = parseInt(i, 10) + incr;
+
+    l.setActiveItem(next);
+
+    win.down('button[text="Anterior"]').setDisabled(next === 0);
+    win.down('button[text="Siguiente"]').setDisabled(next === 1);
+  },
+
+//------------------------------------------------------- End Nav Methods ----------------------------------------------
+
+  OnClickButton_VincularTacografo: function (btn, e) {
+    Ext.create("Ext.window.Window", {
+      title: "Vincular un Tacógrafo a un Vehículo",
+      width: "70%",
+      height: "50%",
+      layout: "fit",
+      resizable: false,
+      draggable: false,
+      modal: true,
+      items: [
+        {
+          xtype: "tacografo_grid",
+          store: Ext.create("MyApp.store.tacografo.TacografoStore", {
+            proxy: {
+              extraParams: {
+                tacografos_disponibles: true,
+              },
+            },
+          }),
+          selModel: {
+            type: "checkboxmodel",
+            checkOnly: false,
+            mode: "SINGLE",
+            allowDeselect: false,
+          },
+          listeners: {
+            beforerender: function (cmp) {
+              var t = cmp.down("toolbar");
+              var i = t.query("button");
+              var s = t.query("tbspacer");
+              var p = t.query("tbseparator");
+
+              i[0].setVisible(false);
+              i[1].setVisible(false);
+              i[2].setVisible(false);
+              i[3].setVisible(false);
+
+              s[0].setVisible(false);
+              s[1].setVisible(false);
+              s[2].setVisible(false);
+              s[3].setVisible(false);
+              s[4].setVisible(false);
+              s[5].setVisible(false);
+              s[6].setVisible(false);
+              // s[7].setVisible(false)
+
+              p[0].setVisible(false);
+              p[1].setVisible(false);
+              p[2].setVisible(false);
+              p[3].setVisible(false);
+            },
+          },
+        },
+      ],
+      buttons: [
+        {
+          text: "Vincular Tacógrafo",
+          disabled: true,
+          style: {
+            textDecoration: "none",
+          },
+        },
+      ],
+    }).show();
+  },
+
+  onSelectionChange_GridVincularTacografo: function (sm, record) {
+    var btn_vincular_cliente = Ext.ComponentQuery.query(
+      'window[title="Vincular un Tacógrafo a un Vehículo"] button[text="Vincular Tacógrafo"]'
+    )[0];
+    if (sm.getSelection().length > 0) btn_vincular_cliente.setDisabled(false);
+  },
+
+  onClick_VincularTacografo: function (btn, e) {
+    var grid_vehiculo = Ext.ComponentQuery.query(
+      'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid'
+    )[0];
+    var grid_tacografo = Ext.ComponentQuery.query(
+      'window[title="Vincular un Tacógrafo a un Vehículo"] > tacografo_grid'
+    )[0];
+
+    Ext.Ajax.request({
+      headers: { Token: "TacoLuServices2024**" },
+      url: "api/3/tacografo_manager",
+      method: "POST",
+      params: {
+        id_vehiculo: grid_vehiculo.getSelectionModel().getSelection()[0].data
+          .id,
+        id_tacografo: grid_tacografo.getSelectionModel().getSelection()[0].data
+          .id,
+      },
+      success: function (response, opts) {
+        Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
+        Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+        Ext.StoreManager.lookup("cliente.ClienteStore").load();
+        Ext.StoreManager.lookup("tacografo.TacografoStore").load();
+        btn.up("window").close();
+      },
+
+      failure: function (response, opts) {
+        console.log("server-side failure with status code " + response.status);
+      },
+    });
+
+    /* var grid_vehiculo = Ext.ComponentQuery.query(
+      'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid'
+    )[0];
+    var grid_cliente = Ext.ComponentQuery.query(
+      'window[title="Vincular un Cliente a un Vehículo"] > cliente_grid'
+    )[0];
+
+    Ext.Ajax.request({
+      headers: { Token: "TacoLuServices2024**" },
+      url: "api/3/cliente_manager",
+      method: "POST",
+      params: {
+        id_vehiculo: grid_vehiculo.getSelectionModel().getSelection()[0].data
+          .id,
+        id_cliente: grid_cliente.getSelectionModel().getSelection()[0].data
+          .codcliente,
+      },
+      success: function (response, opts) {
+        Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
+        Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+        Ext.StoreManager.lookup("cliente.ClienteStore").load();
+        Ext.StoreManager.lookup("tacografo.TacografoStore").load();
+        btn.up("window").close();
+      },
+
+      failure: function (response, opts) {
+        console.log("server-side failure with status code " + response.status);
+      },
+    });*/
+  },
+
+  //----------------------
+
+  onClick_VincularCliente: function (btn, e) {
+    var grid_vehiculo = Ext.ComponentQuery.query(
+      'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid'
+    )[0];
+    var grid_cliente = Ext.ComponentQuery.query(
+      'window[title="Vincular un Cliente a un Vehículo"] > cliente_grid'
+    )[0];
+
+    Ext.Ajax.request({
+      headers: { Token: "TacoLuServices2024**" },
+      url: "api/3/cliente_manager",
+      method: "POST",
+      params: {
+        id_vehiculo: grid_vehiculo.getSelectionModel().getSelection()[0].data
+          .id,
+        id_cliente: grid_cliente.getSelectionModel().getSelection()[0].data
+          .codcliente,
+      },
+      success: function (response, opts) {
+        Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
+        Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+        Ext.StoreManager.lookup("cliente.ClienteStore").load();
+        Ext.StoreManager.lookup("tacografo.TacografoStore").load();
+        btn.up("window").close();
+      },
+
+      failure: function (response, opts) {
+        console.log("server-side failure with status code " + response.status);
+      },
+    });
+  },
+
+  onSelectionChange_GridVincularCliente: function (sm, record) {
+    var btn_vincular_cliente = Ext.ComponentQuery.query(
+      'window[title="Vincular un Cliente a un Vehículo"] button[text="Vincular Cliente"]'
+    )[0];
+    if (sm.getSelection().length > 0) btn_vincular_cliente.setDisabled(false);
+  },
+
+  OnClickButton_VincularCliente: function (btn, e) {
+    Ext.create("Ext.window.Window", {
+      title: "Vincular un Cliente a un Vehículo",
+      width: "70%",
+      height: "50%",
+      layout: "fit",
+      resizable: false,
+      draggable: false,
+      modal: true,
+      items: [
+        {
+          xtype: "cliente_grid",
+          selModel: {
+            type: "checkboxmodel",
+            checkOnly: false,
+            mode: "SINGLE",
+            allowDeselect: false,
+          },
+          listeners: {
+            beforerender: function (cmp) {
+              var t = cmp.down("toolbar");
+              var i = t.query("button");
+              var s = t.query("tbspacer");
+              var p = t.query("tbseparator");
+
+              i[0].setVisible(false);
+              i[1].setVisible(false);
+              i[2].setVisible(false);
+              i[3].setVisible(false);
+
+              s[0].setVisible(false);
+              s[1].setVisible(false);
+              s[2].setVisible(false);
+              s[3].setVisible(false);
+              s[4].setVisible(false);
+              s[5].setVisible(false);
+              s[6].setVisible(false);
+              // s[7].setVisible(false)
+
+              p[0].setVisible(false);
+              p[1].setVisible(false);
+              p[2].setVisible(false);
+              p[3].setVisible(false);
+            },
+          },
+        },
+      ],
+      buttons: [
+        {
+          text: "Vincular Cliente",
+          disabled: true,
+          style: {
+            textDecoration: "none",
+          },
+        },
+      ],
+    }).show();
   },
 
   onSelectChange_CreateOrden_Vehiculo: function (sm, record) {
@@ -48,14 +357,12 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
 
     //vehiculos_sm = cmp.getSelectionModel();
 
-    if (
-      sm.getSelection().length > 0 &&
-      record[0].data.tiene_tacografo &&
-      record[0].data.tiene_cliente
-    ) {
+    if (sm.getSelection().length > 0) {
       btn_siguiente = win.query('button[text="Siguiente"]')[0];
-      btn_siguiente.setDisabled(false);
-    } else {
+      btn_siguiente.setDisabled(
+        !(record[0].data.tiene_cliente && record[0].data.tiene_tacografo)
+      );
+
       btn_vincular_cliente.setDisabled(record[0].data.tiene_cliente);
       btn_vincular_tacografo.setDisabled(record[0].data.tiene_tacografo);
     }
@@ -66,13 +373,15 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       title: "Adicionar una nueva Orden de Trabajo",
       width: "90%",
       height: "90%",
-      layout: "fit",
+      layout: "card",
+      requires: ["Ext.layout.container.Card"],
       resizable: false,
       draggable: false,
       modal: true,
       items: [
         {
           xtype: "vehiculo_grid",
+          id: "createordenform_card-0",
           selModel: {
             type: "checkboxmodel",
             checkOnly: false,
@@ -129,40 +438,20 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
             ],
           },
           //height: 350,
-        } /*,
+        },
         {
-          xtype: "panel",
-          title: "Pasos",
-          defaults: { padding: '5 20 5 20' },
-          items: [
-            {
-              xtype: "displayfield",
-              fieldLabel: "<b>Paso #1</b>",
-              value: "Seleccione un vehículo en la tabla superior, en caso de no existir, adicione uno nuevo",
-            },{
-              xtype: "displayfield",
-              fieldLabel: "<b>Paso #2</b>",
-              value: "Si el vehículo no esta vinculado a un Cliente, presione <b>Vincular Cliente</b>",
-            },{
-              xtype: "displayfield",
-              fieldLabel: "<b>Paso #3</b>",
-              value: "Si el vehículo no esta vinculado a un Tacógrafo, presione <b>Vincular Tacógrafo</b>",
-            },{
-              xtype: "displayfield",
-              fieldLabel: "<b>Paso #4</b>",
-              value: "Si el vehículo esta en listo, presione <b>Siguiente</b> en la parte inferior derecha de la ventana",
-            }
-          ],
-        },*/,
+          id: "createordenform_card-1",
+          title: "temp",
+        }
       ],
       buttons: [
         {
           text: "Anterior",
-          disabled: true,
+          disabled: true
         },
         {
           text: "Siguiente",
-          disabled: true,
+          disabled: true
         },
       ],
     }).show();

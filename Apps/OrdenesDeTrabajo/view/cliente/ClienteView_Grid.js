@@ -107,7 +107,7 @@ Ext.define("MyApp.view.cliente.ClienteView_Grid", {
       labelPad: 0,
       labelWidth: 50,
       enableKeyEvents: true,
-      emptyText: "Matrícula o Número de Chasis ",
+      emptyText: "CIFNIF, Nombre, Código y Email",
     }, // add a 50px space
     {
       text: "Buscar",
