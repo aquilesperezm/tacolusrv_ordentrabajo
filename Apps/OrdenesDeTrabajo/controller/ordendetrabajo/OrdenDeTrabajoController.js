@@ -380,7 +380,14 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     }
   },
   //-------------------------------------------------------------------------------------------------------------------------------------
-
+  /**
+   * @description Encarga de realizar la interaccion entre la tabla ordenes 
+   * y tipo de intervencion, al pinchar un elemento de la tabla ordenes de trabajo
+   * nos mostrara los tipos de intervenciones que esta posea.
+   * 
+   * @param sm - Selection Model perteneciente al grid ordenes de trabajo
+   * @param records - Los campos seleccionados 
+   */
   OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
     var store = Ext.data.StoreManager.lookup(
       "tipointervencion.TipoIntervencionByIDOrdenStore"
@@ -539,19 +546,15 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     }).show();
   },
 
-  onSpecialKeyPress_TextfieldSearch: function (f, e) {
+  onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
     if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch();
+      this.onClick_ButtonSearch(cmp.nextSibling('button'));
     }
   },
 
   onClick_ButtonSearch: function (cmp, e) {
-    var textfield = Ext.ComponentQuery.query(
-      'ordendetrabajo_grid toolbar[dock="top"] > textfield'
-    )[0];
-    var store_ordenes = Ext.ComponentQuery.query(
-      "ordendetrabajo_grid"
-    )[0].getStore();
+    var textfield = cmp.previousSibling('textfield');
+    var store_ordenes = cmp.up('ordendetrabajo_grid').getStore();
     store_ordenes.load({
       params: {
         criteria: textfield.getValue(),
@@ -565,7 +568,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
    * @event keyup
    */
   onKeyUp_CounterPages: function (cmp) {
-    var store = Ext.ComponentQuery.query("ordendetrabajo_grid")[0].getStore();
+    var store = cmp.up("ordendetrabajo_grid").getStore();
     store.setPageSize(cmp.getValue());
     store.loadPage(1);
   },

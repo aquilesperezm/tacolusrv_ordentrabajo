@@ -21,19 +21,17 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
     },
   },
 
-  onSpecialKeyPress_TextfieldSearch: function (f, e) {
+  onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
     if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch();
+      this.onClick_ButtonSearch(cmp.nextSibling('button'));
     }
   },
 
   onClick_ButtonSearch: function (cmp, e) {
-    var textfield = Ext.ComponentQuery.query(
-      'cliente_grid toolbar[dock="top"] > textfield'
-    )[0];
-    var store_ordenes = Ext.ComponentQuery.query(
-      "cliente_grid"
-    )[0].getStore();
+    
+    var textfield = cmp.previousSibling('textfield');
+    var store_ordenes = cmp.up('cliente_grid').getStore();
+
     store_ordenes.load({
       params: {
         criteria: textfield.getValue(),
@@ -48,7 +46,7 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
    * @event keyup
    */
   onKeyUp_CounterPages: function (cmp) {
-    var store = Ext.ComponentQuery.query("cliente_grid")[0].getStore();
+    var store = cmp.up('cliente_grid').getStore();
     store.setPageSize(cmp.getValue());
     store.loadPage(1);
   },
