@@ -1,4 +1,4 @@
-Ext.define('MyApp.model.IntervencionByIDOrdenModel', {
+Ext.define('MyApp.model.tipointervencion.TipoIntervencionByIDOrdenModel', {
     extend: 'Ext.data.Model',
     fields: [
         {name: 'id',  type: 'int'},

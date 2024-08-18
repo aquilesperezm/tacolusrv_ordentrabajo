@@ -1,6 +1,6 @@
-Ext.define("MyApp.store.IntervencionByIDOrdenStore", {
+Ext.define("MyApp.store.tipointervencion.TipoIntervencionByIDOrdenStore", {
     extend: "Ext.data.Store",
-    model: "MyApp.model.IntervencionByIDOrdenModel",
+    model: "MyApp.model.tipointervencion.TipoIntervencionByIDOrdenModel",
     proxy: {
       headers: {Token:'TacoLuServices2024**'},
       type: "ajax",
@@ -8,6 +8,7 @@ Ext.define("MyApp.store.IntervencionByIDOrdenStore", {
       reader: {
         type: "json",
         rootProperty: "intervenciones",
+        totalProperty: 'total'
       },
     },
     autoLoad: false

@@ -18,6 +18,8 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
   selModel: {
     type: "checkboxmodel",
     checkOnly: false,
+    mode: "SINGLE",
+    allowDeselect: true,
   },
   columns: [
     {
@@ -34,8 +36,8 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       text: "Fecha",
       flex: 0.5,
       dataIndex: "fecha_orden",
-     // xtype: "datecolumn",
-     // format: "d-m-Y",
+      // xtype: "datecolumn",
+      // format: "d-m-Y",
     },
     {
       text: "Centro Autorizado",
@@ -66,49 +68,59 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-file.ico'
-     // iconCls: "tbar-add",
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-file.ico",
+      // iconCls: "tbar-add",
     }, // same as {xtype: 'tbtext', text: 'text1'} to create Ext.toolbar.TextItem
-    { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // same as ' ' to create Ext.toolbar.Spacer
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" }, // same as ' ' to create Ext.toolbar.Spacer
     {
       text: "Actualizar",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico'
-     // iconCls: "tbar-update",
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico",
+      // iconCls: "tbar-update",
     },
-    { xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" }, // add a 50px space
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" }, // add a 50px space
     {
       text: "Eliminar",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico',
-    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico",
+    },
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" },
     {
       text: "Imprimir",
       xtype: "button",
       scale: "medium",
-      disabled:true,
+      disabled: true,
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico',
-    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico",
+    },
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" },
     {
-      xtype: 'textfield',
-      fieldLabel:'<b>Criterio</b>',
-      labelPad:0,
-      labelWidth:50,
-      enableKeyEvents:true,
-      emptyText:'Número de Orden' 
+      xtype: "textfield",
+      fieldLabel: "<b>Criterio</b>",
+      labelPad: 0,
+      labelWidth: 50,
+      enableKeyEvents: true,
+      emptyText: "Número de Orden",
     }, // add a 50px space
     {
       text: "Buscar",
@@ -117,8 +129,8 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
-    }
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
+    },
   ],
 
   bbar: {
@@ -128,9 +140,10 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
     plugins: {
       "ux-progressbarpager": true,
     },
-    items: [  
-      {xtype:'tbseparator'},{
-        enableKeyEvents:true,
+    items: [
+      { xtype: "tbseparator" },
+      {
+        enableKeyEvents: true,
         xtype: "numberfield",
         fieldLabel: "Items por Página",
         labelWidth: 120,
@@ -147,28 +160,4 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       },
     ],
   },
-  /*listeners: {
-    selectionchange: function (grid, records) {
-      var store = Ext.data.StoreManager.lookup("IntervencionByIDOrdenStore");
-      var imprimir_btn = Ext.getCmp("Imprimir_Orden");
-      var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
-    
-      if (records.length == 1) {
-
-        
-        imprimir_btn.setDisabled(false);
-       
-        //form_imprimir_btn.setConfig('baseParams',{id:561});
-        //console.log(form_imprimir_btn);
-
-        store.load({
-          params: { id_orden: records[0].id },
-        });
-      } else {
-        imprimir_btn.setDisabled(true);
-
-        store.loadData([], false);
-      }
-    },
-  },*/
 });

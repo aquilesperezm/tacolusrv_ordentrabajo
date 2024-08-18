@@ -28,6 +28,12 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     'window[title="Adicionar una nueva Orden de Trabajo"] > grid': {
       selectionchange: "onSelectChange_CreateOrden_Vehiculo",
     },
+
+    //cuando seleccionamos una orden de trabajo, se actualizara la tabla de los tipos de intervenciones
+    ordendetrabajo_grid: {
+      selectionchange: "OnSelectionChange_OrdenesDeTrabajo",
+    },
+
     //---------------------------------------------- Vinculate Client and Tachograph -------------------------------
     // Vinculate Client
     'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Cliente"]':
@@ -65,18 +71,20 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
 
     //----------------------------------------- CRUD Functions -----------------------------------------------------
 
-    //--------------------------- Navigation from Form "Adicionar Orden" -------------------------------------------
-      'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Siguiente"]':{
-        click: function(btn,e){
+    //--------------------------- Navigation Control from Form "Adicionar Orden" -------------------------------------------
+    'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Siguiente"]':
+      {
+        click: function (btn, e) {
           this.showNext(btn);
-        }
+        },
       },
-      'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Anterior"]':{
-        click: function(btn,e){
-          this.showPrevious(btn)
-        }
-      }
-   
+    'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Anterior"]':
+      {
+        click: function (btn, e) {
+          this.showPrevious(btn);
+        },
+      },
+
     // ------------------------------------------------ End Navigation --------------------------------------------------------
   },
 
@@ -95,17 +103,17 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     )[0];
 
     //var me = this,
-      l = win.getLayout(),
-      i = l.activeItem.id.split("createordenform_card-")[1],
-      next = parseInt(i, 10) + incr;
+    (l = win.getLayout()),
+      (i = l.activeItem.id.split("createordenform_card-")[1]),
+      (next = parseInt(i, 10) + incr);
 
     l.setActiveItem(next);
 
     win.down('button[text="Anterior"]').setDisabled(next === 0);
-    win.down('button[text="Siguiente"]').setDisabled(next === 1);
+    win.down('button[text="Siguiente"]').setDisabled(next === 2);
   },
 
-//------------------------------------------------------- End Nav Methods ----------------------------------------------
+  //------------------------------------------------------- End Nav Methods ----------------------------------------------
 
   OnClickButton_VincularTacografo: function (btn, e) {
     Ext.create("Ext.window.Window", {
@@ -367,6 +375,30 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       btn_vincular_tacografo.setDisabled(record[0].data.tiene_tacografo);
     }
   },
+  //-------------------------------------------------------------------------------------------------------------------------------------
+
+  OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
+      //var store = Ext.data.StoreManager.lookup("tipointervencion.TipoIntervencionByIDOrdenStore");
+      //var imprimir_btn = Ext.getCmp("Imprimir_Orden");
+      //var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
+    
+      if (records.length == 1) {
+
+        
+        imprimir_btn.setDisabled(false);
+       
+        //form_imprimir_btn.setConfig('baseParams',{id:561});
+        //console.log(form_imprimir_btn);
+
+        store.load({
+          params: { id_orden: records[0].id },
+        });
+      } else {
+        imprimir_btn.setDisabled(true);
+
+        store.loadData([], false);
+      }
+  },
 
   onClick_ButtonAdd: function (btn, e) {
     Ext.create("Ext.window.Window", {
@@ -441,17 +473,48 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
         },
         {
           id: "createordenform_card-1",
-          title: "temp",
-        }
+          xtype: "tipointervencion_grid",
+          listeners: {
+            beforerender: function (cmp) {
+              var t = cmp.down("toolbar");
+              var i = t.query("button");
+              var s = t.query("tbspacer");
+              var p = t.query("tbseparator");
+
+              i[0].setVisible(false);
+              i[1].setVisible(false);
+              i[2].setVisible(false);
+              i[3].setVisible(false);
+
+              s[0].setVisible(false);
+              s[1].setVisible(false);
+              s[2].setVisible(false);
+              s[3].setVisible(false);
+              s[4].setVisible(false);
+              s[5].setVisible(false);
+              s[6].setVisible(false);
+              // s[7].setVisible(false)
+
+              p[0].setVisible(false);
+              p[1].setVisible(false);
+              p[2].setVisible(false);
+              p[3].setVisible(false);
+            },
+          },
+        },
+        {
+          id: "createordenform_card-2",
+          title: "Resumen de Orden de Trabajo",
+        },
       ],
       buttons: [
         {
           text: "Anterior",
-          disabled: true
+          disabled: true,
         },
         {
           text: "Siguiente",
-          disabled: true
+          disabled: true,
         },
       ],
     }).show();
