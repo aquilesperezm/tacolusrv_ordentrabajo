@@ -29,6 +29,7 @@ class API_TipoIntervencion extends ApiController
         if ($criteria_exits)
             $criteria_str = $_GET['criteria'];
 
+
         if ($this->request->isMethod('GET')) {
 
             $result = [];

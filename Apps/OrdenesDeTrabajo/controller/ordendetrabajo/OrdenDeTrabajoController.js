@@ -1,7 +1,10 @@
 Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   extend: "Ext.app.Controller",
 
-  stores: ["ordendetrabajo.OrdenDeTrabajoStore"],
+  stores: [
+    "ordendetrabajo.OrdenDeTrabajoStore",
+    "tipointervencion.TipoIntervencionByIDOrdenStore",
+  ],
   views: ["ordendetrabajo.OrdenDeTrabajoView_Grid"],
 
   control: {
@@ -29,7 +32,8 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       selectionchange: "onSelectChange_CreateOrden_Vehiculo",
     },
 
-    //cuando seleccionamos una orden de trabajo, se actualizara la tabla de los tipos de intervenciones
+    //cuando seleccionamos una orden de trabajo, se actualizara la tabla de los tipos de intervenciones que se
+    //encuentra debajo
     ordendetrabajo_grid: {
       selectionchange: "OnSelectionChange_OrdenesDeTrabajo",
     },
@@ -378,11 +382,26 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   //-------------------------------------------------------------------------------------------------------------------------------------
 
   OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
-      //var store = Ext.data.StoreManager.lookup("tipointervencion.TipoIntervencionByIDOrdenStore");
-      //var imprimir_btn = Ext.getCmp("Imprimir_Orden");
-      //var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
-    
-      if (records.length == 1) {
+    var store = Ext.data.StoreManager.lookup(
+      "tipointervencion.TipoIntervencionByIDOrdenStore"
+    );
+
+    store.getProxy().setConfig({
+      extraParams:{
+        id_orden:records[0].data.id
+      }
+    });
+
+    store.loadPage(1, {
+      params: {
+        id_orden: records[0].data.id,
+      },
+    });
+
+    //var imprimir_btn = Ext.getCmp("Imprimir_Orden");
+    //var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
+
+    /*if (records.length == 1) {
 
         
         imprimir_btn.setDisabled(false);
@@ -397,7 +416,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
         imprimir_btn.setDisabled(true);
 
         store.loadData([], false);
-      }
+      }*/
   },
 
   onClick_ButtonAdd: function (btn, e) {

@@ -3,41 +3,80 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   region: "center",
   xtype: "centerpanel_view",
   padding: 15,
+
   items: [
     {
       xtype: "ordendetrabajo_grid",
     },
     {
       xtype: "tipointervencion_grid",
+      title: "Tipos de Intervenciones por Orden de Trabajo Selecionada",
+      store: "tipointervencion.TipoIntervencionByIDOrdenStore",
       margin: "10 0 0 0",
+      bbar: {
+        xtype: "pagingtoolbar",
+        displayInfo: true,
+        emptyMsg: "No existen Tipos de Revision para mostrar",
+        plugins: {
+          "ux-progressbarpager": true,
+        },
+        items: [
+          { xtype: "tbseparator" },
+          {
+            enableKeyEvents: true,
+            xtype: "numberfield",
+            fieldLabel: "Items por Página",
+            labelWidth: 120,
+            labelPad: 2,
+            width: 160,
+            value: 15,
+            maxValue: 99,
+            minValue: 5,
+            hideTrigger: true,
+            keyNavEnabled: false,
+            mouseWheelEnabled: false,
+            maxLength: 2,
+            enforceMaxLength: true,
+          },
+        ],
+      },
+
       listeners: {
         beforerender: function (cmp) {
           var t = cmp.down("toolbar");
-          var i = t.query('button');
-          var s = t.query('tbspacer')
-          var p = t.query('tbseparator')
-          
-          i[0].setVisible(false)
-          i[1].setVisible(false)
-          i[2].setVisible(false)
-          i[3].setVisible(false)
+          var i = t.query("button");
+          var s = t.query("tbspacer");
+          var p = t.query("tbseparator");
 
-          s[0].setVisible(false)
-          s[1].setVisible(false)
-          s[2].setVisible(false)
-          s[3].setVisible(false)
-          s[4].setVisible(false)
-          s[5].setVisible(false)
-          s[6].setVisible(false)
-         // s[7].setVisible(false)
+          i[0].setVisible(false);
+          i[1].setVisible(false);
+          i[2].setVisible(false);
+          i[3].setVisible(false);
 
-          p[0].setVisible(false)
-          p[1].setVisible(false)
-          p[2].setVisible(false)
-          p[3].setVisible(false)
-  
+          s[0].setVisible(false);
+          s[1].setVisible(false);
+          s[2].setVisible(false);
+          s[3].setVisible(false);
+          s[4].setVisible(false);
+          s[5].setVisible(false);
+          s[6].setVisible(false);
+          // s[7].setVisible(false)
 
+          p[0].setVisible(false);
+          p[1].setVisible(false);
+          p[2].setVisible(false);
+          p[3].setVisible(false);
 
+          var orden_grid = Ext.ComponentQuery.query("ordendetrabajo_grid")[0];
+        
+          cmp
+            .getStore()
+            .getProxy()
+            .setConfig({
+              extraParams: {
+                id_orden: '1'
+              },
+            });
         },
       },
     },
