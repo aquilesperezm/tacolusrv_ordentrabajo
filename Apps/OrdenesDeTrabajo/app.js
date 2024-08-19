@@ -11,10 +11,14 @@ Ext.application({
     "dashboard.DashBoardController",
     "dashboard.centerpanel.CenterPanelController",
     "ordendetrabajo.OrdenDeTrabajoController",
+    "ordendetrabajo.crud.OrdenDeTrabajoCRUDController",
+
     "vehiculo.VehiculoController",
+    "vehiculo.crud.VehiculoCRUDController",
+
     "tipointervencion.TipoIntervencionController",
     "tacografo.TacografoController",
-    "cliente.ClienteController"
+    "cliente.ClienteController",
   ],
 
   launch: () => {

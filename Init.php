@@ -46,6 +46,17 @@ class Init extends InitClass
         Kernel::addRoute('/api/3/tacografo_manager', 'API_TacografoManager', -1);
         ApiRoot::addCustomResource('tacografo_manager');
         
+        Kernel::addRoute('/api/3/centroautorizo_manager', 'API_CentroAutorizoManager', -1);
+        ApiRoot::addCustomResource('centroautorizo_manager');
+
+        Kernel::addRoute('/api/3/marca_manager', 'API_MarcaManager', -1);
+        ApiRoot::addCustomResource('marca_manager');
+    
+        Kernel::addRoute('/api/3/modelo_manager', 'API_ModeloManager', -1);
+        ApiRoot::addCustomResource('modelo_manager');
+    
+
+
     }
 
     public function uninstall(): void

@@ -7,18 +7,27 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
 
   control: {
     // cuando cambiamos el valor del selector de cantidad de items que se muestran en la tabla
-    'vehiculo_grid toolbar[dock="bottom"] > numberfield[fieldLabel="Items por Página"]':
+    'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar[dock="bottom"] > numberfield[fieldLabel="Items por Página"]':
       {
         keyup: "onKeyUp_CounterPages",
       },
     // cuando damos ENTER en el campo de texto de la busqueda
-    'vehiculo_grid toolbar[dock="top"] > textfield': {
+    'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar[dock="top"] > textfield': {
       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
-    'vehiculo_grid toolbar[dock="top"] > button[text="Buscar"]': {
+    'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar[dock="top"] > button[text="Buscar"]': {
       click: "onClick_ButtonSearch",
     },
+
+    'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar button[text="Adicionar"]':{
+      click: 'onClickAddVehiculo_inAddOrdenTrabajo'
+    }
+  },
+
+  onClickAddVehiculo_inAddOrdenTrabajo: function(cmp,e){
+    var win = Ext.create('MyApp.view.vehiculo.form.CreateVehiculoView_Window');
+    win.show();
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {

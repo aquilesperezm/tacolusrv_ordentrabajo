@@ -120,7 +120,7 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
           grid.up("window").down('button[text="Anterior"]').setDisabled(false);
         },
 
-        beforerender: function (cmp) {
+       /* beforerender: function (cmp) {
           // console.log('beforerender');
 
           var t = cmp.down("toolbar");
@@ -146,7 +146,7 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
           p[1].setVisible(false);
           p[2].setVisible(false);
           p[3].setVisible(false);
-        },
+        },*/
       },
     },
     {

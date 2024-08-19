@@ -61,12 +61,24 @@ class API_ClienteManager extends ApiController
                 array_push($result, $item);
             }
 
-            $start = $_GET['start'];
-            $limit = $_GET['limit'];
+            $all_rows = Null;
 
-            $data = ["clientes" => array_slice($result, $start, $limit), "total" => count($result)];
-            $this->response->setContent(json_encode($data));
+            if (isset($_GET['query']))
+                $all_rows = $_GET['query'];
 
+            if ($all_rows == Null) {
+
+                $start = $_GET['start'];
+                $limit = $_GET['limit'];
+
+                $data = ["clientes" => array_slice($result, $start, $limit), "total" => count($result)];
+                $this->response->setContent(json_encode($data));
+
+            } else if ($all_rows == "all_data") {
+
+                $clientes = $cliente->all();
+                $this->response->setContent(json_encode($clientes));
+            }
 
 
 
