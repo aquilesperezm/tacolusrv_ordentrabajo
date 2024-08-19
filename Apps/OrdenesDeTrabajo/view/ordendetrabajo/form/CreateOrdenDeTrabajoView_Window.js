@@ -12,6 +12,25 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
   items: [
     {
       xtype: "vehiculo_grid",
+      listeners:{
+        activate: function(grid){
+           Ext.StoreManager.lookup('vehiculo.VehiculoStore').loadPage(1);
+
+           if (grid.getSelectionModel().getSelection().length > 0)
+            grid
+              .up("window")
+              .down('button[text="Siguiente"]')
+              .setDisabled(false);
+          else
+            grid
+              .up("window")
+              .down('button[text="Siguiente"]')
+              .setDisabled(true);
+
+          grid.up("window").down('button[text="Anterior"]').setDisabled(true);
+
+        }
+      },
       id: "createordenform_card-0",
       selModel: {
         type: "checkboxmodel",
@@ -84,6 +103,9 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
       },
       listeners: {
         activate: function (grid) {
+
+          Ext.StoreManager.lookup('tipointervencion.TipoIntervencionStore').loadPage(1);
+
           if (grid.getSelectionModel().getSelection().length > 0)
             grid
               .up("window")

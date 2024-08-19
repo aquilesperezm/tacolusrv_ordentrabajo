@@ -463,18 +463,19 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       "tipointervencion.TipoIntervencionByIDOrdenStore"
     );
 
-    store.getProxy().setConfig({
-      extraParams: {
-        id_orden: records[0].data.id,
-      },
-    });
+    if (records.length > 0) {
+      store.getProxy().setConfig({
+        extraParams: {
+          id_orden: records[0].data.id,
+        },
+      });
 
-    store.loadPage(1, {
-      params: {
-        id_orden: records[0].data.id,
-      },
-    });
-
+      store.loadPage(1, {
+        params: {
+          id_orden: records[0].data.id,
+        },
+      });
+    }
     //var imprimir_btn = Ext.getCmp("Imprimir_Orden");
     //var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
 
