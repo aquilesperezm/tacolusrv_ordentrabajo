@@ -30,7 +30,8 @@ Ext.define("MyApp.controller.tacografo.TacografoController", {
   onClick_ButtonSearch: function (cmp, e) {
     var textfield = cmp.previousSibling('textfield');
     var store_ordenes = cmp.up('tacografo_grid').getStore();
-    store_ordenes.load({
+
+    store_ordenes.loadPage(1,{
       params: {
         criteria: textfield.getValue(),
       },

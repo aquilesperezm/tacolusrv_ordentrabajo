@@ -5,7 +5,10 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     "ordendetrabajo.OrdenDeTrabajoStore",
     "tipointervencion.TipoIntervencionByIDOrdenStore",
   ],
-  views: ["ordendetrabajo.OrdenDeTrabajoView_Grid"],
+  views: [
+    "ordendetrabajo.OrdenDeTrabajoView_Grid",
+    "ordendetrabajo.form.CreateOrdenDeTrabajoView_Window",
+  ],
 
   control: {
     // cuando cambiamos el valor del selector de cantidad de items que se muestran en la tabla
@@ -28,7 +31,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     },
 
     //cuando seleccionamos un vehiculo para crear una orden de trabajo
-    'window[title="Adicionar una nueva Orden de Trabajo"] > grid': {
+    'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid': {
       selectionchange: "onSelectChange_CreateOrden_Vehiculo",
     },
 
@@ -70,30 +73,95 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       },
 
     //---------------------------------------------- End Vinculate Client and Tachograph -------------------------------
+    //-------------------------------------------- Controlling Cards ------------------------------------------------
+    "#createordenform_card-1": {
+      selectionchange: "OnSelectionChange_SelectTiposDeIntervenciones_Card2",
+    },
+
+    //-------------------------------------------- Controlling Cards ------------------------------------------------
 
     //------------------------------------------- CRUD Functions ---------------------------------------------
-
+    "#Create_NewOrdenTrabajo": {
+      click: "CRUD_CreateNewOrdenDeTrabajo",
+    },
     //----------------------------------------- CRUD Functions -----------------------------------------------------
 
     //--------------------------- Navigation Control from Form "Adicionar Orden" -------------------------------------------
     'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Siguiente"]':
       {
-        click: function (btn, e) {
-          this.showNext(btn);
-        },
+        click: "showNext",
       },
     'window[title="Adicionar una nueva Orden de Trabajo"] button[text="Anterior"]':
       {
-        click: function (btn, e) {
-          this.showPrevious(btn);
-        },
+        click: "showPrevious",
       },
 
     // ------------------------------------------------ End Navigation --------------------------------------------------------
+  }, //end event selector - control -  by controllers
+
+  //CRUD Create Orden de Trabajo
+  CRUD_CreateNewOrdenDeTrabajo: function (btn, e) {
+    var grid_vehiculo = Ext.getCmp("createordenform_card-0");
+    var grid_tipointervencion = Ext.getCmp("createordenform_card-1");
+    var sm_vehiculo = grid_vehiculo.getSelectionModel();
+    var sm_tipointervencion = grid_tipointervencion.getSelectionModel();
+    var record_vehiculo = sm_vehiculo.getSelection();
+    var records_tipointervencion = sm_tipointervencion.getSelection();
+
+    var ids = [];
+    records_tipointervencion.forEach((e, i, a) => {
+      ids.push(e.data.id);
+    });
+
+    Ext.Ajax.request({
+      headers: { Token: "TacoLuServices2024**" },
+      url: "api/3/get_ordenesdetrabajo",
+      method: "POST",
+      params: {
+        no_orden: Ext.getCmp("resumen_numero_orden").getValue(),
+        fecha_orden: Ext.getCmp("resumen_fecha").getValue(),
+        id_vehiculo: record_vehiculo[0].data.id,
+        tipos_intervenciones: Ext.encode(ids),
+      },
+      success: function (response, opts) {
+        let response_server = Ext.decode(response.responseText);
+        if (response_server.success) {
+          Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
+          Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+
+          btn.up("window").close();
+          // Ext.getCmp("CardPanel_AddOrden").up("window").close();
+        } else {
+          Ext.Msg.alert(
+            "Error",
+            "Ha existido un problema al crear la orden, contacte al administrador del sistema"
+          );
+        }
+      },
+
+      failure: function (response, opts) {
+        console.log("server-side failure with status code " + response.status);
+      },
+    });
   },
 
+  //---------------------------------- Controlling Cards Methods ----------------------------------------------------------
+  OnSelectionChange_SelectTiposDeIntervenciones_Card2: function (sm, records) {
+    var btn_siguiente = Ext.getCmp("createordenform_card-1")
+      .up("window")
+      .down('button[text="Siguiente"]');
+    var btn_anterior = Ext.getCmp("createordenform_card-1")
+      .up("window")
+      .down('button[text="Anterior"]');
+
+    if (records.length > 0) btn_siguiente.setDisabled(false);
+    else btn_siguiente.setDisabled(true);
+  },
+
+  //---------------------------------- Controlling Cards Methods ----------------------------------------------------------
+
   //-------------------------------------- Nav Methods -----------------------------------------------------------------
-  showNext: function () {
+  showNext: function (btn) {
     this.doCardNavigation(1);
   },
 
@@ -113,8 +181,10 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
 
     l.setActiveItem(next);
 
-    win.down('button[text="Anterior"]').setDisabled(next === 0);
-    win.down('button[text="Siguiente"]').setDisabled(next === 2);
+    var btn_anterior = win.down('button[text="Anterior"]');
+    if (next == 0) btn_anterior.setDisabled(true);
+    var btn_siguiente = win.down('button[text="Siguiente"]');
+    if (next == 2) btn_siguiente.setDisabled(true);
   },
 
   //------------------------------------------------------- End Nav Methods ----------------------------------------------
@@ -381,12 +451,12 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   },
   //-------------------------------------------------------------------------------------------------------------------------------------
   /**
-   * @description Encarga de realizar la interaccion entre la tabla ordenes 
+   * @description Encarga de realizar la interaccion entre la tabla ordenes
    * y tipo de intervencion, al pinchar un elemento de la tabla ordenes de trabajo
    * nos mostrara los tipos de intervenciones que esta posea.
-   * 
+   *
    * @param sm - Selection Model perteneciente al grid ordenes de trabajo
-   * @param records - Los campos seleccionados 
+   * @param records - Los campos seleccionados
    */
   OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
     var store = Ext.data.StoreManager.lookup(
@@ -394,9 +464,9 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     );
 
     store.getProxy().setConfig({
-      extraParams:{
-        id_orden:records[0].data.id
-      }
+      extraParams: {
+        id_orden: records[0].data.id,
+      },
     });
 
     store.loadPage(1, {
@@ -427,135 +497,22 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   },
 
   onClick_ButtonAdd: function (btn, e) {
-    Ext.create("Ext.window.Window", {
-      title: "Adicionar una nueva Orden de Trabajo",
-      width: "90%",
-      height: "90%",
-      layout: "card",
-      requires: ["Ext.layout.container.Card"],
-      resizable: false,
-      draggable: false,
-      modal: true,
-      items: [
-        {
-          xtype: "vehiculo_grid",
-          id: "createordenform_card-0",
-          selModel: {
-            type: "checkboxmodel",
-            checkOnly: false,
-            mode: "SINGLE",
-            allowDeselect: false,
-          },
-          bbar: {
-            xtype: "pagingtoolbar",
-            displayInfo: true,
-            emptyMsg: "No existen Vehículos para mostrar",
-            plugins: {
-              "ux-progressbarpager": true,
-            },
-            items: [
-              { xtype: "tbseparator" },
-              {
-                enableKeyEvents: true,
-                xtype: "numberfield",
-                fieldLabel: "Items por Página",
-                labelWidth: 120,
-                labelPad: 2,
-                width: 160,
-                value: 15,
-                maxValue: 99,
-                minValue: 5,
-                hideTrigger: true,
-                keyNavEnabled: false,
-                mouseWheelEnabled: false,
-                maxLength: 2,
-                enforceMaxLength: true,
-              },
-              { xtype: "tbseparator" },
-              {
-                xtype: "button",
-                text: "Vincular Cliente",
-                scale: "medium",
-                style: {
-                  textDecoration: "none",
-                },
-                icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-user.ico",
-                disabled: true,
-              },
-              { xtype: "tbseparator" },
-              {
-                xtype: "button",
-                scale: "medium",
-                style: {
-                  textDecoration: "none",
-                },
-                icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-location.ico",
-                text: "Vincular Tacógrafo",
-                disabled: true,
-              },
-            ],
-          },
-          //height: 350,
-        },
-        {
-          id: "createordenform_card-1",
-          xtype: "tipointervencion_grid",
-          listeners: {
-            beforerender: function (cmp) {
-              var t = cmp.down("toolbar");
-              var i = t.query("button");
-              var s = t.query("tbspacer");
-              var p = t.query("tbseparator");
-
-              i[0].setVisible(false);
-              i[1].setVisible(false);
-              i[2].setVisible(false);
-              i[3].setVisible(false);
-
-              s[0].setVisible(false);
-              s[1].setVisible(false);
-              s[2].setVisible(false);
-              s[3].setVisible(false);
-              s[4].setVisible(false);
-              s[5].setVisible(false);
-              s[6].setVisible(false);
-              // s[7].setVisible(false)
-
-              p[0].setVisible(false);
-              p[1].setVisible(false);
-              p[2].setVisible(false);
-              p[3].setVisible(false);
-            },
-          },
-        },
-        {
-          id: "createordenform_card-2",
-          title: "Resumen de Orden de Trabajo",
-        },
-      ],
-      buttons: [
-        {
-          text: "Anterior",
-          disabled: true,
-        },
-        {
-          text: "Siguiente",
-          disabled: true,
-        },
-      ],
-    }).show();
+    Ext.create(
+      "MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window"
+    ).show();
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
     if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling('button'));
+      this.onClick_ButtonSearch(cmp.nextSibling("button"));
     }
   },
 
   onClick_ButtonSearch: function (cmp, e) {
-    var textfield = cmp.previousSibling('textfield');
-    var store_ordenes = cmp.up('ordendetrabajo_grid').getStore();
-    store_ordenes.load({
+    var textfield = cmp.previousSibling("textfield");
+    var store_ordenes = cmp.up("ordendetrabajo_grid").getStore();
+
+    store_ordenes.loadPage(1, {
       params: {
         criteria: textfield.getValue(),
       },

@@ -185,6 +185,8 @@ Ext.define("MyApp.controller.Create_OrdenTrabajo", {
     if (selmodel.getSelection().length > 0) btn.setDisabled(false);
     else btn.setDisabled(true);
   },
+
+  
   onCreateNewOrdenTrabajo: function (btn, e) {
     var grid_vehiculo = Ext.ComponentQuery.query("#card-0 > grid")[0];
     var grid_vehiculo_sm = grid_vehiculo.getSelectionModel().getSelection();

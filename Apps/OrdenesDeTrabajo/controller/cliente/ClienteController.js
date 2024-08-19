@@ -32,7 +32,7 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
     var textfield = cmp.previousSibling('textfield');
     var store_ordenes = cmp.up('cliente_grid').getStore();
 
-    store_ordenes.load({
+    store_ordenes.loadPage(1,{
       params: {
         criteria: textfield.getValue(),
       },

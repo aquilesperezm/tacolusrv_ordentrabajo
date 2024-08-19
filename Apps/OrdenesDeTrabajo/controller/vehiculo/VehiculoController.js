@@ -23,14 +23,15 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
     if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling('button'));
+      this.onClick_ButtonSearch(cmp.nextSibling("button"));
     }
   },
 
   onClick_ButtonSearch: function (cmp, e) {
-    var textfield = cmp.previousSibling('textfield');
-    var store_ordenes = cmp.up('vehiculo_grid').getStore();
-    store_ordenes.load({
+    var textfield = cmp.previousSibling("textfield");
+    var store_ordenes = cmp.up("vehiculo_grid").getStore();
+    
+    store_ordenes.loadPage(1, {
       params: {
         criteria: textfield.getValue(),
       },
@@ -44,7 +45,7 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
    * @event keyup
    */
   onKeyUp_CounterPages: function (cmp) {
-    var store = cmp.up("vehiculo_grid")[0].getStore();
+    var store = cmp.up("vehiculo_grid").getStore();
     store.setPageSize(cmp.getValue());
     store.loadPage(1);
   },

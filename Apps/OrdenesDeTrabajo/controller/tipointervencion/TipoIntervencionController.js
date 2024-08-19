@@ -29,12 +29,10 @@ Ext.define("MyApp.controller.tipointervencion.TipoIntervencionController", {
 
   onClick_ButtonSearch: function (cmp, e) {
     
-    //Ext.ComponentQuery.query("tipointervencion_grid")[0]
-
     var textfield = cmp.previousSibling('textfield');
     var store_ordenes = cmp.up('tipointervencion_grid').getStore();
 
-   store_ordenes.load({
+   store_ordenes.loadPage(1,{
       params: {
         criteria: textfield.getValue(),
       },
