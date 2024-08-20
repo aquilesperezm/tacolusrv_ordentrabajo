@@ -113,55 +113,66 @@ class API_Vehiculo extends ApiController
 
             $action = $_POST['action'];
 
-            $matricula_msg = $_POST['matricula'];
-            $no_chasis_msg = $_POST['num_chasis'];
+            if ($action == 'create' || $action == 'update') {
 
-            $id_centroautorizado = $_POST['id_centroautorizado'];
-            $codclient = $_POST['codcliente'];
+                $matricula_msg = $_POST['matricula'];
+                $no_chasis_msg = $_POST['num_chasis'];
 
-            $id_marca = $_POST['id_marca'];
-            $id_modelo = $_POST['id_modelo'];
+                $id_centroautorizado = $_POST['id_centroautorizado'];
+                $codclient = $_POST['codcliente'];
 
-            $id_categoria = $_POST['id_categoria'];
+                $id_marca = $_POST['id_marca'];
+                $id_modelo = $_POST['id_modelo'];
 
-            // fix date to save in database
-            $fecha_orden = DateTime::createFromFormat('d/m/Y', $_POST['fecha_matriculacion']);
-            $fecha_matricula = $fecha_orden->format('Y-m-d');
+                $id_categoria = $_POST['id_categoria'];
 
-            //$fecha_matricula = $_POST['fecha_matriculacion'];
+                // fix date to save in database
+                $fecha_orden = DateTime::createFromFormat('d/m/Y', $_POST['fecha_matriculacion']);
+                $fecha_matricula = $fecha_orden->format('Y-m-d');
 
-            $comentario_msg = $_POST['comentarios'];
+                //$fecha_matricula = $_POST['fecha_matriculacion'];
 
-            if ($action == 'create')
-                $vehiculo = new Vehiculo();
-            else {
-                $vehiculo = new Vehiculo();
-                $vehiculo = $vehiculo->get($_POST['id_vehiculo']);
-            }
+                $comentario_msg = $_POST['comentarios'];
+
+                if ($action == 'create')
+                    $vehiculo = new Vehiculo();
+                else if ($action == 'update') {
+                    $vehiculo = new Vehiculo();
+                    $vehiculo = $vehiculo->get($_POST['id_vehiculo']);
+                }
 
 
-            $vehiculo->matricula = $matricula_msg;
-            $vehiculo->num_chasis = $no_chasis_msg;
-            $vehiculo->id_centroautorizado = $id_centroautorizado;
+                $vehiculo->matricula = $matricula_msg;
+                $vehiculo->num_chasis = $no_chasis_msg;
+                $vehiculo->id_centroautorizado = $id_centroautorizado;
 
-            $vehiculo->id_cliente = ($codclient != '') ? $codclient : Null;
+                $vehiculo->id_cliente = ($codclient != '') ? $codclient : Null;
 
-            $vehiculo->id_marca = $id_marca;
-            $vehiculo->id_modelo = $id_modelo;
+                $vehiculo->id_marca = $id_marca;
+                $vehiculo->id_modelo = $id_modelo;
 
-            $vehiculo->id_categoria = $id_categoria;
-            $vehiculo->fecha_matriculacion = $fecha_matricula;
+                $vehiculo->id_categoria = $id_categoria;
+                $vehiculo->fecha_matriculacion = $fecha_matricula;
 
-            $vehiculo->comentarios = $comentario_msg;
+                $vehiculo->comentarios = $comentario_msg;
 
-            $successfull = $vehiculo->save();
-            if ($successfull) {
+                $successfull = $vehiculo->save();
+                if ($successfull) {
+                    $this->response->setStatusCode(200);
+                    $this->response->setContent(json_encode(['success' => 'true']));
+                } else {
+
+                    $this->response->setStatusCode(400);
+                    $this->response->setContent(json_encode(['sucess' => 'false']));
+                }
+            } else if ($action == 'delete') {
+
+                $ids = json_decode($_POST['ids']);
+                $vehiculo = $vehiculo->get($ids);
+                $vehiculo->delete();
+
                 $this->response->setStatusCode(200);
-                $this->response->setContent(json_encode(['success' => 'true']));
-            } else {
-
-                $this->response->setStatusCode(400);
-                $this->response->setContent(json_encode(['sucess' => 'false']));
+                $this->response->setContent(json_encode(['sucess' => 'true']));
             }
         } else {
             $this->response->setStatusCode(403);
