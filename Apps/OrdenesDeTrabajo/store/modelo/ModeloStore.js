@@ -11,5 +11,5 @@ Ext.define("MyApp.store.modelo.ModeloStore", {
       totalProperty: "total"
     },
   },
-  autoLoad: false,
+  autoLoad: true,
 });

@@ -12,6 +12,8 @@ Ext.define("MyApp.model.vehiculo.VehiculoModel", {
     { name: "cifnif_cliente", type: "string" },
     { name: "description_cliente", type: "string" },
 
+    { name: "fecha_matriculacion", type: "string" },
+
     { name: "id_centroautorizado", type: "int" },
     { name: "codigo_centroautorizado", type: "string" },
     { name: "nombre_centroautorizado", type: "string" },

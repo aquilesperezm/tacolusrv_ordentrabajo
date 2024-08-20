@@ -44,8 +44,8 @@ class API_CentroAutorizoManager extends ApiController
             //    $item = (array) $centroautorizado;
 
                 $item['id'] = $centroautorizado->id;
-                $item['codigo'] = $centroautorizado->codigo_centroautorizado;
-                $item['nombre'] = $centroautorizado->nombre_centroautorizado;
+                $item['codigo_centroautorizado'] = $centroautorizado->codigo_centroautorizado;
+                $item['nombre_centroautorizado'] = $centroautorizado->nombre_centroautorizado;
 
                 array_push($result, $item);
             }

@@ -110,9 +110,9 @@ class API_Vehiculo extends ApiController
         } else if ($this->request->isMethod('POST')) {
 
             $matricula_msg = $_POST['matricula'];
-            $no_chasis_msg = $_POST['no_chasis'];
+            $no_chasis_msg = $_POST['num_chasis'];
 
-            $id_centroautorizado = $_POST['id_centroautorizacion'];
+            $id_centroautorizado = $_POST['id_centroautorizado'];
             $codclient = $_POST['codcliente'];
 
             $id_marca = $_POST['id_marca'];
@@ -120,7 +120,7 @@ class API_Vehiculo extends ApiController
 
             $id_categoria = $_POST['id_categoria'];
 
-            $fecha_matricula = $_POST['fecha_matricula'];
+            $fecha_matricula = $_POST['fecha_matriculacion'];
 
             $comentario_msg = $_POST['comentarios'];
 
@@ -129,7 +129,7 @@ class API_Vehiculo extends ApiController
             $vehiculo->matricula = $matricula_msg;
             $vehiculo->num_chasis = $no_chasis_msg;
             $vehiculo->id_centroautorizado = $id_centroautorizado;
-            
+
             $vehiculo->id_cliente = ($codclient != '') ? $codclient : Null;
 
             $vehiculo->id_marca = $id_marca;
@@ -144,12 +144,59 @@ class API_Vehiculo extends ApiController
             if ($successfull) {
                 $this->response->setStatusCode(200);
                 $this->response->setContent(json_encode(['success' => 'true']));
-
             } else {
-                
+
                 $this->response->setStatusCode(400);
                 $this->response->setContent(json_encode(['sucess' => 'false']));
             }
+        } else if ($this->request->isMethod('PATCH')) {
+
+           // var_dump($_PATH['as']);
+
+           // $vehiculo = new Vehiculo();
+           // $vehiculo = $vehiculo->get($_PATCH['id_vehiculo']);
+
+
+
+            /*$matricula_msg = $_POST['matricula'];
+            $no_chasis_msg = $_POST['num_chasis'];
+
+            $id_centroautorizado = $_POST['id_centroautorizado'];
+            $codclient = $_POST['codcliente'];
+
+            $id_marca = $_POST['id_marca'];
+            $id_modelo = $_POST['id_modelo'];
+
+            $id_categoria = $_POST['id_categoria'];
+
+            $fecha_matricula = $_POST['fecha_matriculacion'];
+
+            $comentario_msg = $_POST['comentarios'];
+
+            $vehiculo->matricula = $matricula_msg;
+            $vehiculo->num_chasis = $no_chasis_msg;
+            $vehiculo->id_centroautorizado = $id_centroautorizado;
+
+            $vehiculo->id_cliente = ($codclient != '') ? $codclient : Null;
+
+            $vehiculo->id_marca = $id_marca;
+            $vehiculo->id_modelo = $id_modelo;
+
+            $vehiculo->id_categoria = $id_categoria;
+            $vehiculo->fecha_matriculacion = $fecha_matricula;
+
+            $vehiculo->comentarios = $comentario_msg;
+
+            $successfull = $vehiculo->save();
+            if ($successfull) {
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode(['success' => 'true']));
+            } else {
+
+                $this->response->setStatusCode(400);
+                $this->response->setContent(json_encode(['sucess' => 'false']));
+            }
+*/
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));

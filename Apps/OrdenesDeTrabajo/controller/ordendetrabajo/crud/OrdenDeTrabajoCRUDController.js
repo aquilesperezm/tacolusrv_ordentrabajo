@@ -7,10 +7,7 @@ Ext.define(
     views: ["ordendetrabajo.form.CreateOrdenDeTrabajoView_Window"],
 
     control: {
-      //cuando seleccionamos un vehiculo para crear una orden de trabajo
-      'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid': {
-        selectionchange: "onSelectChange_CreateOrden_Vehiculo",
-      },
+      
 
       //---------------------------------------------- Vinculate Client and Tachograph -------------------------------
       // Vinculate Client
@@ -373,31 +370,7 @@ Ext.define(
       }).show();
     },
 
-    onSelectChange_CreateOrden_Vehiculo: function (sm, record) {
-      var win = Ext.ComponentQuery.query(
-        'window[title="Adicionar una nueva Orden de Trabajo"]'
-      )[0];
-      var grid = win.query("grid")[0];
-      var toolbar_bottom_grid = grid.query('toolbar[dock="bottom"]')[0];
-      var btn_vincular_cliente = toolbar_bottom_grid.query(
-        'button[text="Vincular Cliente"]'
-      )[0];
-      var btn_vincular_tacografo = toolbar_bottom_grid.query(
-        'button[text="Vincular Tacógrafo"]'
-      )[0];
-
-      //vehiculos_sm = cmp.getSelectionModel();
-
-      if (sm.getSelection().length > 0) {
-        btn_siguiente = win.query('button[text="Siguiente"]')[0];
-        btn_siguiente.setDisabled(
-          !(record[0].data.tiene_cliente && record[0].data.tiene_tacografo)
-        );
-
-        btn_vincular_cliente.setDisabled(record[0].data.tiene_cliente);
-        btn_vincular_tacografo.setDisabled(record[0].data.tiene_tacografo);
-      }
-    },
+    
     init: function () {},
   }
 );

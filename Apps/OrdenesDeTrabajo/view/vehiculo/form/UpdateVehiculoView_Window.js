@@ -1,6 +1,6 @@
-Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
+Ext.define("MyApp.view.vehiculo.form.UpdateVehiculoView_Window", {
   extend: "Ext.window.Window",
-  title: "Adicionar un nuevo vehiculo",
+  title: "Actualizar un vehiculo existente",
   modal: true,
   layout: "fit",
   resizable: false,
@@ -35,14 +35,14 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
         {
           xtype: "textfield",
           fieldLabel: "Matrícula",
-          allowBlank:false,
-          name:'matricula'
+          allowBlank: false,
+          name: "matricula",
         },
         {
           xtype: "textfield",
           fieldLabel: "No. Chasis",
-          allowBlank:false,
-          name:'num_chasis'
+          allowBlank: false,
+          name: "num_chasis",
         },
         {
           xtype: "combobox",
@@ -52,8 +52,8 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
           valueField: "id",
           scrollable: true,
           allQuery: "all_data",
-          allowBlank:false,
-          name:'id_centroautorizacion'
+          allowBlank: false,
+          name: "id_centroautorizado",
         },
         {
           xtype: "combobox",
@@ -63,8 +63,8 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
           valueField: "codcliente",
           scrollable: true,
           allQuery: "all_data",
-         // allowBlank:false,
-          name:'codcliente'
+          // allowBlank:false,
+          name: "codcliente",
         },
         {
           xtype: "combobox",
@@ -72,13 +72,20 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
           store: "marca.MarcaStore",
           displayField: "nombre_marca",
           valueField: "id",
-          allowBlank:false,
-          name:'id_marca',
+          allowBlank: false,
+          name: "id_marca",
 
           listeners: {
             select: function (combo, record) {
-             // console.log(record);
-              combo.nextSibling('combo').setDisabled(false)
+              // console.log(record);
+              Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
+                params: {
+                  id_marca: record.id,
+                },
+              });
+            },
+            beforerender: function (combo, record) {
+              // console.log(record);
               Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
                 params: {
                   id_marca: record.id,
@@ -93,14 +100,13 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
           store: "modelo.ModeloStore",
           displayField: "nombre_modelo",
           valueField: "id",
-          //queryMode: "local",
-          disabled:true,
-          allowBlank:false,
-          name:'id_modelo'
+          queryMode: "local",
+          allowBlank: false,
+          name: "id_modelo",
         },
         {
           xtype: "combobox",
-          name:'id_categoria',
+          name: "id_categoria",
           fieldLabel: "Tipo de Vehículo",
           displayField: "nombre",
           valueField: "id",
@@ -111,24 +117,24 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
               { id: "2", nombre: "Viajeros" },
             ],
           }),
-          allowBlank:false
+          allowBlank: false,
         },
         {
           xtype: "datefield",
           fieldLabel: "Fecha de Matrícula",
-          allowBlank:false,
-          name:'fecha_matriculacion'
+          allowBlank: false,
+          name: "fecha_matriculacion",
         },
         {
           xtype: "textarea",
           fieldLabel: "Comentarios",
-          name:'comentarios'
+          name: "comentarios",
         },
       ],
       buttons: [
         {
-          text: "Crear Nuevo Vehículo",
-          id:'AddNew_Vehiculo',
+          text: "Actualizar Nuevo Vehículo",
+          id: "UpdateNew_Vehiculo",
           style: {
             textDecoration: "none",
           },
