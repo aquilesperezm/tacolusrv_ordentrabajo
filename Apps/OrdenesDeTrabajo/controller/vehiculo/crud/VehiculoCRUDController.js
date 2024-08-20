@@ -8,9 +8,9 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
     'window[title="Actualizar un vehiculo existente"] form': {
       beforerender: "onBeforeRender_UpdateVehiculo",
     },
-    '#UpdateNew_Vehiculo':{
-      click: "Update_NewVehiculo"
-    }
+    "#UpdateNew_Vehiculo": {
+      click: "Update_NewVehiculo",
+    },
   },
 
   views: [
@@ -29,11 +29,19 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
       "create_ordedetrabajo_win > vehiculo_grid"
     )[0];
 
-    selected_record =  grid_vehiculo.getSelectionModel().getSelection()[0];
-    console.log(selected_record);
+    selected_record = grid_vehiculo.getSelectionModel().getSelection()[0];
     cmp.loadRecord(selected_record);
+    //console.log(selected_record);
 
-
+   /* Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
+      callback: () => {
+        // combo.nextSibling("combo").setDisabled(false);
+        
+      }/*,
+      params: {
+        id_marca: 12,
+      },
+    });*/
   },
 
   Create_NewVehiculo: function (btn, e) {
@@ -45,6 +53,9 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
         method: "POST",
         clientValidation: true,
         url: "api/3/get_vehiculos",
+        params: {
+          action: "create",
+        },
         success: function (form, action) {
           Ext.data.StoreManager.lookup("vehiculo.VehiculoStore").loadPage(1);
           btn.up("window").close();
@@ -65,19 +76,19 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
     )[0];
 
     var selected_record = grid_vehiculo.getSelectionModel().getSelection()[0];
-   
+
     var form = btn.up("form").getForm();
     if (form.isValid()) {
       form.submit({
         headers: { Token: "TacoLuServices2024**" },
-        method: "PATCH",
+        method: "POST",
         clientValidation: true,
         url: "api/3/get_vehiculos",
-        params:{
-          id_vehiculo: selected_record.id
+        params: {
+          action: "update",
+          id_vehiculo: selected_record.id,
         },
         success: function (form, action) {
-          
           Ext.data.StoreManager.lookup("vehiculo.VehiculoStore").loadPage(1);
           btn.up("window").close();
 

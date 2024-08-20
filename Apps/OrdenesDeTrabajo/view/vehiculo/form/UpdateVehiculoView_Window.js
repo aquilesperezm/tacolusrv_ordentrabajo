@@ -77,16 +77,11 @@ Ext.define("MyApp.view.vehiculo.form.UpdateVehiculoView_Window", {
 
           listeners: {
             select: function (combo, record) {
-              // console.log(record);
               Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
-                params: {
-                  id_marca: record.id,
+                callback: (records) => {
+                  if (records.length > 0)
+                    combo.nextSibling("combo").select(records[0]);
                 },
-              });
-            },
-            beforerender: function (combo, record) {
-              // console.log(record);
-              Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
                 params: {
                   id_marca: record.id,
                 },
