@@ -17,7 +17,10 @@ Ext.application({
     "vehiculo.crud.VehiculoCRUDController",
 
     "tipointervencion.TipoIntervencionController",
+
     "tacografo.TacografoController",
+    "tacografo.crud.TacografoCRUDController",
+    
     "cliente.ClienteController",
   ],
 

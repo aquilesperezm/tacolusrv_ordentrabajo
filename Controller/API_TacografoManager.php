@@ -35,6 +35,8 @@ class API_TacografoManager extends ApiController
         $modelo = new ModeloTacografo();
         $categoria = new CategoriaTacografo();
 
+
+
         $flag_tacografos_disponibles = null;
         if (isset($_GET['tacografos_disponibles']))
             $flag_tacografos_disponibles = $_GET['tacografos_disponibles'];
@@ -45,7 +47,7 @@ class API_TacografoManager extends ApiController
             $criteria_str = $_GET['criteria'];
 
 
-        if ($this->request->isMethod('GET')) {
+        if ($this->request->isMethod('GET') && !isset($_GET['action'])) {
 
             $result = [];
             //$u = new OrdenDeTrabajo();
@@ -63,8 +65,8 @@ class API_TacografoManager extends ApiController
                 // var_dump($ordenes);
             }
 
-            if($flag_tacografos_disponibles)
-               $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
+            if ($flag_tacografos_disponibles)
+                $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
 
             foreach ($tacografos as $tacografo) {
                 $item = (array) $tacografo;
@@ -99,6 +101,24 @@ class API_TacografoManager extends ApiController
 
             $this->response->setStatusCode(200);
             $this->response->setContent(json_encode(['success' => True]));
+        } else if (isset($_GET['action'])) {
+            if ($_GET['action'] == 'get-all-modelos') {
+
+                $modelo_tacografo = new ModeloTacografo();
+
+                $data = ["tacografos" => $modelo_tacografo->all()];
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode($data));
+                
+            } else  if ($_GET['action'] == 'get-all-categorias') {
+                $cat_tacografo = new CategoriaTacografo();
+
+                $data = ["tacografos" => $cat_tacografo->all()];
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode($data));
+            }
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));

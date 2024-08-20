@@ -61,6 +61,9 @@ Ext.define("MyApp.view.tacografo.TacografoView_Grid", {
       text: "Adicionar",
       xtype: "button",
       scale: "medium",
+      handler: function(btn){
+        Ext.create('MyApp.view.tacografo.form.CreateTacografoView_Window').show();
+      },
       style: {
         textDecoration: "none",
       },

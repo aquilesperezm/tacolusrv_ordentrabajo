@@ -5,16 +5,7 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
   layout: "fit",
   resizable: false,
   draggable: false,
-  height:
-    Math.max(
-      document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
-    ) /
-      2 +
-    200,
+  //height:'auto',
   width:
     Math.max(
       document.body.scrollWidth,
