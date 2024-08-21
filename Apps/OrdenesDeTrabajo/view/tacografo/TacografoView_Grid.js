@@ -76,6 +76,9 @@ Ext.define("MyApp.view.tacografo.TacografoView_Grid", {
       xtype: "button",
       scale: "medium",
       disabled:true,
+      handler: function(btn){
+        Ext.create('MyApp.view.tacografo.form.UpdateTacografoView_Window').show();
+      },
       style: {
         textDecoration: "none",
       },

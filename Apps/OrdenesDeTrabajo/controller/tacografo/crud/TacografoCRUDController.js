@@ -1,7 +1,10 @@
 Ext.define("MyApp.controller.tacografo.crud.TacografoCRUDController", {
   extend: "Ext.app.Controller",
 
-  views: ["tacografo.form.CreateTacografoView_Window"],
+  views: [
+    "tacografo.form.CreateTacografoView_Window",
+    "tacografo.form.UpdateTacografoView_Window",
+  ],
 
   stores: [
     "tacografo.categoria.CategoriaTacografoStore",
@@ -17,9 +20,13 @@ Ext.define("MyApp.controller.tacografo.crud.TacografoCRUDController", {
     },
   },
 
-  onSelectionChange_GridTacografo: function(sm, records){
-    Ext.ComponentQuery.query('tacografo_grid toolbar[dock="top"] button[text="Actualizar"]')[0].setDisabled(false);
-    Ext.ComponentQuery.query('tacografo_grid toolbar[dock="top"] button[text="Eliminar"]')[0].setDisabled(false);
+  onSelectionChange_GridTacografo: function (sm, records) {
+    Ext.ComponentQuery.query(
+      'tacografo_grid toolbar[dock="top"] button[text="Actualizar"]'
+    )[0].setDisabled(false);
+    Ext.ComponentQuery.query(
+      'tacografo_grid toolbar[dock="top"] button[text="Eliminar"]'
+    )[0].setDisabled(false);
   },
 
   Create_NewTacografo: function (btn, e) {
