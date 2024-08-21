@@ -18,6 +18,19 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
     {
       xtype: "form",
       layout: "column",
+      listeners: {
+        beforerender: function (cmp) {
+          
+          var grid_tacografos = Ext.ComponentQuery.query(
+            'window[title="Vincular un Tacógrafo a un Vehículo"] > tacografo_grid'
+          )[0];
+
+          var selected_record = grid_tacografos.getSelectionModel().getSelection()[0];
+
+          cmp.loadRecord(selected_record);
+
+        },
+      },
 
       defaults: {
         layout: "form",
@@ -34,7 +47,7 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
               fieldLabel:
                 "Número de Serie<span style='color:red'><b> *</b></span>",
               allowBlank: false,
-              name:'numero_serie'
+              name: "numero_serie",
             },
             {
               xtype: "combobox",
@@ -43,7 +56,7 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
               store: "tacografo.modelo.ModeloTacografoStore",
               displayField: "modelo_tacografo",
               valueField: "id",
-              name:'id_modelo'
+              name: "id_modelo",
             },
             {
               xtype: "combobox",
@@ -54,10 +67,10 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
               valueField: "id",
               listConfig: {
                 width: 800,
-                maxWidth:800,
-                minWidth:350
+                maxWidth: 800,
+                minWidth: 350,
               },
-              name:'id_categoria'
+              name: "id_categoria",
             },
             {
               xtype: "combobox",
@@ -65,14 +78,15 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
               store: "vehiculo.VehiculoStore",
               displayField: "matricula",
               valueField: "id",
+              //disabled:true,
               typeAhead: true,
               listConfig: {
                 width: 800,
-                maxWidth:800,
-                minWidth:350
+                maxWidth: 800,
+                minWidth: 350,
               },
               pageSize: 1,
-              name:'id_vehiculo'
+              name: "id_vehiculo",
             },
             {
               xtype: "combobox",
@@ -81,7 +95,7 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
               allowBlank: false,
               displayField: "nombre",
               valueField: "id",
-              store:Ext.create("Ext.data.Store", {
+              store: Ext.create("Ext.data.Store", {
                 fields: ["id", "nombre"],
                 data: [
                   { id: "100", nombre: "100 Km/h" },
@@ -90,13 +104,13 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
                   { id: "180", nombre: "180 Km/h" },
                 ],
               }),
-              name:'escala_velocidad'
+              name: "escala_velocidad",
             },
             {
               xtype: "datefield",
               fieldLabel: "Fecha de Fabricación",
-              format:'d-m-Y',
-              name:'fecha_fabricacion'
+              format: "d-m-Y",
+              name: "fecha_fabricacion",
             },
           ],
         },
@@ -105,30 +119,30 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
             {
               xtype: "datefield",
               fieldLabel: "Fecha de Instalación",
-              format:'d-m-Y',
-              name:'fecha_instalacion'
+              format: "d-m-Y",
+              name: "fecha_instalacion",
             },
             {
               xtype: "datefield",
               fieldLabel: "Fecha de la última revisión",
-              format:'d-m-Y',
-              name:'fecha_ultima_revision'
+              format: "d-m-Y",
+              name: "fecha_ultima_revision",
             },
             {
               xtype: "datefield",
               fieldLabel: "Fecha de Fin de Garantía",
-              format:'d-m-Y',
-              name:'fecha_fin_garantia'
+              format: "d-m-Y",
+              name: "fecha_fin_garantia",
             },
             {
               xtype: "textarea",
               fieldLabel: "Homologación",
-              name:'homologacion'
+              name: "homologacion",
             },
             {
               xtype: "textarea",
               fieldLabel: "Comentarios",
-              name:'comentarios'
+              name: "comentarios",
             },
           ],
         },
@@ -136,7 +150,7 @@ Ext.define("MyApp.view.tacografo.form.UpdateTacografoView_Window", {
       buttons: [
         {
           text: "Actualizar Tacógrafo Existente",
-          id:'Update_Tacografo',
+          id: "Update_Tacografo",
           style: {
             textDecoration: "none",
           },

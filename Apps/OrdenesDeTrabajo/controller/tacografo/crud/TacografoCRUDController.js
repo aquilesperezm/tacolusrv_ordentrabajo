@@ -15,6 +15,9 @@ Ext.define("MyApp.controller.tacografo.crud.TacografoCRUDController", {
     "#AddNew_Tacografo": {
       click: "Create_NewTacografo",
     },
+    '#Update_Tacografo':{
+      click: 'Update_Tacografo'
+    },
     tacografo_grid: {
       selectionchange: "onSelectionChange_GridTacografo",
     },
@@ -29,9 +32,48 @@ Ext.define("MyApp.controller.tacografo.crud.TacografoCRUDController", {
     )[0].setDisabled(false);
   },
 
+  Update_Tacografo: function(btn,e){
+
+    var form = btn.up("form");
+   // var grid = Ext.ComponentQuery.query("tacografo_grid")[0];
+
+    var grid = Ext.ComponentQuery.query(
+      'window[title="Vincular un Tacógrafo a un Vehículo"] > tacografo_grid'
+    )[0];
+    var selected_record = grid.getSelectionModel().getSelection()[0];
+
+    if (form.isValid()) {
+      form.submit({
+        headers: { Token: "TacoLuServices2024**" },
+        method: "POST",
+        clientValidation: true,
+        url: "api/3/tacografo_manager",
+        params: {
+          action: "update",
+          id_tacografo: selected_record.id
+        },
+        success: function (form, action) {
+          grid.getStore().loadPage(1, {
+            callback: function () {
+              btn.up("window").close();
+            },
+          });
+
+          //Ext.Msg.alert('Success', action.result.msg);
+        },
+        failure: function (form, action) {
+          Ext.Msg.alert("Failed", action.result.success);
+        },
+      });
+    }
+
+  },
+
   Create_NewTacografo: function (btn, e) {
     var form = btn.up("form");
-    var grid = Ext.ComponentQuery.query("tacografo_grid")[0];
+    var grid = Ext.ComponentQuery.query(
+      'window[title="Vincular un Tacógrafo a un Vehículo"] > tacografo_grid'
+    )[0];
 
     if (form.isValid()) {
       form.submit({

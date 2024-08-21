@@ -65,6 +65,7 @@ Ext.define("MyApp.view.tacografo.form.CreateTacografoView_Window", {
               store: "vehiculo.VehiculoStore",
               displayField: "matricula",
               valueField: "id",
+              //disabled:true,
               typeAhead: true,
               listConfig: {
                 width: 800,
