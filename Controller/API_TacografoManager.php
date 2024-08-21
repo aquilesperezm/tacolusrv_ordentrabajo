@@ -65,9 +65,19 @@ class API_TacografoManager extends ApiController
                 // var_dump($ordenes);
             }
 
-            if ($flag_tacografos_disponibles)
+            if ($flag_tacografos_disponibles && empty($criteria_str))
                 $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
-
+            else
+                {
+                    //$tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
+                    $tacografos = DBQuery::table('tacografos')->where(
+                        [
+                            Where::orLike('numero_serie', $criteria_str),
+                            Where::eq('id_vehiculo', Null)
+                        ]
+                    )->get();
+                }
+                
             foreach ($tacografos as $tacografo) {
                 $item = (array) $tacografo;
 
