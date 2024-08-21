@@ -258,6 +258,7 @@ Ext.define(
           Ext.StoreManager.lookup("cliente.ClienteStore").load();
           Ext.StoreManager.lookup("tacografo.TacografoStore").load();
           btn.up("window").close();
+          grid_vehiculo.down('toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]').setDisabled(true)
         },
 
         failure: function (response, opts) {

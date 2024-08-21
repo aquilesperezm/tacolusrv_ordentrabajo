@@ -89,18 +89,65 @@ class API_TacografoManager extends ApiController
             //vincular un tacografo con un vehiculo
         } elseif ($this->request->isMethod('POST')) {
 
+            if (isset($_POST['action'])) $action = $_POST['action'];
 
-            $id_tacografo = $_POST['id_tacografo'];
-            $id_vehiculo = $_POST['id_vehiculo'];
+            if ($action != 'create' && $action  != 'udate' && $action != 'delete') {
 
-            $tacografo = new Tacografo();
-            $tacografo = $tacografo->get($id_tacografo);
+                $id_tacografo = $_POST['id_tacografo'];
+                $id_vehiculo = $_POST['id_vehiculo'];
 
-            $tacografo->id_vehiculo = $id_vehiculo;
-            $tacografo->save();
+                $tacografo = new Tacografo();
+                $tacografo = $tacografo->get($id_tacografo);
 
-            $this->response->setStatusCode(200);
-            $this->response->setContent(json_encode(['success' => True]));
+                $tacografo->id_vehiculo = $id_vehiculo;
+                $tacografo->save();
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode(['success' => True]));
+            } 
+            else if ($action == 'create') {
+
+                $tacografo = new Tacografo();
+
+                $numero_serie = $_POST['numero_serie'];
+                $id_modelo = $_POST['id_modelo'];
+                $id_categoria = $_POST['id_categoria'];
+                $id_vehiculo_matricula = ($_POST['id_vehiculo'] == '') ? Null : $_POST['id_vehiculo'];
+                $escala_velocidad = $_POST['escala_velocidad'];
+
+                $fecha_fabricacion = ($_POST['fecha_fabricacion'] == '') ? Null : $_POST['fecha_fabricacion'];
+                $fecha_instalacion = ($_POST['fecha_instalacion'] == '') ? Null : $_POST['fecha_instalacion'];
+                $fecha_ultima_revision = ($_POST['fecha_ultima_revision'] == '') ? Null : $_POST['fecha_ultima_revision'];
+                $fecha_fin_garantia = ($_POST['fecha_fin_garantia'] == '') ? Null : $_POST['fecha_fin_garantia'];
+
+                $homologacion = $_POST['homologacion'];
+                $comentarios = $_POST['comentarios'];
+
+                $tacografo->numero_serie = $numero_serie;
+                $tacografo->id_categoria = $id_categoria;
+                $tacografo->id_modelo = $id_modelo;
+                $tacografo->id_vehiculo = $id_vehiculo_matricula;
+                $tacografo->escala_velocidad = $escala_velocidad;
+
+                $tacografo->fecha_fabricacion = $fecha_fabricacion;
+                $tacografo->fecha_instalacion = $fecha_instalacion;
+                $tacografo->fecha_fin_garantia = $fecha_fin_garantia;
+                $tacografo->fecha_ultima_revision = $fecha_ultima_revision;
+
+                $tacografo->homologacion = $homologacion;
+                $tacografo->comentarios = $comentarios;
+
+                $success = $tacografo->save();
+                if ($success) {
+                    $this->response->setStatusCode(200);
+                    $this->response->setContent(json_encode(['success' => True]));
+                } else {
+                    $this->response->setStatusCode(400);
+                    $this->response->setContent(json_encode(['success' => False]));
+                }
+            }
+
+
         } else if (isset($_GET['action'])) {
             if ($_GET['action'] == 'get-all-modelos') {
 
@@ -110,7 +157,6 @@ class API_TacografoManager extends ApiController
 
                 $this->response->setStatusCode(200);
                 $this->response->setContent(json_encode($data));
-                
             } else  if ($_GET['action'] == 'get-all-categorias') {
                 $cat_tacografo = new CategoriaTacografo();
 
