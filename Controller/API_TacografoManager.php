@@ -162,6 +162,19 @@ class API_TacografoManager extends ApiController
                     $this->response->setStatusCode(400);
                     $this->response->setContent(json_encode(['success' => False]));
                 }
+            } else if($action == 'delete'){
+
+                $tacografo = new Tacografo();
+                $ids = json_decode($_POST['ids']);
+                foreach($ids as $id){
+                   $tacografo = $tacografo->get($id);
+                   $tacografo->delete();
+                }
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode(['success' => True, 'action'=>'delete']));
+                
+
             }
 
 

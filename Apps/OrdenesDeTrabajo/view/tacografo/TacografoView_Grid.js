@@ -90,6 +90,7 @@ Ext.define("MyApp.view.tacografo.TacografoView_Grid", {
       text: "Eliminar",
       xtype: "button",
       scale: "medium",
+      id:'Delete_Tacografo',
       disabled:true,
       style: {
         textDecoration: "none",
