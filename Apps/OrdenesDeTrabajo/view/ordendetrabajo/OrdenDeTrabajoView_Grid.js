@@ -19,7 +19,7 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
     type: "checkboxmodel",
     checkOnly: false,
     mode: "SINGLE",
-    allowDeselect: true,
+    //allowDeselect: true,
   },
   columns: [
     {

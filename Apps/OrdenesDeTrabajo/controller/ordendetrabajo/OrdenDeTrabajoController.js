@@ -67,6 +67,13 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
           id_orden: records[0].data.id,
         },
       });
+
+      //activate Update, Delete and Print Button
+      let buttons = Ext.ComponentQuery.query('ordendetrabajo_grid toolbar[dock="top"] button');
+        buttons.forEach((e,i,a)=>{
+          e.setDisabled(false)
+        })
+
     }
     //var imprimir_btn = Ext.getCmp("Imprimir_Orden");
     //var form_imprimir_btn = Ext.getCmp('Print_Form_OrdenTrabajo');
@@ -106,6 +113,10 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     var store_ordenes = cmp.up("ordendetrabajo_grid").getStore();
 
     store_ordenes.loadPage(1, {
+      callback: (r,o,s)=>{
+        if(r.length > 0)
+        cmp.up("ordendetrabajo_grid").getSelectionModel().select(0);
+      },
       params: {
         criteria: textfield.getValue(),
       },

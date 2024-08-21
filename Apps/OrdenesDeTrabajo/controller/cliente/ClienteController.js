@@ -33,6 +33,10 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
     var store_ordenes = cmp.up('cliente_grid').getStore();
 
     store_ordenes.loadPage(1,{
+      callback: (r,o,s)=>{
+        if(r.length > 0)
+        cmp.up("cliente_grid").getSelectionModel().select(0);
+      },
       params: {
         criteria: textfield.getValue(),
       },

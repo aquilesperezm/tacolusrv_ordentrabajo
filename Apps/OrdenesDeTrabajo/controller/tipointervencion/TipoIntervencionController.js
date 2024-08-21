@@ -33,7 +33,11 @@ Ext.define("MyApp.controller.tipointervencion.TipoIntervencionController", {
     var store_ordenes = cmp.up('tipointervencion_grid').getStore();
 
    store_ordenes.loadPage(1,{
-      params: {
+    callback: (r,o,s)=>{
+      if(r.length > 0)
+      cmp.up("tipointervencion_grid").getSelectionModel().select(0);
+    },
+    params: {
         criteria: textfield.getValue(),
       },
     });

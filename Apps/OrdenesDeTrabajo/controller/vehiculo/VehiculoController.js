@@ -92,6 +92,10 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
     var store_ordenes = cmp.up("vehiculo_grid").getStore();
 
     store_ordenes.loadPage(1, {
+      callback: (r,o,s)=>{
+        if(r.length > 0)
+        cmp.up("vehiculo_grid").getSelectionModel().select(0);
+      },
       params: {
         criteria: textfield.getValue(),
       },

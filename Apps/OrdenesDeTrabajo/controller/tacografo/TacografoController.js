@@ -32,6 +32,10 @@ Ext.define("MyApp.controller.tacografo.TacografoController", {
     var store_ordenes = cmp.up('tacografo_grid').getStore();
 
     store_ordenes.loadPage(1,{
+      callback: (r,o,s)=>{
+        if(r.length > 0)
+        cmp.up("tacografo_grid").getSelectionModel().select(0);
+      },
       params: {
         criteria: textfield.getValue(),
       },

@@ -4,11 +4,12 @@ Ext.define(
     extend: "Ext.app.Controller",
 
     stores: [],
-    views: ["ordendetrabajo.form.CreateOrdenDeTrabajoView_Window"],
+    views: [
+      "ordendetrabajo.form.CreateOrdenDeTrabajoView_Window",
+      "ordendetrabajo.form.UpdateOrdenDeTrabajoView_Window",
+    ],
 
     control: {
-      
-
       //---------------------------------------------- Vinculate Client and Tachograph -------------------------------
       // Vinculate Client
       'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Cliente"]':
@@ -258,7 +259,9 @@ Ext.define(
           Ext.StoreManager.lookup("cliente.ClienteStore").load();
           Ext.StoreManager.lookup("tacografo.TacografoStore").load();
           btn.up("window").close();
-          grid_vehiculo.down('toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]').setDisabled(true)
+          grid_vehiculo
+            .down('toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]')
+            .setDisabled(true);
         },
 
         failure: function (response, opts) {
@@ -371,7 +374,6 @@ Ext.define(
       }).show();
     },
 
-    
     init: function () {},
   }
 );
