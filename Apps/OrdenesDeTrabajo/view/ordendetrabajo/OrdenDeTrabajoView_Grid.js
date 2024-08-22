@@ -82,8 +82,10 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
-      handler: function(btn,e){
-        Ext.create('MyApp.view.ordendetrabajo.form.UpdateOrdenDeTrabajoView_Window').show();
+      handler: function (btn, e) {
+        Ext.create(
+          "MyApp.view.ordendetrabajo.form.UpdateOrdenDeTrabajoView_Window"
+        ).show();
       },
       icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico",
       // iconCls: "tbar-update",
@@ -100,6 +102,48 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
         textDecoration: "none",
       },
       icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico",
+      handler: (btn, e) => {
+        var records = btn.up("grid").getSelectionModel().getSelection();
+        var ids = [];
+        records.forEach((v, i, a) => {
+          ids.push(v.id);
+        });
+
+        Ext.Msg.show({
+          title: "Aviso",
+          message:
+            "Se eliminaran los elementos seleccionados, ¿Usted esta seguro?",
+          buttons: Ext.Msg.YESNO,
+          icon: Ext.Msg.WARNING,
+          fn: function (btn) {
+            if (btn === "yes") {
+              Ext.Ajax.request({
+                headers: { Token: "TacoLuServices2024**" },
+                method: "POST",
+                url: "api/3/get_ordenesdetrabajo",
+                params: {
+                  action: "delete",
+                  ids: Ext.encode(ids),
+                },
+                success: function (response, opts) {
+                  //  var obj = Ext.decode(response.responseText);
+                  //  console.dir(obj);
+                  Ext.data.StoreManager.lookup(
+                    "ordendetrabajo.OrdenDeTrabajoStore"
+                  ).loadPage(1);
+                },
+
+                failure: function (response, opts) {
+                  // console.log('server-side failure with status code ' + response.status);
+                },
+              });
+            }
+            Ext.data.StoreManager.lookup(
+              "ordendetrabajo.OrdenDeTrabajoStore"
+            ).loadPage(1);
+          },
+        });
+      },
     },
     { xtype: "tbspacer" },
     { xtype: "tbseparator" },

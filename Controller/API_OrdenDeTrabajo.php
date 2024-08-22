@@ -177,6 +177,37 @@ class API_OrdenDeTrabajo extends ApiController
                 $this->response->setStatusCode(200);
                 $this->response->setContent(json_encode(['success' => true, 'action' => 'update']));
             }
+            //delete
+            else if ($action == 'delete') {
+
+                $ids_ordenes = json_decode($_POST['ids']);
+
+                foreach ($ids_ordenes as $id_orden) {
+
+                    $tipos_intervenciones_old = DBQuery::table('rel_tipodeintervencion_ordenesdetrabajo')->where(
+                        [
+                            Where::orLike('id_ordendetrabajo', $id_orden)
+                            // Where::orLike('numero_orden', $criteria_str)
+                        ]
+                    )->get();
+
+                    foreach ($tipos_intervenciones_old as $old) {
+                        $ixt = new IntervencionXOrdenDeTrabajo();
+                        $ixt = $ixt->get($old['id']);
+                        $ixt->delete();
+                    }
+
+                    $ordenTrabajo = new OrdenDeTrabajo();
+                    $ordenTrabajo = $ordenTrabajo->get($id_orden);
+                    $ordenTrabajo->delete();
+                    
+
+                }
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode(['success' => true, 'action' => 'delete']));
+
+            }
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));
