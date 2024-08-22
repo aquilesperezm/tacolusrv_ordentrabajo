@@ -130,7 +130,14 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
                   //  console.dir(obj);
                   Ext.data.StoreManager.lookup(
                     "ordendetrabajo.OrdenDeTrabajoStore"
-                  ).loadPage(1);
+                  ).loadPage(1, {
+                    callback: (records, operation, success) => {
+                      if (records.length > 0)
+                        Ext.ComponentQuery.query("ordendetrabajo_grid")[0]
+                          .getSelectionModel()
+                          .select(0);
+                    },
+                  });
                 },
 
                 failure: function (response, opts) {
@@ -138,9 +145,9 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
                 },
               });
             }
-            Ext.data.StoreManager.lookup(
+            /*Ext.data.StoreManager.lookup(
               "ordendetrabajo.OrdenDeTrabajoStore"
-            ).loadPage(1);
+            ).loadPage(1);*/
           },
         });
       },
@@ -152,11 +159,24 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       text: "Imprimir",
       xtype: "button",
       scale: "medium",
+      id: "Imprimir_Orden",
       disabled: true,
       style: {
         textDecoration: "none",
       },
       icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/print.ico",
+    },
+    {
+      xtype: "form",
+      id: "Print_Form_OrdenTrabajo",
+      hidden: true,
+      standardSubmit: true,
+      method: "POST",
+      url: "OrdenDeTrabajoReporte",
+      target: "_blank",
+      baseParams: {
+        // id:561
+      },
     },
     { xtype: "tbspacer" },
     { xtype: "tbseparator" },

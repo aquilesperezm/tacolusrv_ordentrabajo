@@ -201,7 +201,6 @@ class API_OrdenDeTrabajo extends ApiController
                     $ordenTrabajo = $ordenTrabajo->get($id_orden);
                     $ordenTrabajo->delete();
                     
-
                 }
 
                 $this->response->setStatusCode(200);

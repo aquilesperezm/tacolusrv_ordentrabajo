@@ -23,38 +23,42 @@ class OrdenDeTrabajoPDF extends FPDF
 
     function showTable_DatosVehiculo()
     {
+
+        $this->Cell(0, 2, '', 0, 1);
+
         $this->SetLineWidth(0.3);
-        $this->SetDrawColor(234, 234, 234);
-        // $this->SetDrawColor(0, 0, 0);
-        $this->Cell(0, 38, '', 1, 0);
+       // $this->SetDrawColor(234, 234, 234);
+       $this->SetDrawColor(255, 0, 0);
+       // $this->SetDrawColor(0, 0, 0);
+        $this->Cell(0, 32, '', 1, 0);
         $this->SetFont('Arial', 'B', 8);
-        $this->Text(12, $this->getY() + 5, utf8_decode('Datos del Vehículo:'));
+        $this->Text(12, $this->getY() + 3, utf8_decode('Datos del Vehículo:'));
 
         $this->setXY(11, $this->GetY() + 7);
         $this->SetDrawColor(0, 0, 0);
-        $this->Cell(50, 10, '', 1, 0);
+        $this->Cell(50, 8, '', 1, 0);
         $this->Text(12, $this->getY() + 3, utf8_decode('(2.) Lectura CuentaKilómetros:'));
 
         //   $this->setXY(11,$this->GetY()+ 7);
         // $this->SetDrawColor(0, 0, 0);
-        $this->Cell(50, 10, '', 1, 0);
+        $this->Cell(50, 8, '', 1, 0);
         $this->Text(62, $this->getY() + 3, utf8_decode('(3.) Tamaño neumáticos:'));
 
-        $this->Cell(50, 10, '', 1, 0);
+        $this->Cell(50, 8, '', 1, 0);
         $this->Text(112, $this->getY() + 3, utf8_decode('(4.) Marca neumáticos:'));
 
-        $this->Cell(0, 10, '', 1, 0);
+        $this->Cell(0, 8, '', 1, 0);
         $this->Text(162, $this->getY() + 3, utf8_decode('(5.) Escultura neumáticos:'));
 
-        $this->setXY(11, $this->GetY() + 10);
-        $this->Cell(100, 10, '', 1, 0);
-        $this->Cell(95, 10, '', 1, 0);
+        $this->setXY(11, $this->GetY() + 8);
+        $this->Cell(95, 8, '', 1, 0);
+        $this->Cell(94, 8, '', 1, 0);
         $this->Text(12, $this->getY() + 3, utf8_decode('(6.) Profundidad Ranura neumáticos:'));
         $this->Text(112, $this->getY() + 3, utf8_decode('(7.) Velocidad Limitador:'));
 
-        $this->setXY(11, $this->GetY() + 10);
-        $this->Cell(100, 10, '', 1, 0);
-        $this->Cell(95, 10, '', 1, 0);
+        $this->setXY(11, $this->GetY() + 8);
+        $this->Cell(95, 8, '', 1, 0);
+        $this->Cell(94, 8, '', 1, 0);
         $this->Text(12, $this->getY() + 3, utf8_decode('Indice de Carga del neumático:'));
     }
 
@@ -62,23 +66,24 @@ class OrdenDeTrabajoPDF extends FPDF
     {
 
         $this->SetLineWidth(0.3);
-        $this->SetDrawColor(234, 234, 234);
+       // $this->SetDrawColor(234, 234, 234);
+       $this->SetDrawColor(0, 255, 0);
         // $this->SetDrawColor(0, 0, 0);
-        $this->Cell(0, 19, '', 1, 0);
+        $this->Cell(0, 14, '', 1, 0);
         $this->SetFont('Arial', 'B', 8);
-        $this->Text(12, $this->getY() + 5, utf8_decode('Presión neumáticos ruedas motrices externas'));
+        $this->Text(12, $this->getY() + 3, utf8_decode('Presión neumáticos ruedas motrices externas'));
         $this->SetFont('Arial', '', 8);
-        $this->Text(75, $this->getY() + 5, utf8_decode('(en bares y con 1 decimal'));
+        $this->Text(75, $this->getY() + 3, utf8_decode('(en bares y con 1 decimal'));
 
         $this->SetFont('Arial', 'B', 8);
-        $this->setXY(11, $this->GetY() + 7);
+        $this->setXY(11, $this->GetY() + 4);
         $this->SetDrawColor(0, 0, 0);
-        $this->Cell(100, 10, '', 1, 0);
+        $this->Cell(100, 8, '', 1, 0);
         $this->Text(12, $this->getY() + 3, utf8_decode('(8.) Presión Rueda Izquierda:'));
 
         //   $this->setXY(11,$this->GetY()+ 7);
         // $this->SetDrawColor(0, 0, 0);
-        $this->Cell(0, 10, '', 1, 0);
+        $this->Cell(0, 8, '', 1, 0);
         $this->Text(112, $this->getY() + 3, utf8_decode('(9.) Presión Rueda Derecha:'));
     }
 

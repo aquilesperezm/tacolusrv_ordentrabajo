@@ -84,134 +84,143 @@ class OrdenDeTrabajoReporte extends Controller
 
         //var_dump($datos);
 
+        $font_size = 8;
+
         $pdf = new OrdenDeTrabajoPDF();
         $pdf->AliasNbPages();
-        $pdf->AddPage('P', 'Letter');
-        $pdf->Image("Plugins/OrdenDeTrabajo/Assets/Images/Logo.png", 10, 10, 40, 40, 'PNG');
+        $pdf->AddPage('P', 'A4');
+        $pdf->Image("Plugins/OrdenDeTrabajo/Assets/Images/Logo.png", 10, 10, 20, 20, 'PNG');
 
-        $pdf->SetXY(20, 20);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell($pdf->GetPageWidth() - 30, 10, 'ORDEN DE TRABAJO', 0, 0, 'R');
+        $pdf->SetXY(20, 25);
+        $pdf->SetFont('Arial', 'B',  $font_size);
+        $pdf->Cell(0, 5, 'ORDEN DE TRABAJO', 0, 1, 'R');
+        //$pdf->Cell($pdf->GetPageWidth() - 30, 10, 'ORDEN DE TRABAJO', 0, 0, 'R');
+        //$pdf->Cell(0, 10, 'ORDEN DE TRABAJO', 0, 0);
 
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
+        $pdf->Cell(0, 5, '', 0, 1);
 
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->SetLineWidth(0.6);
         $pdf->SetDrawColor(234, 234, 234);
         $pdf->Cell(0, 30, '', 1, 1);
         /*$pdf->SetFillColor(234, 234, 234);
         $pdf->Cell(0, count($tipos_intervenciones) * 7, '', 1, 0, '', true);*/
 
-        $pdf->SetXY(10, 60);
+        $pdf->SetXY(10, 40);
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, 'Centro Autorizado: ', 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['centro_autorizado'], 0, 1, '', false, '');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, utf8_decode('N°. de Orden de Trabajo: '), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['numero_orden'], 0, 1, '', false, '');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, 'Fecha: ', 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['fecha_orden'], 0, 1, '', false, '');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, 'Cliente: ', 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['cliente'], 0, 1, '', false, '');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, utf8_decode('Vehículo:'), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['vehiculo'], 0, 1, '', false, '');
 
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(50, 5, utf8_decode('N°. de Serie del Tacógrafo: '), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(50, 5, $datos['noserie_tacografo'], 0, 1, '', false, '');
 
         $pdf->SetFillColor(234, 234, 234);
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(0, 5, utf8_decode('Intervenciones Solicitadas: '), 1, 1, '', true, '');
 
 
         //hacemos un for con los tipos de intervenciones
         foreach ($datos['tipos_intervenciones'] as $item) {
             $pdf->SetFillColor(234, 234, 234);
-            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->SetFont('Arial', 'B',  $font_size);
             $pdf->Cell(0, 5, utf8_decode($item), 1, 1, '', true, '');
         }
 
         //y las operaciones necesarias para asegurar el correcto funcionamiento del tacógrafo
         $pdf->SetFillColor(234, 234, 234);
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(0, 5, utf8_decode('y las operaciones necesarias para asegurar el correcto funcionamiento del tacógrafo'), 1, 1, '', true, '');
 
-        $pdf->Ln();
+        //$
+        $pdf->Cell(0, 2, '', 0, 1);
 
         //tickets section
         $pdf->SetLineWidth(0.3);
         $pdf->SetDrawColor(255, 0, 0);
-        $pdf->Cell(0, 25, utf8_decode(''), 1, 0, '', false, '');
+        $pdf->Cell(0, 17, utf8_decode(''), 1, 0, '', false, '');
 
-        $pdf->SetXY($pdf->GetX() - 190, $pdf->getY() + 5);
+        $pdf->Cell(0, 2, '', 0, 1);
+
+        // $pdf->SetXY($pdf->GetX() - 190, $pdf->getY());
         $pdf->SetDrawColor(0, 0, 0);
+        $pdf->Cell(6, 3, utf8_decode(''), 0, 0, '', false, '');
         $pdf->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
         // $pdf->SetXY(30,115);
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', $font_size);
         $pdf->Cell(20, 3, utf8_decode(' TICKET 1:'), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(30, 3, utf8_decode(' DATOS TÉCNICOS'), 0, 1, '', false, '');
 
-        $pdf->SetXY($pdf->GetX() - 210, $pdf->getY() + 2);
+        $pdf->Cell(0, 2, '', 0, 1);
+
+        // $pdf->SetXY($pdf->GetX() - 210, $pdf->getY());
         $pdf->SetDrawColor(0, 0, 0);
+        $pdf->Cell(6, 3, utf8_decode(''), 0, 0, '', false, '');
         $pdf->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
         // $pdf->SetXY(30,115);
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '', $font_size);
         $pdf->Cell(20, 3, utf8_decode(' TICKET 2:'), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(30, 3, utf8_decode(' EVENTOS Y FALLOS'), 0, 1, '', false, '');
 
-        $pdf->SetXY($pdf->GetX() - 210, $pdf->getY() + 2);
+        $pdf->Cell(0, 2, '', 0, 1);
+
+        //$pdf->SetXY($pdf->GetX() - 210, $pdf->getY());
         $pdf->SetDrawColor(0, 0, 0);
+        $pdf->Cell(6, 3, utf8_decode(''), 0, 0, '', false, '');
         $pdf->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
-        $pdf->SetFont('Arial', '', 10);
+        $pdf->SetFont('Arial', '',  $font_size);
         $pdf->Cell(20, 3, utf8_decode(' TICKET 3:'), 0, 0, '', false, '');
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(30, 3, utf8_decode(' SOBREVELOCIDADES'), 0, 0, '', false, '');
+        $pdf->SetFont('Arial', 'B',  $font_size);
+        $pdf->Cell(30, 3, utf8_decode(' SOBREVELOCIDADES'), 0, 1, '', false, '');
+
+        //new line
+        $pdf->Cell(0, 4, '', 0, 1);
+       // $pdf->Cell(0, 5, '', 0, 1);
+        
+        $pdf->Cell(0, 42, '', 1, 0);
+        $pdf->SetX(10);
+
+       // $pdf->Cell(20, 3, '', 0);
+       $pdf->Cell(0, 2, '', 0,1);
+        $pdf->Cell(27, 3, '(1.) Marca con una', 0);
+       // $pdf->Cell(4, 4, '', 1, 0);
+        //$pdf->SetXY($pdf->GetX() - 217, $pdf->getY() + 1);
+        $pdf->Cell(5, 4, 'X', 1,0,'C');
+        //$pdf->SetXY($pdf->GetX() - 215, $pdf->getY() - 1);
+        $pdf->Cell(0, 3, 'las intervenciones realizadas:', 0);
 
         $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
-        //$pdf->Ln();
 
-        // Seccion Marca con una X las intervenciones -------------------------------------------------------
-
-        $pdf->Cell(0, 44, '', 1);
-
-        $pdf->SetXY($pdf->GetX() - 195, $pdf->getY() + 1);
-        $pdf->Cell(35, 5, '(1.) Marca con una', 0);
-        $pdf->SetXY($pdf->GetX() - 217, $pdf->getY() + 1);
-        $pdf->Cell(4, 4, 'X', 1);
-        $pdf->SetXY($pdf->GetX() - 215, $pdf->getY() - 1);
-        $pdf->Cell(0, 5, 'las intervenciones realizadas:', 0);
-        $pdf->Ln();
-
-        $pdf->SetFont('Arial', '', 8);
+        $pdf->SetFont('Arial', '', 7);
         $pdf->SetDrawColor(0, 0, 0);
 
         $tipointervencion = new TipoIntervencion();
         $items = $tipointervencion->all();
-
-
 
         function existInArray(array $array, int  $n): bool
         {
@@ -230,7 +239,7 @@ class OrdenDeTrabajoReporte extends Controller
             for ($i = 0; $i < count($items); $i++) {
                 if ($i % 2 == 0) {
                     //column 1
-                    $pdf->SetXY($pdf->GetX() - 215, $pdf->getY() + 2);
+                    $pdf->SetXY($pdf->GetX() - 208, $pdf->getY() + 2);
 
                     if (existInArray($tipos_intervenciones, $items[$i]->id))
                         $pdf->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
@@ -253,7 +262,7 @@ class OrdenDeTrabajoReporte extends Controller
             for ($i = 1; $i < count($items); $i++) {
                 if ($i % 2 == 1) {
                     //column 1
-                    $pdf->SetXY($pdf->GetX() - 215, $pdf->getY() + 2);
+                    $pdf->SetXY($pdf->GetX() - 208, $pdf->getY() + 2);
 
                     if (existInArray($tipos_intervenciones, $items[$i]->id))
                         $pdf->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
@@ -272,7 +281,7 @@ class OrdenDeTrabajoReporte extends Controller
                 }
             }
             //column 1
-            $pdf->SetXY($pdf->GetX() - 215, $pdf->getY() + 2);
+            $pdf->SetXY($pdf->GetX() - 208, $pdf->getY() + 2);
 
             if (existInArray($tipos_intervenciones, $items[0]->id))
                 $pdf->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
@@ -283,17 +292,16 @@ class OrdenDeTrabajoReporte extends Controller
 
         //--------------------------------------------------------------------------
 
-        $pdf->Ln();
-        $pdf->Ln();
-        $pdf->Ln();
+         //new line
+         $pdf->Cell(0, 4, '', 0, 1);
 
         $pdf->showTable_DatosVehiculo();
 
-        $pdf->Ln();
+        $pdf->Cell(0,10, '', 0, 1);
 
         $pdf->showTable_PresionNeumaticos();
-
-        $pdf->Ln();
+        
+        $pdf->Cell(0,11, '', 0, 1);
 
         $pdf->showTable_InstalacionTacografo();
 
@@ -405,7 +413,7 @@ class OrdenDeTrabajoReporte extends Controller
             ]
         );
         //---------------------------------------------------------------------------------------------------------
-    
+
         $pdf->show_Tickets_By_Data();
 
         $pdf->ShowTable_PrecintadoTacografo();
