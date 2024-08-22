@@ -53,6 +53,9 @@ Ext.define(
       "#Create_NewOrdenTrabajo": {
         click: "CRUD_CreateNewOrdenDeTrabajo",
       },
+      "#Update_OrdeDeTrabajo": {
+        click: "CRUD_UpdateNewOrdenDeTrabajo",
+      },
       //----------------------------------------- CRUD Functions -----------------------------------------------------
 
       //--------------------------- Navigation Control from Form "Adicionar Orden" -------------------------------------------
@@ -65,6 +68,56 @@ Ext.define(
           click: "showPrevious",
         },
     },
+
+    //CRUD Update Orden de Trabajo
+    CRUD_UpdateNewOrdenDeTrabajo: function (btn, e) {
+      var grid = btn.up("window").down("grid");
+
+      ids = [];
+      grid
+        .getSelectionModel()
+        .getSelection()
+        .forEach((e, i, a) => {
+          ids.push(e.id);
+        });
+
+      var grid_ordenes = Ext.ComponentQuery.query("ordendetrabajo_grid")[0];
+
+      Ext.Ajax.request({
+        headers: { Token: "TacoLuServices2024**" },
+        url: "api/3/get_ordenesdetrabajo",
+        method: "POST",
+        params: {
+          action: "update",
+          id_orden: grid_ordenes.getSelectionModel().getSelection()[0].id,
+          tipos_intervenciones: Ext.encode(ids),
+        },
+        success: function (response, opts) {
+          let response_server = Ext.decode(response.responseText);
+          if (response_server.success) {
+            Ext.StoreManager.lookup(
+              "tipointervencion.TipoIntervencionByIDOrdenStore"
+            ).load({
+              callback: () => {
+                btn.up("window").close();
+              },
+            });
+          } else {
+            Ext.Msg.alert(
+              "Error",
+              "Ha existido un problema al crear la orden, contacte al administrador del sistema"
+            );
+          }
+        },
+
+        failure: function (response, opts) {
+          console.log(
+            "server-side failure with status code " + response.status
+          );
+        },
+      });
+    },
+
     //CRUD Create Orden de Trabajo
     CRUD_CreateNewOrdenDeTrabajo: function (btn, e) {
       var grid_vehiculo = Ext.getCmp("createordenform_card-0");
@@ -84,6 +137,7 @@ Ext.define(
         url: "api/3/get_ordenesdetrabajo",
         method: "POST",
         params: {
+          action: "create",
           no_orden: Ext.getCmp("resumen_numero_orden").getValue(),
           fecha_orden: Ext.getCmp("resumen_fecha").getValue(),
           id_vehiculo: record_vehiculo[0].data.id,

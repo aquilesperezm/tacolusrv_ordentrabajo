@@ -82,6 +82,9 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       style: {
         textDecoration: "none",
       },
+      handler: function(btn,e){
+        Ext.create('MyApp.view.ordendetrabajo.form.UpdateOrdenDeTrabajoView_Window').show();
+      },
       icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/written-paper.ico",
       // iconCls: "tbar-update",
     },

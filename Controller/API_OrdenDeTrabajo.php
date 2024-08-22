@@ -22,6 +22,10 @@ class API_OrdenDeTrabajo extends ApiController
         // tu código aquí
         //$this->response->setContent(json_encode(['hola' => 'mundo']));
 
+        $action = Null;
+        if (isset($_POST['action']))
+            $action = $_POST['action'];
+
         $centroauth = new CentroAutorizado();
         $cliente = new Cliente();
         $vehiculo = new Vehiculo();
@@ -81,7 +85,7 @@ class API_OrdenDeTrabajo extends ApiController
 
                 //tacografos
                 $orden["no_serie_tacografo"] = ($tacografo->get($orden['id_tacografo']))->numero_serie;
-                
+
 
                 $orden['logged_user'] = $_COOKIE['fsNick'];
                 array_push($result, $orden);
@@ -111,39 +115,68 @@ class API_OrdenDeTrabajo extends ApiController
         //create orden de trabajo
         elseif ($this->request->isMethod('POST')) {
 
-            $no_orden = $_POST['no_orden'];
-            $fecha_orden = DateTime::createFromFormat('d-m-Y', $_POST['fecha_orden']);
+            //create
+            if ($action == 'create') {
+                $no_orden = $_POST['no_orden'];
+                $fecha_orden = DateTime::createFromFormat('d-m-Y', $_POST['fecha_orden']);
 
-            $id_vehiculo = $_POST['id_vehiculo'];
+                $id_vehiculo = $_POST['id_vehiculo'];
 
 
-            $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $id_vehiculo)->get();
-            $tipos_intervenciones = json_decode($_POST['tipos_intervenciones']);
+                $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $id_vehiculo)->get();
+                $tipos_intervenciones_ids = json_decode($_POST['tipos_intervenciones']);
 
-            $ordenTrabajo = new OrdenDeTrabajo();
-            $ordenTrabajo->numero_orden = $no_orden;
-            $ordenTrabajo->fecha_orden = $fecha_orden->format('Y-m-d');
-            $ordenTrabajo->id_vehiculo = $id_vehiculo;
-            $ordenTrabajo->id_tacografo = $tacografos[0]['id'];
+                $ordenTrabajo = new OrdenDeTrabajo();
+                $ordenTrabajo->numero_orden = $no_orden;
+                $ordenTrabajo->fecha_orden = $fecha_orden->format('Y-m-d');
+                $ordenTrabajo->id_vehiculo = $id_vehiculo;
+                $ordenTrabajo->id_tacografo = $tacografos[0]['id'];
 
-            $save_ordentrabajo = $ordenTrabajo->save();
+                $save_ordentrabajo = $ordenTrabajo->save();
 
-            foreach ($tipos_intervenciones as $ti) {
-                $ixt = new IntervencionXOrdenDeTrabajo();
-                $ixt->id_ordendetrabajo = $ordenTrabajo->id;
-                $ixt->id_tipodeintervencion = $ti;
-                $ixt->save();
+                foreach ($tipos_intervenciones_ids as $ti) {
+                    $ixt = new IntervencionXOrdenDeTrabajo();
+                    $ixt->id_ordendetrabajo = $ordenTrabajo->id;
+                    $ixt->id_tipodeintervencion = $ti;
+                    $ixt->save();
+                }
+
+                if ($save_ordentrabajo) {
+                    $this->response->setStatusCode(200);
+                    $this->response->setContent(json_encode(['success' => true, 'action' => 'create']));
+                } else $this->response->setContent(json_encode(['success' => false]));
+
+                //update 
+            } else if ($action == 'update') {
+
+                $tipos_intervenciones_ids = json_decode($_POST['tipos_intervenciones']);
+                $id_orden = $_POST['id_orden'];
+
+                //delete all prev tipos de intervenciones related with this id
+                $tipos_intervenciones_old = DBQuery::table('rel_tipodeintervencion_ordenesdetrabajo')->where(
+                    [
+                        Where::orLike('id_ordendetrabajo', $id_orden)
+                        // Where::orLike('numero_orden', $criteria_str)
+                    ]
+                )->get();
+
+                foreach ($tipos_intervenciones_old as $old) {
+                    $ixt = new IntervencionXOrdenDeTrabajo();
+                    $ixt = $ixt->get($old['id']);
+                    $ixt->delete();
+                }
+
+                //create relations        
+                foreach ($tipos_intervenciones_ids as $ti) {
+                    $ixt = new IntervencionXOrdenDeTrabajo();
+                    $ixt->id_ordendetrabajo = $id_orden;
+                    $ixt->id_tipodeintervencion = $ti;
+                    $ixt->save();
+                }
+
+                $this->response->setStatusCode(200);
+                $this->response->setContent(json_encode(['success' => true, 'action' => 'update']));
             }
-
-            if ($save_ordentrabajo)
-                $this->response->setContent(json_encode(['success' => true]));
-            else $this->response->setContent(json_encode(['success' => false]));
-        }
-        //update orden de trabajo   
-        elseif ($this->request->isMethod('PATCH')) {
-        }
-        //borrar orden de trabajo
-        elseif ($this->request->isMethod('DELETE')) {
         } else {
             $this->response->setStatusCode(403);
             $this->response->setContent(json_encode(['error' => 'mundo']));
