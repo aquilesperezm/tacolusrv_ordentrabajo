@@ -91,6 +91,7 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->setTitulo_I();
         $pdf->setDetallesOrden_II($datos);
         $pdf->setTickets_III();
+        $pdf->setMarkWithX_IV($tipos_intervenciones);
 
        /* $pdf->SetXY(20, 25);
         $pdf->SetFont('Arial', 'B',  $font_size);

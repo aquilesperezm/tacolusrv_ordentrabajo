@@ -4,6 +4,8 @@ namespace FacturaScripts\Plugins\OrdenDeTrabajo\Classes;
 
 use FacturaScripts\Plugins\OrdenDeTrabajo\Library\PDF\FPDF;
 
+use FacturaScripts\Plugins\Nomencladores\Model\TipoIntervencion;
+
 class OrdenDeTrabajoPDF extends FPDF
 {
 
@@ -70,8 +72,8 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(0, 4, utf8_decode('Intervenciones Solicitadas: '), 1, 1, '', true, '');
 
         foreach ($datos['tipos_intervenciones'] as $item) {
-            // $pdf->SetFillColor(234, 234, 234);
-            // $pdf->SetFont('Arial', 'B',  $font_size);
+            // $this->SetFillColor(234, 234, 234);
+            // $this->SetFont('Arial', 'B',  $font_size);
             $this->SetFont('Helvetica', 'B', 8);
             $this->Cell(10, 4, utf8_decode(''), 1, 0, '', true, '');
             $this->Cell(0, 4, utf8_decode($item), 1, 1, '', true, '');
@@ -113,7 +115,7 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->SetFont('Helvetica', 'B',  8);
         $this->Cell(20, 4, utf8_decode('TICKET 2:'), 0, 0);
         $this->SetFont('Helvetica', '',  8);
-        $this->Cell(0, 4, utf8_decode('EVENTOS Y FALLOS'),'R', 1);
+        $this->Cell(0, 4, utf8_decode('EVENTOS Y FALLOS'), 'R', 1);
 
         $this->Cell(0, 1, '', 'LR', 1);
 
@@ -122,7 +124,7 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->SetDrawColor(0, 0, 0);
         $this->Cell(4, 4, '', 1, 0);
         $this->SetDrawColor(255, 0, 0);
-        
+
         $this->Cell(4, 4, '', 0, 0);
         $this->SetFont('Helvetica', 'B',  8);
         $this->Cell(20, 4, utf8_decode('TICKET 3:'), 0, 0);
@@ -134,6 +136,121 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(0, 1, '', 0, 1);
     }
 
+    function setMarkWithX_IV($tipos_intervenciones)
+    {
+
+        $this->SetFont('Helvetica', '',  8);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(0, 1, '', 0, 1);
+
+        $this->Cell(0, 1, '', 'LTR', 1);
+        $this->Cell(21, 4, utf8_decode('(1. ) Marca con '), 'LR', 0);
+        $this->Cell(4, 4, utf8_decode('X'), 1, 0);
+        $this->Cell(0, 4, utf8_decode('las intervenciones realizadas: '), 'R', 1);
+
+        $tipointervencion = new TipoIntervencion();
+        $items = $tipointervencion->all();
+
+        function existInArray(array $array, int  $n): bool
+        {
+            $r = False;
+            foreach ($array as $a)
+                if ($a['id_tipodeintervencion'] == $n) {
+                    $r = true;
+                    break;
+                }
+
+            return $r;
+        }
+
+        //crear for para 2 columnas
+        $this->Cell(0, 1, '', 'LR', 1);
+
+        for ($i = 0; $i < count($items) - 1; $i++) {
+            $this->Cell(3, 3, '', 'L', 0);
+            
+            
+            $this->Cell(3, 3, '', 1, 0);
+
+            $this->Cell(90, 3, utf8_decode($items[$i]->nombre), 0, 0);
+            $this->Cell(3, 3, '', 0, 0);
+
+            $this->Cell(3, 3, '', 1, 0);
+
+            $this->Cell(0, 3, utf8_decode($items[++$i]->nombre), 'R', 1);
+            $this->Cell(0, 1, '', 'LR', 1);
+        }
+
+        if (count($items) % 2 == 1){
+            $this->Cell(3, 3, '', 'L', 0);
+
+            $this->Cell(3, 3, '', 1, 0);
+            
+            $this->Cell(0, 3, utf8_decode($items[count($items)-1]->nombre), 'R', 1);
+            $this->Cell(0, 1, '', 'LRB', 1);
+        } else {
+            $this->Cell(0, 1, '', 'LRB', 1);
+        }
+
+
+
+        /*
+        if (count($items) % 2 == 0) {
+            for ($i = 0; $i < count($items); $i++) {
+                if ($i % 2 == 0) {
+                    //column 1
+                   // $this->SetXY($this->GetX() - 208, $this->getY() + 2);
+
+                    if (existInArray($tipos_intervenciones, $items[$i]->id))
+                        $this->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
+                    else $this->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
+
+                    $this->Cell(30, 3, utf8_decode($items[$i]->nombre), 0, 0, '', false, '');
+                } else {
+                    //column 2
+                   // $this->SetXY($this->GetX() - 150, $this->getY());
+
+                    if (existInArray($tipos_intervenciones, $items[$i]->id))
+                        $this->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
+                    else $this->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
+
+                    $this->Cell(30, 3, utf8_decode($items[$i]->nombre), 0, 1, '', false, '');
+                }
+            }
+        } else {
+
+            for ($i = 1; $i < count($items); $i++) {
+                if ($i % 2 == 1) {
+                    //column 1
+                   // $this->SetXY($this->GetX() - 208, $this->getY() + 2);
+
+                    if (existInArray($tipos_intervenciones, $items[$i]->id))
+                        $this->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
+                    else $this->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
+
+                    $this->Cell(30, 3, utf8_decode($items[$i]->nombre), 0, 0, '', false, '');
+                } else {
+                    //column 2
+                    //$this->SetXY($this->GetX() - 150, $this->getY());
+
+                    if (existInArray($tipos_intervenciones, $items[$i]->id))
+                        $this->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
+                    else $this->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
+
+                    $this->Cell(30, 3, utf8_decode($items[$i]->nombre), 0, 1, '', false, '');
+                }
+            }
+            //column 1
+           // $this->SetXY($this->GetX() - 208, $this->getY() + 2);
+
+            if (existInArray($tipos_intervenciones, $items[0]->id))
+                $this->Cell(3, 3, utf8_decode('X'), 1, 0, '', false, '');
+            else $this->Cell(3, 3, utf8_decode(''), 1, 0, '', false, '');
+
+            $this->Cell(30, 3, utf8_decode($items[0]->nombre), 0, 0, '', false, '');
+        }
+        */
+    }
 
     //----------------------------------------------------------------- Old -------------------------------------------
 
