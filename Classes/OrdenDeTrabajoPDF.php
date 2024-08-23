@@ -7,19 +7,136 @@ use FacturaScripts\Plugins\OrdenDeTrabajo\Library\PDF\FPDF;
 class OrdenDeTrabajoPDF extends FPDF
 {
 
-
+    const FONT_SIZE = 8;
 
     function Header()
     {
-        // Select Arial bold 15
-        $this->SetFont('Arial', 'B', 8);
-        // Move to the right
-        // $this->Cell(80);
-        // Framed title
+
+        $this->SetFont('Arial', 'B', 7);
         $this->Cell(0, 10, utf8_decode('Página: ') . $this->PageNo() . '/{nb}', 0, 0, 'R');
-        // Line break
-        $this->Ln(20);
     }
+
+    function setTitulo_I($title = "ORDEN DE TRABAJO", $marginY = 2)
+    {
+
+        $this->AliasNbPages();
+        $this->AddPage('P', 'A4');
+        $this->Image("Plugins/OrdenDeTrabajo/Assets/Images/Logo.png", 10, 5, 30, 30, 'PNG');
+        $this->Ln();
+        $this->SetFont('Helvetica', 'B', 10);
+        $this->Cell(0, 10, utf8_decode($title), 0, 1, 'R');
+        $this->Cell(0, 5, utf8_decode(''), 0, 1);
+
+        $this->Cell(0, $marginY, '', 0, 1);
+    }
+
+    function setDetallesOrden_II($datos)
+    {
+        $this->SetDrawColor(234, 234, 234);
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('Centro Autorizado: '), 'LT', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['centro_autorizado']), 'TR', 1);
+
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('N°. de Orden de Trabajo: '), 'L', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['numero_orden']), 'R', 1);
+
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('Fecha'), 'L', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['fecha_orden']), 'R', 1);
+
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('Cliente'), 'L', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['cliente']), 'R', 1);
+
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('Vehículo'), 'L', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['vehiculo']), 'R', 1);
+
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(35, 4, utf8_decode('N°. de Serie del Tacógrafo:'), 'L', 0);
+        $this->SetFont('Helvetica', 'B', 8);
+        $this->Cell(0, 4, utf8_decode($datos['noserie_tacografo']), 'R', 1);
+
+        $this->Cell(0, 1, utf8_decode(''), 'B', 1);
+
+        $this->SetFillColor(234, 234, 234);
+        $this->SetFont('Helvetica', '', 8);
+        $this->Cell(0, 4, utf8_decode('Intervenciones Solicitadas: '), 1, 1, '', true, '');
+
+        foreach ($datos['tipos_intervenciones'] as $item) {
+            // $pdf->SetFillColor(234, 234, 234);
+            // $pdf->SetFont('Arial', 'B',  $font_size);
+            $this->SetFont('Helvetica', 'B', 8);
+            $this->Cell(10, 4, utf8_decode(''), 1, 0, '', true, '');
+            $this->Cell(0, 4, utf8_decode($item), 1, 1, '', true, '');
+        }
+
+        $this->SetFont('Helvetica', '',  8);
+        $this->Cell(10, 4, utf8_decode(''), 1, 0, '', true, '');
+        $this->Cell(0, 4, utf8_decode('y las operaciones necesarias para asegurar el correcto funcionamiento del tacógrafo'), 1, 1, '', true, '');
+
+        $this->Cell(0, 1, '', 0, 1);
+    }
+
+    function setTickets_III()
+    {
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(0, 1, '', 'LTR', 1);
+
+        $this->Cell(4, 4, '', 'L', 0);
+
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+
+        $this->Cell(4, 4, '', 0, 0);
+        $this->SetFont('Helvetica', 'B',  8);
+        $this->Cell(20, 4, utf8_decode('TICKET 1:'), 0, 0);
+        $this->SetFont('Helvetica', '',  8);
+        $this->Cell(0, 4, utf8_decode('DATOS TÉCNICOS'), 'R', 1);
+
+        $this->Cell(0, 1, '', 'LR', 1);
+
+        $this->Cell(4, 4, '', 'L', 0);
+
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+
+        $this->Cell(4, 4, '', 0, 0);
+        $this->SetFont('Helvetica', 'B',  8);
+        $this->Cell(20, 4, utf8_decode('TICKET 2:'), 0, 0);
+        $this->SetFont('Helvetica', '',  8);
+        $this->Cell(0, 4, utf8_decode('EVENTOS Y FALLOS'),'R', 1);
+
+        $this->Cell(0, 1, '', 'LR', 1);
+
+        $this->Cell(4, 4, '', 'L', 0);
+
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(4, 4, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        
+        $this->Cell(4, 4, '', 0, 0);
+        $this->SetFont('Helvetica', 'B',  8);
+        $this->Cell(20, 4, utf8_decode('TICKET 3:'), 0, 0);
+        $this->SetFont('Helvetica', '',  8);
+        $this->Cell(0, 4, utf8_decode('SOBREVELOCIDADES'), 'R', 1);
+
+        $this->Cell(0, 1, '', 'LBR', 1);
+
+        $this->Cell(0, 1, '', 0, 1);
+    }
+
+
+    //----------------------------------------------------------------- Old -------------------------------------------
+
 
     function showTable_DatosVehiculo()
     {
@@ -27,9 +144,9 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(0, 2, '', 0, 1);
 
         $this->SetLineWidth(0.3);
-       // $this->SetDrawColor(234, 234, 234);
-       $this->SetDrawColor(255, 0, 0);
-       // $this->SetDrawColor(0, 0, 0);
+        // $this->SetDrawColor(234, 234, 234);
+        $this->SetDrawColor(255, 0, 0);
+        // $this->SetDrawColor(0, 0, 0);
         $this->Cell(0, 32, '', 1, 0);
         $this->SetFont('Arial', 'B', 8);
         $this->Text(12, $this->getY() + 3, utf8_decode('Datos del Vehículo:'));
@@ -66,8 +183,8 @@ class OrdenDeTrabajoPDF extends FPDF
     {
 
         $this->SetLineWidth(0.3);
-       // $this->SetDrawColor(234, 234, 234);
-       $this->SetDrawColor(0, 255, 0);
+        // $this->SetDrawColor(234, 234, 234);
+        $this->SetDrawColor(0, 255, 0);
         // $this->SetDrawColor(0, 0, 0);
         $this->Cell(0, 14, '', 1, 0);
         $this->SetFont('Arial', 'B', 8);
@@ -455,131 +572,133 @@ class OrdenDeTrabajoPDF extends FPDF
         }
 
         $this->SetFont('Arial', '', 8);
-        
-            $this->Cell($this->GetPageWidth() / 2, 4, utf8_decode($array[0]), 'LTR', 0);
-            $this->Cell(0, 4, utf8_decode($array[1]), 'LTR', 1);
-            $this->Cell($this->GetPageWidth() / 2, 4, '', 'LBR', 0);
-            $this->Cell(0, 4, '', 'LBR', 1);
-        
+
+        $this->Cell($this->GetPageWidth() / 2, 4, utf8_decode($array[0]), 'LTR', 0);
+        $this->Cell(0, 4, utf8_decode($array[1]), 'LTR', 1);
+        $this->Cell($this->GetPageWidth() / 2, 4, '', 'LBR', 0);
+        $this->Cell(0, 4, '', 'LBR', 1);
     }
 
-    function show_Tickets_By_Data(){
+    function show_Tickets_By_Data()
+    {
 
         $this->Cell(0, 2, '', 0, 1);
-        $this->SetDrawColor(255,0,0);
+        $this->SetDrawColor(255, 0, 0);
         $this->Cell(0, 2, '', 'LTR', 1);
 
-        $this->Cell(3,3,'','L',0);
+        $this->Cell(3, 3, '', 'L', 0);
 
-        $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
 
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(15,3,'TICKET 5:',0,0);
+        $this->Cell(15, 3, 'TICKET 5:', 0, 0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('24 HORAS TARJETA TÉCNICO'),'R',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, utf8_decode('24 HORAS TARJETA TÉCNICO'), 'R', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
-        $this->Cell(3,3,'','L',0);
+        $this->Cell(3, 3, '', 'L', 0);
 
-        $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
 
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(15,3,'TICKET 6:',0,0);
+        $this->Cell(15, 3, 'TICKET 6:', 0, 0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('DATOS TÉCNICOS'),'R',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, utf8_decode('DATOS TÉCNICOS'), 'R', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
-        $this->Cell(3,3,'','L',0);
-         $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 'L', 0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(15,3,'TICKET 7:',0,0);
+        $this->Cell(15, 3, 'TICKET 7:', 0, 0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('SOBREVELOCIDAD'),'R',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, utf8_decode('SOBREVELOCIDAD'), 'R', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(0,3,'DESCARGA VU','LR',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, 'DESCARGA VU', 'LR', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
-        $this->Cell(3,3,'','L',0);
-        $this->Cell(3,3,'',0,0);
-        $this->Cell(3,3,'',0,0);
-        $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 'L', 0);
+        $this->Cell(3, 3, '', 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
         //$this->Cell(15,3,'TICKET 7:',0,0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('FICHERO DATOS TÉCNICOS'),'R',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, utf8_decode('FICHERO DATOS TÉCNICOS'), 'R', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
-        $this->Cell(3,3,'','L',0);
-        $this->Cell(3,3,'',0,0);
-        $this->Cell(3,3,'',0,0);
-        $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 'L', 0);
+        $this->Cell(3, 3, '', 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
         //$this->Cell(15,3,'TICKET 7:',0,0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('FICHERO EVENTOS Y FALLOS'),'R',1);
-        $this->Cell(0,3,'','LR',1);
+        $this->Cell(0, 3, utf8_decode('FICHERO EVENTOS Y FALLOS'), 'R', 1);
+        $this->Cell(0, 3, '', 'LR', 1);
 
-        $this->Cell(3,3,'','L',0);
-        $this->SetDrawColor(0,0,0);
-        $this->Cell(3,3,'',1,0);
-        $this->SetDrawColor(255,0,0);
-        $this->Cell(3,3,'',0,0);
+        $this->Cell(3, 3, '', 'L', 0);
+        $this->SetDrawColor(0, 0, 0);
+        $this->Cell(3, 3, '', 1, 0);
+        $this->SetDrawColor(255, 0, 0);
+        $this->Cell(3, 3, '', 0, 0);
 
         $this->SetFont('Arial', 'B', 8);
-       // $this->Cell(15,3,'TICKET 7:',0,0);
+        // $this->Cell(15,3,'TICKET 7:',0,0);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,3,utf8_decode('FICHERO GNSS/DSRC'),'R',1);
-        $this->Cell(0,3,'','LBR',1);
+        $this->Cell(0, 3, utf8_decode('FICHERO GNSS/DSRC'), 'R', 1);
+        $this->Cell(0, 3, '', 'LBR', 1);
 
-       // $this->Cell(0, 2, '', 'LBR', 1);
-       // $this->Cell(0, 2, '', 0, 1);
+        // $this->Cell(0, 2, '', 'LBR', 1);
+        // $this->Cell(0, 2, '', 0, 1);
     }
 
-    function ShowTable_PrecintadoTacografo(){
+    function ShowTable_PrecintadoTacografo()
+    {
         $this->Cell(0, 2, '', 0, 1);
-        $this->SetDrawColor(0,0,0);
+        $this->SetDrawColor(0, 0, 0);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(0,4,utf8_decode('Precintado de tacógrafo'),0,1);
+        $this->Cell(0, 4, utf8_decode('Precintado de tacógrafo'), 0, 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(0,4,utf8_decode('No. precintos instalados'),1,1);
-        $this->Cell(0,4,utf8_decode('No. de serie de los precintos instalados'),'LTR',1);
-        $this->Cell(0,4,utf8_decode(''),'LBR',1);
+        $this->Cell(0, 4, utf8_decode('No. precintos instalados'), 1, 1);
+        $this->Cell(0, 4, utf8_decode('No. de serie de los precintos instalados'), 'LTR', 1);
+        $this->Cell(0, 4, utf8_decode(''), 'LBR', 1);
     }
 
-    function resultado_global(){
+    function resultado_global()
+    {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(0, 2, '', 0, 1);
         $this->Cell($this->GetPageWidth() / 3, 4, '(50.) RESULTADO GLOBAL', 'LTR', 0);
         $this->Cell($this->GetPageWidth() / 3, 4, 'En caso desfavorable indicar la causa:', 'LTR', 0);
         $this->Cell(0, 4, 'FECHA:', 'LTR', 1);
-        
+
         $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
         $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
         $this->Cell(0, 4, '', 'LR', 1);
-       
-        
+
+
         $this->Cell(4, 4, '', 'L', 0);
         $this->Cell(4, 4, '', 0, 0);
         $this->Cell(4, 4, '', 0, 0);
@@ -621,24 +740,23 @@ class OrdenDeTrabajoPDF extends FPDF
         $this->Cell(4, 4, '', 'R', 0);
         $this->Cell($this->GetPageWidth() / 3, 4, '', 'LR', 0);
         $this->Cell(0, 4, 'Fdo.:', 'LR', 1);
-       
+
         $this->Cell($this->GetPageWidth() / 3, 2, '', 'LRB', 0);
         $this->Cell($this->GetPageWidth() / 3, 2, '', 'LRB', 0);
         $this->Cell(0, 2, '', 'LRB', 1);
 
         $this->Cell(0, 2, '', 0, 1);
-       
-        $this->SetDrawColor(255,0,0);
+
+        $this->SetDrawColor(255, 0, 0);
         $this->Cell(0, 2, '', 'LTR', 1);
 
-        $this->Cell(4, 4, '', 'L', 0); 
-        $this->SetDrawColor(0,0,0);
+        $this->Cell(4, 4, '', 'L', 0);
+        $this->SetDrawColor(0, 0, 0);
         $this->Cell(4, 4, '', 1, 0);
-        $this->SetDrawColor(255,0,0);
+        $this->SetDrawColor(255, 0, 0);
         $this->Cell(4, 4, '', 0, 0);
-        $this->Cell(0, 4, utf8_decode('DESCARGA TARJETA CENTRO TÉCNICO'), 'R', 1);  
+        $this->Cell(0, 4, utf8_decode('DESCARGA TARJETA CENTRO TÉCNICO'), 'R', 1);
 
         $this->Cell(0, 2, '', 'LBR', 1);
-
     }
 }

@@ -85,13 +85,14 @@ class OrdenDeTrabajoReporte extends Controller
         //var_dump($datos);
 
         $font_size = 8;
-
+//------------------------------------------------- GENERATING REPORTE ----------------------------------------------
         $pdf = new OrdenDeTrabajoPDF();
-        $pdf->AliasNbPages();
-        $pdf->AddPage('P', 'A4');
-        $pdf->Image("Plugins/OrdenDeTrabajo/Assets/Images/Logo.png", 10, 10, 20, 20, 'PNG');
+       
+        $pdf->setTitulo_I();
+        $pdf->setDetallesOrden_II($datos);
+        $pdf->setTickets_III();
 
-        $pdf->SetXY(20, 25);
+       /* $pdf->SetXY(20, 25);
         $pdf->SetFont('Arial', 'B',  $font_size);
         $pdf->Cell(0, 5, 'ORDEN DE TRABAJO', 0, 1, 'R');
         //$pdf->Cell($pdf->GetPageWidth() - 30, 10, 'ORDEN DE TRABAJO', 0, 0, 'R');
@@ -104,7 +105,7 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->SetDrawColor(234, 234, 234);
         $pdf->Cell(0, 30, '', 1, 1);
         /*$pdf->SetFillColor(234, 234, 234);
-        $pdf->Cell(0, count($tipos_intervenciones) * 7, '', 1, 0, '', true);*/
+        $pdf->Cell(0, count($tipos_intervenciones) * 7, '', 1, 0, '', true);
 
         $pdf->SetXY(10, 40);
 
@@ -289,11 +290,11 @@ class OrdenDeTrabajoReporte extends Controller
 
             $pdf->Cell(30, 3, utf8_decode($items[0]->nombre), 0, 0, '', false, '');
         }
-
+*/
         //--------------------------------------------------------------------------
 
          //new line
-         $pdf->Cell(0, 4, '', 0, 1);
+        /*$pdf->Cell(0, 4, '', 0, 1);
 
         $pdf->showTable_DatosVehiculo();
 
@@ -419,7 +420,7 @@ class OrdenDeTrabajoReporte extends Controller
         $pdf->ShowTable_PrecintadoTacografo();
 
         $pdf->resultado_global();
-
+*/
         $pdf->Output('', '', true);
 
         // tu código aquí
