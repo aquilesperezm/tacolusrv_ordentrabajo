@@ -309,13 +309,32 @@ Ext.define(
         },
         success: function (response, opts) {
           Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
-          Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+          Ext.StoreManager.lookup("vehiculo.VehiculoStore").load({
+            callback: () => {
+              grid_vehiculo
+                .down(
+                  'toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]'
+                )
+                .setDisabled(true);
+              //verificamos que el record selecionado esta OK
+              let record_updated = grid_vehiculo
+                .getSelectionModel()
+                .getSelection()[0].data;
+              if (
+                record_updated.tiene_cliente &&
+                record_updated.tiene_tacografo
+              ) {
+                grid_vehiculo
+                  .up("window")
+                  .down('button[text="Siguiente"]')
+                  .setDisabled(false);
+              }
+              //if(record_updated.tiene_cliente && record_updated.tiene_tacografo)
+            },
+          });
           Ext.StoreManager.lookup("cliente.ClienteStore").load();
           Ext.StoreManager.lookup("tacografo.TacografoStore").load();
           btn.up("window").close();
-          grid_vehiculo
-            .down('toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]')
-            .setDisabled(true);
         },
 
         failure: function (response, opts) {
@@ -348,7 +367,29 @@ Ext.define(
         },
         success: function (response, opts) {
           Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
-          Ext.StoreManager.lookup("vehiculo.VehiculoStore").load();
+          Ext.StoreManager.lookup("vehiculo.VehiculoStore").load({
+            callback: () => {
+              grid_vehiculo
+                .down(
+                  'toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]'
+                )
+                .setDisabled(true);
+              //verificamos que el record selecionado esta OK
+              let record_updated = grid_vehiculo
+                .getSelectionModel()
+                .getSelection()[0].data;
+              if (
+                record_updated.tiene_cliente &&
+                record_updated.tiene_tacografo
+              ) {
+                grid_vehiculo
+                  .up("window")
+                  .down('button[text="Siguiente"]')
+                  .setDisabled(false);
+              }
+              //if(record_updated.tiene_cliente && record_updated.tiene_tacografo)
+            },
+          });
           Ext.StoreManager.lookup("cliente.ClienteStore").load();
           Ext.StoreManager.lookup("tacografo.TacografoStore").load();
           btn.up("window").close();
