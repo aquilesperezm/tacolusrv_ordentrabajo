@@ -42,9 +42,9 @@ class API_OrdenDeTrabajo extends ApiController
 
             $result = [];
 
-            if (!$criteria_exits && empty($criteria_str))
-                $ordenes = (array) $ordenTrabajo->all();
-            else {
+            //if (!$criteria_exits && empty($criteria_str))
+
+            /*else {
 
                 $ordenes = DBQuery::table('ordenesdetrabajo')->where(
                     [
@@ -54,7 +54,8 @@ class API_OrdenDeTrabajo extends ApiController
                 )->get();
 
                 // var_dump($ordenes);
-            }
+            }*/
+            $ordenes = (array) $ordenTrabajo->all();
 
             foreach ($ordenes as $orden) {
                 $orden = (array) $orden;
@@ -88,7 +89,28 @@ class API_OrdenDeTrabajo extends ApiController
 
 
                 $orden['logged_user'] = $_COOKIE['fsNick'];
-                array_push($result, $orden);
+
+                //si existe una busqueda 
+                if ($criteria_str) {
+                    if (str_contains(strtolower($orden['numero_orden']), strtolower($criteria_str))) {
+                        array_push($result, $orden);
+                    } else if (str_contains(strtolower($orden['cifnif_cliente']), strtolower($criteria_str))) {
+                        array_push($result, $orden);
+                    } else if (str_contains(strtolower($orden['matricula']), strtolower($criteria_str))) {
+                        array_push($result, $orden);
+                    } else if (str_contains(strtolower($orden['no_chasis']), strtolower($criteria_str))) {
+                        array_push($result, $orden);
+                    } else if (str_contains(strtolower($orden['no_serie_tacografo']), strtolower($criteria_str))) {
+                        array_push($result, $orden);
+                    } else {
+                        continue;
+                    }
+                    // if not criteria exists    
+                } else
+                    array_push($result, $orden);
+
+
+                //array_push($result, $orden);
             }
 
             $page = $_GET['page'];
@@ -97,21 +119,7 @@ class API_OrdenDeTrabajo extends ApiController
 
             $data = ["ordenes" => array_slice($result, $start, $limit), "total" => count($result)];
             $this->response->setContent(json_encode($data));
-        } /*elseif (isset($_GET["criteria"])) {
-
-            $page = $_GET['page'];
-            $start = $_GET['start'];
-            $limit = $_GET['limit'];
-
-            $criteria = $_GET['criteria'];
-
-           
-
-            // var_dump($results);
-
-            $data = ["ordenes" => array_slice($results, $start, $limit), "total" => count($results)];
-            $this->response->setContent(json_encode($data));
-        }*/
+        }
         //create orden de trabajo
         elseif ($this->request->isMethod('POST')) {
 
@@ -200,12 +208,10 @@ class API_OrdenDeTrabajo extends ApiController
                     $ordenTrabajo = new OrdenDeTrabajo();
                     $ordenTrabajo = $ordenTrabajo->get($id_orden);
                     $ordenTrabajo->delete();
-                    
                 }
 
                 $this->response->setStatusCode(200);
                 $this->response->setContent(json_encode(['success' => true, 'action' => 'delete']));
-
             }
         } else {
             $this->response->setStatusCode(403);

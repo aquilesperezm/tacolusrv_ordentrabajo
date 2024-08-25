@@ -2,12 +2,13 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
   extend: "Ext.container.Container",
   region: "center",
   xtype: "centerpanel_view",
+  layout:'fit',
   padding: 15,
 
   items: [
     {
       xtype: "ordendetrabajo_grid",
-    },
+    }/*,
     {
       xtype: "tipointervencion_grid",
       title: "Tipos de Intervenciones por Orden de Trabajo Selecionada",
@@ -79,7 +80,7 @@ Ext.define("MyApp.view.dashboard.centerpanel.CenterPanelView", {
             });
         },
       },
-    },
+    },*/
   ],
 
   //activeTab: 0, // First tab active by default

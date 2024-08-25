@@ -11,6 +11,6 @@ Ext.define("MyApp.store.ordendetrabajo.OrdenDeTrabajoStore", {
       totalProperty: "total"
     },
   },
-  pageSize:15,
+  pageSize:50,
   autoLoad: true,
 });

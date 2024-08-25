@@ -5,16 +5,7 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
   //id: "IdGridOrdenDeTrabajo",
   store: "ordendetrabajo.OrdenDeTrabajoStore",
   scrollable: true,
-  height:
-    Math.max(
-      document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
-    ) /
-      2 -
-    50,
+  height:'100%',
   selModel: {
     type: "checkboxmodel",
     checkOnly: false,
@@ -183,15 +174,17 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
     { xtype: "tbspacer" },
     {
       xtype: "textfield",
-      fieldLabel: "<b>Criterio</b>",
+      fieldLabel: "<b>Buscar</b>",
       labelPad: 0,
-      labelWidth: 50,
+      labelWidth: 70,
+      width:700,
       enableKeyEvents: true,
-      emptyText: "Número de Orden",
+      emptyText: "Número de Orden, CIFNIF Cliente, Matrícula, Número de Chasis, Número de Serie del Tacógrafo",
     }, // add a 50px space
     {
       text: "Buscar",
       xtype: "button",
+      hidden:true,
       scale: "medium",
       style: {
         textDecoration: "none",
@@ -215,14 +208,16 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
         fieldLabel: "Items por Página",
         labelWidth: 120,
         labelPad: 2,
-        width: 160,
-        value: 15,
-        maxValue: 99,
+        width: 170,
+
+        //pagesize
+        value: 50,
+        //maxValue: 99,
         minValue: 5,
         hideTrigger: true,
         keyNavEnabled: false,
         mouseWheelEnabled: false,
-        maxLength: 2,
+       // maxLength: 2,
         enforceMaxLength: true,
       },
     ],
