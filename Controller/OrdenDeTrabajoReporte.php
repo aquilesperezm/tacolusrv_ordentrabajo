@@ -36,11 +36,14 @@ class OrdenDeTrabajoReporte extends Controller
      */
     public function privateCore(&$response, $user, $permissions): void
     {
+
+        //export for all users
+        $permissions->set(true, 2, true, true);
+
         parent::privateCore($response, $user, $permissions);
 
         $datos = [];
-
-
+       
         $id_orden = $_POST['id_orden'];
         $orden_trabajo = new OrdenDeTrabajo();
         $orden_trabajo = $orden_trabajo->get($id_orden);
@@ -232,6 +235,5 @@ class OrdenDeTrabajoReporte extends Controller
     {
         parent::publicCore($response);
 
-        // tu código aquí
     }
 }

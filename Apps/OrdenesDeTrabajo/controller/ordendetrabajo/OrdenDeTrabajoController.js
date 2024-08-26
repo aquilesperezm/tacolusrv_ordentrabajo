@@ -15,6 +15,8 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       },
     // cuando damos ENTER en el campo de texto de la busqueda
     'ordendetrabajo_grid toolbar[dock="top"] > textfield': {
+      // specialkey: "onSpecialKeyPress_TextfieldSearch",
+      keyup: "onSpecialKeyPress_TextfieldSearch",
       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
@@ -45,8 +47,220 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     // ------------------------------------------------ End Navigation --------------------------------------------------------
   }, //end event selector - control -  by controllers
 
-  onClickShowDetails_OrderOfWork: function(btn, e){
-    console.log(this);
+  onClickShowDetails_OrderOfWork: function (btn, e) {
+    Ext.create({
+      xtype: "window",
+      title: "Detalles",
+      modal: true,
+      layout: "fit",
+      resizable: false,
+      draggable: false,
+      width:
+        Math.max(
+          document.body.scrollWidth,
+          document.body.offsetWidth,
+          document.documentElement.clientWidth,
+          document.documentElement.scrollWidth,
+          document.documentElement.offsetWidth
+        ) / 2,
+      items: [
+        {
+          xtype: "container",
+          //id: "createordenform_card-2",
+          //title: "Detalles de la Orden",
+          listeners: {
+            beforerender: (cmp) => {
+              var grid_orden = Ext.ComponentQuery.query(
+                "ordendetrabajo_grid"
+              )[0];
+              var selected_record = grid_orden
+                .getSelectionModel()
+                .getSelection()[0];
+
+              console.log(selected_record);
+
+              Ext.StoreManager.lookup(
+                "tipointervencion.TipoIntervencionByIDOrdenStore"
+              ).load({
+                callback: (records,opertion,success) => {
+                  Ext.getCmp("detalle_centroautorizado").setValue(
+                    selected_record.data.full_centroautorizado
+                  );
+                  Ext.getCmp("detalle_numero_orden").setValue(
+                    selected_record.data.numero_orden
+                  );
+                  Ext.getCmp("detalle_fecha").setValue(
+                    selected_record.data.fecha_orden
+                  );
+                  Ext.getCmp("detalle_cliente").setValue(
+                    selected_record.data.full_cliente
+                  );
+                  Ext.getCmp("detalle_vehiculo").setValue(
+                    selected_record.data.full_vehiculo
+                  );
+                  Ext.getCmp("detalle_no_serie_tacografo").setValue(
+                    selected_record.data.no_serie_tacografo
+                  );
+
+                  var html = "<ul>";
+                  records.forEach((e, i, a) => {
+                    html += "<li>" + e.data.nombre;
+                    +"</li>";
+                  });
+    
+                  html +=
+                    "<li>y las operaciones necesarias para asegurar el correcto funcionamiento del tacógrafo.</li>";
+    
+                  html += "</ul>";
+    
+                  Ext.getCmp("detalle_intervenciones_solicitadas").setValue(html);
+
+                },
+              });
+            },
+
+            /*beforerender: function (panel) {
+              var grid_vehiculo = Ext.getCmp("createordenform_card-0");
+              var grid_tipointervencion = Ext.getCmp("createordenform_card-1");
+
+              var sm_vehiculo = grid_vehiculo.getSelectionModel();
+              var sm_tipointervencion =
+                grid_tipointervencion.getSelectionModel();
+
+              var record_vehiculo = sm_vehiculo.getSelection();
+              var records_tipointervencion = sm_tipointervencion.getSelection();
+
+              // Resumen Centro autorizado
+              Ext.getCmp("resumen_centroautorizado").setValue(
+                record_vehiculo[0].data.codigo_centroautorizado +
+                  " / " +
+                  record_vehiculo[0].data.nombre_centroautorizado
+              );
+
+              //Resumen numero de orden
+              var dt = new Date(Date.now());
+              var fecha = Ext.Date.format(dt, "d-m-Y");
+              var day = Ext.Date.format(dt, "d");
+
+              var month = new Number(dt.getMonth() + 1);
+              if (month < 10) month = "0" + month;
+              //if(day < 10) day = '0' + day;
+
+              // estructura del campo Year+Mes+Dia+(L - Lucas o V - Vanessa) + No. Matricula
+              var numero_orden =
+                dt.getFullYear() +
+                month +
+                day +
+                "-" +
+                record_vehiculo[0].data.logged_user_initial +
+                "-" +
+                record_vehiculo[0].data.matricula;
+
+              Ext.getCmp("resumen_numero_orden").setValue(numero_orden);
+
+              //Resumen para la fecha
+              Ext.getCmp("resumen_fecha").setValue(fecha);
+
+              //Resumen para el cliente
+              Ext.getCmp("resumen_cliente").setValue(
+                " " +
+                  record_vehiculo[0].data.cifnif_cliente +
+                  " / " +
+                  record_vehiculo[0].data.nombre_cliente
+              );
+
+              //Resumen para el vehiculo
+              Ext.getCmp("resumen_vehiculo").setValue(
+                " " +
+                  record_vehiculo[0].data.num_chasis +
+                  " / " +
+                  record_vehiculo[0].data.matricula
+              );
+
+              //Resumen para el tacografo
+              Ext.getCmp("resumen_no_serie_tacografo").setValue(
+                " " + record_vehiculo[0].data.num_serie_tacografo
+              );
+
+              //Tipos de Intervenciones
+              var html = "<ul>";
+              records_tipointervencion.forEach((e, i, a) => {
+                html += "<li>" + e.data.nombre;
+                +"</li>";
+              });
+
+              html +=
+                "<li>y las operaciones necesarias para asegurar el correcto funcionamiento del tacógrafo.</li>";
+
+              html += "</ul>";
+
+              Ext.getCmp("resumen_intervenciones_solicitadas").setValue(html);
+            }*/
+          },
+          items: [
+            {
+              xtype: "form",
+              padding: 20,
+              height: 380,
+              scrollable: true,
+              items: [
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Centro de Autorización",
+                  labelWidth: 200,
+                  id: "detalle_centroautorizado",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Número de Orden de Trabajo",
+                  labelWidth: 200,
+                  id: "detalle_numero_orden",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Fecha:",
+                  labelWidth: 200,
+                  id: "detalle_fecha",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Cliente:",
+                  labelWidth: 200,
+                  id: "detalle_cliente",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Vehículo:",
+                  labelWidth: 200,
+                  id: "detalle_vehiculo",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Número de Serie del Tacógrafo:",
+                  labelWidth: 200,
+                  id: "detalle_no_serie_tacografo",
+                },
+                {
+                  xtype: "displayfield",
+                  fieldLabel: "Intervenciones Solicitadas:",
+                  labelWidth: 200,
+                  id: "detalle_intervenciones_solicitadas",
+                },
+              ] /*,
+            buttons: [
+              {
+                text: "Guardar Nueva Orden",
+                id: "Create_NewOrdenTrabajo",
+                style: {
+                  textDecoration: "none",
+                },
+              },
+            ],*/,
+            },
+          ],
+        },
+      ],
+    }).show();
   },
 
   onClick_Imprimir_Orden: function (btn, e) {
@@ -74,7 +288,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
    * @param records - Los campos seleccionados
    */
   OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
-     var store = Ext.data.StoreManager.lookup(
+    var store = Ext.data.StoreManager.lookup(
       "tipointervencion.TipoIntervencionByIDOrdenStore"
     );
 
@@ -92,7 +306,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       });
 
       //activate Update, Delete and Print Button
-     /* let buttons = Ext.ComponentQuery.query(
+      /* let buttons = Ext.ComponentQuery.query(
         'ordendetrabajo_grid toolbar[dock="top"] button'
       );
       buttons.forEach((e, i, a) => {
@@ -101,7 +315,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     }
     var details_btn = Ext.getCmp("ShowDetailsFromOrderOfWork");
     details_btn.setDisabled(false);
-    
+
     var print_btn = Ext.getCmp("ShowDetailsFromOrderOfWork").nextSibling(
       "button"
     );
@@ -112,7 +326,6 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
 
     var update_btn = delete_btn.previousSibling("button");
     update_btn.setDisabled(false);
-    
   },
 
   onClick_ButtonAdd: function (btn, e) {
@@ -122,9 +335,17 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
-    if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling("button"));
-    }
+    var store_ordenes = cmp.up("ordendetrabajo_grid").getStore();
+
+    store_ordenes.loadPage(1, {
+      callback: (r, o, s) => {
+        if (r.length > 0)
+          cmp.up("ordendetrabajo_grid").getSelectionModel().select(0);
+      },
+      params: {
+        criteria: cmp.getValue(),
+      },
+    });
   },
 
   onClick_ButtonSearch: function (cmp, e) {
