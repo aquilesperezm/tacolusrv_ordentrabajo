@@ -44,12 +44,20 @@ Ext.define("MyApp.view.ordendetrabajo.form.UpdateOrdenDeTrabajoView_Window", {
           p[3].setVisible(false);
 
           //select all
-          var grid = Ext.ComponentQuery.query(
-            'tipointervencion_grid[title="Tipos de Intervenciones por Orden de Trabajo Selecionada"]'
-          )[0];
-          var records = grid.getStore().getData();
-          var records_toSelect = cmp.getStore().getData();
+          var grid_orders = Ext.ComponentQuery.query('ordendetrabajo_grid[title="Ordenes de Trabajo"]')[0]
+          //console.log(grid_orders.getSelectionModel().getSelection());
 
+         /* var grid = Ext.ComponentQuery.query(
+            'tipointervencion_grid[title="Tipos de Intervenciones por Orden de Trabajo Selecionada"]'
+          )[0];*/
+
+          var store = Ext.data.StoreManager.lookup(
+            "tipointervencion.TipoIntervencionByIDOrdenStore"
+          );
+          var records = store.getData();
+
+
+          var records_toSelect = cmp.getStore().getData();
           var records_selected = [];
           records.each((e1, i1, l1) => {
             records_toSelect.each((e, i, l) => {

@@ -147,6 +147,21 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
     { xtype: "tbseparator" },
     { xtype: "tbspacer" },
     {
+      text: "Detalles",
+      id:'ShowDetailsFromOrderOfWork',
+      xtype: "button",
+      //hidden:true,
+      scale: "medium",
+      disabled:true,
+      style: {
+        textDecoration: "none",
+      },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
+    },
+    { xtype: "tbspacer" },
+    { xtype: "tbseparator" },
+    { xtype: "tbspacer" }, // add a 50px space
+    {
       text: "Imprimir",
       xtype: "button",
       scale: "medium",
@@ -180,16 +195,6 @@ Ext.define("MyApp.view.ordendetrabajo.OrdenDeTrabajoView_Grid", {
       width:700,
       enableKeyEvents: true,
       emptyText: "Número de Orden, CIFNIF Cliente, Matrícula, Número de Chasis, Número de Serie del Tacógrafo",
-    }, // add a 50px space
-    {
-      text: "Buscar",
-      xtype: "button",
-      hidden:true,
-      scale: "medium",
-      style: {
-        textDecoration: "none",
-      },
-      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
     },
   ],
 

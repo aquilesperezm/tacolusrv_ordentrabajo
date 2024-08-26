@@ -30,6 +30,12 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       click: "onClick_Imprimir_Orden",
     },
 
+    //Cuando seleccionamos detalles de la orden de trabajo
+
+    "#ShowDetailsFromOrderOfWork": {
+      click: "onClickShowDetails_OrderOfWork",
+    },
+
     //cuando seleccionamos una orden de trabajo, se actualizara la tabla de los tipos de intervenciones que se
     //encuentra debajo
     ordendetrabajo_grid: {
@@ -39,23 +45,24 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
     // ------------------------------------------------ End Navigation --------------------------------------------------------
   }, //end event selector - control -  by controllers
 
-
-  onClick_Imprimir_Orden: function(btn,e){
-    
-    var grid_ordenes = btn.up('grid');
-    var selected_record = grid_ordenes.getSelectionModel().getSelection();
-    var id_selected_record = selected_record[0].data.id
-
-    Ext.getCmp('Print_Form_OrdenTrabajo').getForm().submit({
-      target:'_blank',
-      params:{
-        id_orden:id_selected_record
-      }
-    });
-
+  onClickShowDetails_OrderOfWork: function(btn, e){
+    console.log(this);
   },
 
+  onClick_Imprimir_Orden: function (btn, e) {
+    var grid_ordenes = btn.up("grid");
+    var selected_record = grid_ordenes.getSelectionModel().getSelection();
+    var id_selected_record = selected_record[0].data.id;
 
+    Ext.getCmp("Print_Form_OrdenTrabajo")
+      .getForm()
+      .submit({
+        target: "_blank",
+        params: {
+          id_orden: id_selected_record,
+        },
+      });
+  },
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   /**
@@ -67,7 +74,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
    * @param records - Los campos seleccionados
    */
   OnSelectionChange_OrdenesDeTrabajo: function (sm, records) {
-    var store = Ext.data.StoreManager.lookup(
+     var store = Ext.data.StoreManager.lookup(
       "tipointervencion.TipoIntervencionByIDOrdenStore"
     );
 
@@ -85,13 +92,26 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
       });
 
       //activate Update, Delete and Print Button
-      let buttons = Ext.ComponentQuery.query(
+     /* let buttons = Ext.ComponentQuery.query(
         'ordendetrabajo_grid toolbar[dock="top"] button'
       );
       buttons.forEach((e, i, a) => {
         e.setDisabled(false);
-      });
+      });*/
     }
+    var details_btn = Ext.getCmp("ShowDetailsFromOrderOfWork");
+    details_btn.setDisabled(false);
+    
+    var print_btn = Ext.getCmp("ShowDetailsFromOrderOfWork").nextSibling(
+      "button"
+    );
+    print_btn.setDisabled(false);
+
+    var delete_btn = details_btn.previousSibling("button");
+    delete_btn.setDisabled(false);
+
+    var update_btn = delete_btn.previousSibling("button");
+    update_btn.setDisabled(false);
     
   },
 
