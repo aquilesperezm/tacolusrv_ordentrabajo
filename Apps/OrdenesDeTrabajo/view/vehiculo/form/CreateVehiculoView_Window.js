@@ -13,7 +13,9 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
       document.documentElement.clientWidth,
       document.documentElement.scrollWidth,
       document.documentElement.offsetWidth
-    ) / 4,
+    ) /
+      4 +
+    100,
 
   items: [
     {
@@ -47,52 +49,139 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
           name: "id_centroautorizado",
         },
         {
-          xtype: "combobox",
-          fieldLabel: "Cliente",
-          store: "cliente.ClienteStore",
-          displayField: "nombre",
-          valueField: "codcliente",
-          scrollable: true,
-          allQuery: "all_data",
-          // allowBlank:false,
-          name: "codcliente",
-        },
-        {
-          xtype: "combobox",
-          fieldLabel: "Marca",
-          store: "marca.MarcaStore",
-          displayField: "nombre_marca",
-          valueField: "id",
-          allowBlank: false,
-          name: "id_marca",
-
-          listeners: {
-            select: function (combo, record) {
-              // console.log(record);
-              Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
-                callback: (records) => {
-                  combo.nextSibling("combo").setDisabled(false);
-                  if (records.length > 0)
-                    combo.nextSibling("combo").select(records[0]);
-                },
-                params: {
-                  id_marca: record.id,
-                },
-              });
+          xtype: "container",
+          layout: "column",
+          defaults: {},
+          items: [
+            {
+              xtype: "combobox",
+              fieldLabel: "Cliente",
+              store: "cliente.ClienteStore",
+              displayField: "nombre",
+              valueField: "codcliente",
+              scrollable: true,
+              allQuery: "all_data",
+              // allowBlank:false,
+              name: "codcliente",
+              columnWidth: 0.7,
             },
-          },
+            {
+              xtype: "container",
+              columnWidth: 0.1,
+            },
+            {
+              xtype: "button",
+              text: "<b>+</b>",
+              height: 30,
+              columnWidth: 0.1,
+              margin: "0 0 0 10",
+              href: "EditCliente",
+              tooltip: {
+                text: "Adicionar un nuevo Cliente",
+              },
+              style: {
+                textDecoration: "none",
+              },
+            },
+          ],
         },
         {
-          xtype: "combobox",
-          fieldLabel: "Modelo",
-          store: "modelo.ModeloStore",
-          displayField: "nombre_modelo",
-          valueField: "id",
-          queryMode: "local",
-          disabled: true,
-          allowBlank: false,
-          name: "id_modelo",
+          xtype: "container",
+          layout: "column",
+          defaults: {},
+          items: [
+            {
+              xtype: "combobox",
+              fieldLabel: "Marca",
+              store: "marca.MarcaStore",
+              displayField: "nombre_marca",
+              valueField: "id",
+              allowBlank: false,
+              name: "id_marca",
+              columnWidth: 0.7,
+
+              listeners: {
+                select: function (combo, record) {
+                  // console.log(record);
+                  Ext.data.StoreManager.lookup("modelo.ModeloStore").load({
+                    callback: (records) => {
+                      combo
+                        .up("container")
+                        .nextSibling("container").down('combo')
+                        .setDisabled(false);
+                      if (records.length > 0)
+                        combo
+                          .up("container")
+                          .nextSibling("container").down('combo')
+                          .select(records[0]);
+                    },
+                    params: {
+                      id_marca: record.id,
+                    },
+                  });
+                },
+              },
+            },
+            {
+              xtype: "container",
+              columnWidth: 0.1,
+            },
+            {
+              xtype: "button",
+              text: "<b>+</b>",
+              witdth: 30,
+              height: 30,
+              columnWidth: 0.1,
+              margin: "0 0 0 10",
+              href: "EditMarcaVehiculo",
+              tooltip: {
+                text: "Adicionar una nueva Marca",
+              },
+              style: {
+                textDecoration: "none",
+              },
+            },
+          ],
         },
+        {
+          xtype: "container",
+          layout: "column",
+          defaults: {},
+          items: [
+            {
+              xtype: "combobox",
+              fieldLabel: "Modelo",
+              store: "modelo.ModeloStore",
+              displayField: "nombre_modelo",
+              valueField: "id",
+              queryMode: "local",
+              disabled: true,
+              allowBlank: false,
+              name: "id_modelo",
+              columnWidth: 0.7,
+            },
+            {
+              xtype: "container",
+              columnWidth: 0.1,
+            },
+            {
+              xtype: "button",
+              text: "<b>+</b>",
+              witdth: 30,
+              height: 30,
+              columnWidth: 0.1,
+              margin: "0 0 0 10",
+              href: "EditModeloVehiculo",
+              tooltip: {
+                text: "Adicionar un nuevo Modelo",
+              },
+              style: {
+                textDecoration: "none",
+              },
+            },
+          ],
+        },
+
         {
           xtype: "combobox",
           name: "id_categoria",

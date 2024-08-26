@@ -113,12 +113,18 @@ class API_OrdenDeTrabajo extends ApiController
                 //array_push($result, $orden);
             }
 
-            $page = $_GET['page'];
-            $start = $_GET['start'];
-            $limit = $_GET['limit'];
+            if (!$criteria_str) {
+                $page = $_GET['page'];
+                $start = $_GET['start'];
+                $limit = $_GET['limit'];
 
-            $data = ["ordenes" => array_slice($result, $start, $limit), "total" => count($result)];
-            $this->response->setContent(json_encode($data));
+                $data = ["ordenes" => array_slice($result, $start, $limit), "total" => count($result)];
+                $this->response->setContent(json_encode($data));
+            
+            } else {
+                $data = ["ordenes" => $result, "total" => count($result)];
+                $this->response->setContent(json_encode($data));
+            }
         }
         //create orden de trabajo
         elseif ($this->request->isMethod('POST')) {

@@ -47,7 +47,7 @@ Ext.define("MyApp.view.cliente.ClienteView_Grid", {
     },
   ],
   tbar: [
-    {
+    /*{
       text: "Adicionar",
       xtype: "button",
       scale: "medium",
@@ -100,16 +100,16 @@ Ext.define("MyApp.view.cliente.ClienteView_Grid", {
     { xtype: "tbspacer" },
     { xtype: "tbseparator" },
     { xtype: "tbspacer" },
-    {
+    */{
       xtype: "textfield",
-      fieldLabel: "<b>Criterio</b>",
+      fieldLabel: "<b>Buscar</b>",
       width: 300,
       labelPad: 0,
       labelWidth: 50,
       enableKeyEvents: true,
       emptyText: "CIFNIF, Nombre, Código y Email",
     }, // add a 50px space
-    {
+    /*{
       text: "Buscar",
       xtype: "button",
       scale: "medium",
@@ -117,7 +117,7 @@ Ext.define("MyApp.view.cliente.ClienteView_Grid", {
         textDecoration: "none",
       },
       icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
-    },
+    },*/
   ],
 
   bbar: {
