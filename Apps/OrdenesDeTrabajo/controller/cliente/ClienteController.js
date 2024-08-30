@@ -13,29 +13,37 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
       },
     // cuando damos ENTER en el campo de texto de la busqueda
     'cliente_grid toolbar[dock="top"] > textfield': {
+      keyup: "onSpecialKeyPress_TextfieldSearch",
       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
-    'cliente_grid toolbar[dock="top"] > button[text="Buscar"]': {
+    /*'cliente_grid toolbar[dock="top"] > button[text="Buscar"]': {
       click: "onClick_ButtonSearch",
-    },
+    },*/
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
-    if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling('button'));
-    }
+    var grid_clientes = cmp.up("cliente_grid");
+    var store_clientes = grid_clientes.getStore();
+
+    store_clientes.loadPage(1, {
+      callback: (r, o, s) => {
+        if (r.length > 0) grid_clientes.getSelectionModel().select(0);
+      },
+      params: {
+        criteria: cmp.getValue(),
+      },
+    });
   },
 
   onClick_ButtonSearch: function (cmp, e) {
-    
-    var textfield = cmp.previousSibling('textfield');
-    var store_ordenes = cmp.up('cliente_grid').getStore();
+    //var textfield = cmp.pr("textfield");
+    var grid_clientes = cmp.up("cliente_grid");
+    var store_clientes = grid_clientes.getStore();
 
-    store_ordenes.loadPage(1,{
-      callback: (r,o,s)=>{
-        if(r.length > 0)
-        cmp.up("cliente_grid").getSelectionModel().select(0);
+    store_clientes.loadPage(1, {
+      callback: (r, o, s) => {
+        if (r.length > 0) grid_clientes.getSelectionModel().select(0);
       },
       params: {
         criteria: textfield.getValue(),
@@ -50,7 +58,7 @@ Ext.define("MyApp.controller.cliente.ClienteController", {
    * @event keyup
    */
   onKeyUp_CounterPages: function (cmp) {
-    var store = cmp.up('cliente_grid').getStore();
+    var store = cmp.up("cliente_grid").getStore();
     store.setPageSize(cmp.getValue());
     store.loadPage(1);
   },
