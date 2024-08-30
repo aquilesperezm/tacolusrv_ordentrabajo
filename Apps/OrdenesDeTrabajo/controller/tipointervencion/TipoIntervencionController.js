@@ -13,6 +13,7 @@ Ext.define("MyApp.controller.tipointervencion.TipoIntervencionController", {
       },
     // cuando damos ENTER en el campo de texto de la busqueda
     'tipointervencion_grid toolbar[dock="top"] > textfield': {
+      keyup: "onSpecialKeyPress_TextfieldSearch",
       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
@@ -22,9 +23,18 @@ Ext.define("MyApp.controller.tipointervencion.TipoIntervencionController", {
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
-    if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling('button'));
-    }
+    var grid_tipointervencion = cmp.up('tipointervencion_grid');
+    var store_tipointervencion = grid_tipointervencion.getStore();
+
+   store_tipointervencion.loadPage(1,{
+    callback: (r,o,s)=>{
+      if(r.length > 0)
+      grid_tipointervencion.getSelectionModel().select(0);
+    },
+    params: {
+        criteria: cmp.getValue(),
+      },
+    });
   },
 
   onClick_ButtonSearch: function (cmp, e) {

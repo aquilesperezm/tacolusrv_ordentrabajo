@@ -84,7 +84,7 @@ Ext.define("MyApp.view.tipointervencion.TipoIntervencionView_Grid", {
       enableKeyEvents:true,
       emptyText:'Nombre' 
     }, // add a 50px space
-    {
+    /*{
       text: "Buscar",
       xtype: "button",
       scale: "medium",
@@ -92,7 +92,7 @@ Ext.define("MyApp.view.tipointervencion.TipoIntervencionView_Grid", {
         textDecoration: "none",
       },
       icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
-    }
+    }*/
   ],
 
   bbar: {
