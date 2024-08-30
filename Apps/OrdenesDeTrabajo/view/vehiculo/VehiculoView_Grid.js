@@ -114,7 +114,7 @@ Ext.define("MyApp.view.vehiculo.VehiculoView_Grid", {
       enableKeyEvents:true,
       emptyText:'Matrícula o Número de Chasis ' 
     }, // add a 50px space
-    {
+    /*{
       text: "Buscar",
       xtype: "button",
       scale: "medium",
@@ -122,7 +122,7 @@ Ext.define("MyApp.view.vehiculo.VehiculoView_Grid", {
         textDecoration: "none",
       },
       icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
-    }
+    }*/
   ],
 
   bbar: {

@@ -14,6 +14,7 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
     // cuando damos ENTER en el campo de texto de la busqueda
     'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar[dock="top"] > textfield':
       {
+        keyup: "onSpecialKeyPress_TextfieldSearch",
         specialkey: "onSpecialKeyPress_TextfieldSearch",
       },
     // cuando presionamos buscar, el boton que sigue al campo de texto
@@ -26,11 +27,11 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
       {
         click: "onClickAddVehiculo_AddOrdenTrabajo",
       },
-     //Mostrar el formulario para actualizar un vehiculo
+    //Mostrar el formulario para actualizar un vehiculo
     'window[title="Adicionar una nueva Orden de Trabajo"] vehiculo_grid toolbar button[text="Actualizar"]':
-    {
-      click: "onClickUpdateVehiculo_AddOrdenTrabajo",
-    }, 
+      {
+        click: "onClickUpdateVehiculo_AddOrdenTrabajo",
+      },
     //cuando seleccionamos un vehiculo para crear una orden de trabajo
     'window[title="Adicionar una nueva Orden de Trabajo"] > vehiculo_grid': {
       selectionchange: "onSelectChange_CreateOrden_Vehiculo",
@@ -57,7 +58,10 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
     if (sm.getSelection().length > 0) {
       btn_siguiente = win.query('button[text="Siguiente"]')[0];
       btn_siguiente.setDisabled(
-        !(selected_record.data.tiene_cliente && selected_record.data.tiene_tacografo)
+        !(
+          selected_record.data.tiene_cliente &&
+          selected_record.data.tiene_tacografo
+        )
       );
 
       btn_vincular_cliente.setDisabled(selected_record.data.tiene_cliente);
@@ -84,9 +88,18 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
-    if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling("button"));
-    }
+    //var textfield = cmp.previousSibling("textfield");
+    var grid_vehiculo = cmp.up("vehiculo_grid");
+    var store_vehiculo = grid_vehiculo.getStore();
+
+    store_vehiculo.loadPage(1, {
+      callback: (r, o, s) => {
+        if (r.length > 0) grid_vehiculo.getSelectionModel().select(0);
+      },
+      params: {
+        criteria: cmp.getValue(),
+      },
+    });
   },
 
   onClick_ButtonSearch: function (cmp, e) {
@@ -94,9 +107,8 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
     var store_ordenes = cmp.up("vehiculo_grid").getStore();
 
     store_ordenes.loadPage(1, {
-      callback: (r,o,s)=>{
-        if(r.length > 0)
-        cmp.up("vehiculo_grid").getSelectionModel().select(0);
+      callback: (r, o, s) => {
+        if (r.length > 0) cmp.up("vehiculo_grid").getSelectionModel().select(0);
       },
       params: {
         criteria: textfield.getValue(),
