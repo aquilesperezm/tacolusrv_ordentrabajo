@@ -13,7 +13,8 @@ Ext.define("MyApp.controller.tacografo.TacografoController", {
       },
     // cuando damos ENTER en el campo de texto de la busqueda
     'tacografo_grid toolbar[dock="top"] > textfield': {
-      specialkey: "onSpecialKeyPress_TextfieldSearch",
+       keyup: "onSpecialKeyPress_TextfieldSearch",
+       specialkey: "onSpecialKeyPress_TextfieldSearch",
     },
     // cuando presionamos buscar, el boton que sigue al campo de texto
     'tacografo_grid toolbar[dock="top"] > button[text="Buscar"]': {
@@ -22,9 +23,18 @@ Ext.define("MyApp.controller.tacografo.TacografoController", {
   },
 
   onSpecialKeyPress_TextfieldSearch: function (cmp, e) {
-    if (e.getKey() == e.ENTER) {
-      this.onClick_ButtonSearch(cmp.nextSibling('button'));
-    }
+    var grid_tacografo = cmp.up('tacografo_grid');
+    var store_ordenes = grid_tacografo.getStore();
+
+    store_ordenes.loadPage(1,{
+      callback: (r,o,s)=>{
+        if(r.length > 0)
+        grid_tacografo.getSelectionModel().select(0);
+      },
+      params: {
+        criteria: cmp.getValue(),
+      },
+    });
   },
 
   onClick_ButtonSearch: function (cmp, e) {

@@ -52,14 +52,16 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
 
     //vehiculos_sm = cmp.getSelectionModel();
 
+    let selected_record = sm.getSelection()[0];
+
     if (sm.getSelection().length > 0) {
       btn_siguiente = win.query('button[text="Siguiente"]')[0];
       btn_siguiente.setDisabled(
-        !(record[0].data.tiene_cliente && record[0].data.tiene_tacografo)
+        !(selected_record.data.tiene_cliente && selected_record.data.tiene_tacografo)
       );
 
-      btn_vincular_cliente.setDisabled(record[0].data.tiene_cliente);
-      btn_vincular_tacografo.setDisabled(record[0].data.tiene_tacografo);
+      btn_vincular_cliente.setDisabled(selected_record.data.tiene_cliente);
+      btn_vincular_tacografo.setDisabled(selected_record.data.tiene_tacografo);
 
       //enable update and delete in toolbar
       var top_toolbar = grid.query('toolbar[dock="top"]')[0];

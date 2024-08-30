@@ -116,7 +116,7 @@ Ext.define("MyApp.view.tacografo.TacografoView_Grid", {
       enableKeyEvents:true,
       emptyText:'Número de Serie' 
     }, // add a 50px space
-    {
+    /*{
       text: "Buscar",
       xtype: "button",
       scale: "medium",
@@ -124,7 +124,7 @@ Ext.define("MyApp.view.tacografo.TacografoView_Grid", {
         textDecoration: "none",
       },
       icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico',
-    }
+    }*/
   ],
 
   bbar: {

@@ -297,13 +297,14 @@ Ext.define(
         'window[title="Vincular un Tacógrafo a un Vehículo"] > tacografo_grid'
       )[0];
 
+      let selected_record = grid_vehiculo.getSelectionModel().getSelection()[0];
+
       Ext.Ajax.request({
         headers: { Token: "TacoLuServices2024**" },
         url: "api/3/tacografo_manager",
         method: "POST",
         params: {
-          id_vehiculo: grid_vehiculo.getSelectionModel().getSelection()[0].data
-            .id,
+          id_vehiculo: selected_record.data.id,
           id_tacografo: grid_tacografo.getSelectionModel().getSelection()[0]
             .data.id,
         },
@@ -311,25 +312,12 @@ Ext.define(
           Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
           Ext.StoreManager.lookup("vehiculo.VehiculoStore").load({
             callback: () => {
-              grid_vehiculo
-                .down(
-                  'toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]'
-                )
-                .setDisabled(true);
               //verificamos que el record selecionado esta OK
-              let record_updated = grid_vehiculo
-                .getSelectionModel()
-                .getSelection()[0].data;
-              if (
-                record_updated.tiene_cliente &&
-                record_updated.tiene_tacografo
-              ) {
-                grid_vehiculo
-                  .up("window")
-                  .down('button[text="Siguiente"]')
-                  .setDisabled(false);
-              }
-              //if(record_updated.tiene_cliente && record_updated.tiene_tacografo)
+              grid_vehiculo.fireEvent(
+                "selectionchange",
+                grid_vehiculo.getSelectionModel(),
+                [selected_record]
+              );
             },
           });
           Ext.StoreManager.lookup("cliente.ClienteStore").load();
@@ -355,13 +343,14 @@ Ext.define(
         'window[title="Vincular un Cliente a un Vehículo"] > cliente_grid'
       )[0];
 
+      let selected_record = grid_vehiculo.getSelectionModel().getSelection()[0];
+
       Ext.Ajax.request({
         headers: { Token: "TacoLuServices2024**" },
         url: "api/3/cliente_manager",
         method: "POST",
         params: {
-          id_vehiculo: grid_vehiculo.getSelectionModel().getSelection()[0].data
-            .id,
+          id_vehiculo: selected_record.data.id,
           id_cliente: grid_cliente.getSelectionModel().getSelection()[0].data
             .codcliente,
         },
@@ -369,25 +358,12 @@ Ext.define(
           Ext.StoreManager.lookup("ordendetrabajo.OrdenDeTrabajoStore").load();
           Ext.StoreManager.lookup("vehiculo.VehiculoStore").load({
             callback: () => {
-              grid_vehiculo
-                .down(
-                  'toolbar[dock="bottom"] button[text="Vincular Tacógrafo"]'
-                )
-                .setDisabled(true);
               //verificamos que el record selecionado esta OK
-              let record_updated = grid_vehiculo
-                .getSelectionModel()
-                .getSelection()[0].data;
-              if (
-                record_updated.tiene_cliente &&
-                record_updated.tiene_tacografo
-              ) {
-                grid_vehiculo
-                  .up("window")
-                  .down('button[text="Siguiente"]')
-                  .setDisabled(false);
-              }
-              //if(record_updated.tiene_cliente && record_updated.tiene_tacografo)
+              grid_vehiculo.fireEvent(
+                "selectionchange",
+                grid_vehiculo.getSelectionModel(),
+                [selected_record]
+              );
             },
           });
           Ext.StoreManager.lookup("cliente.ClienteStore").load();

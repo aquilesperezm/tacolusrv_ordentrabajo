@@ -109,6 +109,9 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
       "create_ordedetrabajo_win > vehiculo_grid"
     )[0];
 
+    var btn_vincular_cliente = grid_vehiculo.down('toolbar[dock="bottom"]').down('button[text="Vincular Cliente"]');
+    var btn_vincular_tacografo = btn_vincular_cliente.nextSibling('button');
+
     var selected_record = grid_vehiculo.getSelectionModel().getSelection()[0];
 
     var form = btn.up("form").getForm();
@@ -123,8 +126,20 @@ Ext.define("MyApp.controller.vehiculo.crud.VehiculoCRUDController", {
           id_vehiculo: selected_record.id,
         },
         success: function (form, action) {
-          Ext.data.StoreManager.lookup("vehiculo.VehiculoStore").loadPage(1);
-          btn.up("window").close();
+          Ext.data.StoreManager.lookup("vehiculo.VehiculoStore").load({
+            callback: (records,operation,success)=>{
+              
+              grid_vehiculo.focus();
+              grid_vehiculo.getSelectionModel().select(Ext.Array.indexOf(records,selected_record));
+             // console.log(selected_record)
+
+              grid_vehiculo.fireEvent('selectionchange',grid_vehiculo.getSelectionModel(),[selected_record]);
+
+              btn.up("window").close();
+
+            }
+          });
+          
 
           //Ext.Msg.alert('Success', action.result.msg);
         },
