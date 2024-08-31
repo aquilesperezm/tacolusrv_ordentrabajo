@@ -67,17 +67,16 @@ class API_TacografoManager extends ApiController
 
             if ($flag_tacografos_disponibles && empty($criteria_str))
                 $tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
-            else
-                {
-                    //$tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
-                    $tacografos = DBQuery::table('tacografos')->where(
-                        [
-                            Where::orLike('numero_serie', $criteria_str),
-                            Where::eq('id_vehiculo', Null)
-                        ]
-                    )->get();
-                }
-                
+            else {
+                //$tacografos = DbQuery::table('tacografos')->whereEq('id_vehiculo', Null)->get();
+                $tacografos = DBQuery::table('tacografos')->where(
+                    [
+                        Where::orLike('numero_serie', $criteria_str),
+                        Where::eq('id_vehiculo', Null)
+                    ]
+                )->get();
+            }
+
             foreach ($tacografos as $tacografo) {
                 $item = (array) $tacografo;
 
@@ -101,11 +100,24 @@ class API_TacografoManager extends ApiController
 
             if (isset($_POST['action'])) $action = $_POST['action'];
 
-            if ($action != 'create' && $action  != 'update' && $action != 'delete') {
+            // Vinculate or Update Tacografo relationship with vehicle
+            if ($action == 'vinculate') {
 
                 $id_tacografo = $_POST['id_tacografo'];
                 $id_vehiculo = $_POST['id_vehiculo'];
 
+
+                //verificamos que el tacografo que entra no tiene ninguna relacion con algun vehiculo
+                $tacografos_activos = DbQuery::table('tacografos')->whereEq('id_vehiculo', $id_vehiculo)->get();
+                //var_dump($tacografos);
+                foreach ($tacografos_activos as $taco) {
+                    
+                    $tacografo = new Tacografo();
+                    $tacografo = $tacografo->get($taco['id']);
+                    $tacografo->id_vehiculo = Null;
+                    $tacografo->save();
+                }
+                
                 $tacografo = new Tacografo();
                 $tacografo = $tacografo->get($id_tacografo);
 
@@ -113,20 +125,20 @@ class API_TacografoManager extends ApiController
                 $tacografo->save();
 
                 $this->response->setStatusCode(200);
-                $this->response->setContent(json_encode(['success' => True]));
-            } 
-            else if ($action == 'create' || $action == 'update') {
+                $this->response->setContent(json_encode(['success' => True, 'action' => 'vinculate']));
+            } else if ($action == 'create' || $action == 'update') {
 
                 $tacografo = new Tacografo();
-                if($action == 'create') $tacografo = new Tacografo(); else
+                if ($action == 'create') $tacografo = new Tacografo();
+                else
                 if ($action == 'update') $tacografo = $tacografo->get($_POST['id_tacografo']);
 
                 $numero_serie = $_POST['numero_serie'];
                 $id_modelo = $_POST['id_modelo'];
                 $id_categoria = $_POST['id_categoria'];
-                
+
                 $id_vehiculo_matricula = (strlen($_POST['id_vehiculo']) == 0) ? Null : $_POST['id_vehiculo'];
-                
+
                 $escala_velocidad = $_POST['escala_velocidad'];
 
                 $fecha_fabricacion = (strlen($_POST['fecha_fabricacion']) == 0) ? Null : $_POST['fecha_fabricacion'];
@@ -154,30 +166,25 @@ class API_TacografoManager extends ApiController
                 $success = $tacografo->save();
                 if ($success) {
                     $this->response->setStatusCode(200);
-                    if($action == 'create')
-                    $this->response->setContent(json_encode(['success' => True, 'action'=>'create']));
-                    else if($action == 'update') $this->response->setContent(json_encode(['success' => True,'action'=>'update']));
-
+                    if ($action == 'create')
+                        $this->response->setContent(json_encode(['success' => True, 'action' => 'create']));
+                    else if ($action == 'update') $this->response->setContent(json_encode(['success' => True, 'action' => 'update']));
                 } else {
                     $this->response->setStatusCode(400);
                     $this->response->setContent(json_encode(['success' => False]));
                 }
-            } else if($action == 'delete'){
+            } else if ($action == 'delete') {
 
                 $tacografo = new Tacografo();
                 $ids = json_decode($_POST['ids']);
-                foreach($ids as $id){
-                   $tacografo = $tacografo->get($id);
-                   $tacografo->delete();
+                foreach ($ids as $id) {
+                    $tacografo = $tacografo->get($id);
+                    $tacografo->delete();
                 }
 
                 $this->response->setStatusCode(200);
-                $this->response->setContent(json_encode(['success' => True, 'action'=>'delete']));
-                
-
+                $this->response->setContent(json_encode(['success' => True, 'action' => 'delete']));
             }
-
-
         } else if (isset($_GET['action'])) {
             if ($_GET['action'] == 'get-all-modelos') {
 

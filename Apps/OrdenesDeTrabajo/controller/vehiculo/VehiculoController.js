@@ -47,9 +47,8 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
     var btn_vincular_cliente = toolbar_bottom_grid.query(
       'button[text="Vincular Cliente"]'
     )[0];
-    var btn_vincular_tacografo = toolbar_bottom_grid.query(
-      'button[text="Vincular Tacógrafo"]'
-    )[0];
+
+    var btn_vincular_tacografo = Ext.getCmp('btn_vincular_tacografo');
 
     //vehiculos_sm = cmp.getSelectionModel();
 
@@ -65,7 +64,10 @@ Ext.define("MyApp.controller.vehiculo.VehiculoController", {
       );
 
       btn_vincular_cliente.setDisabled(selected_record.data.tiene_cliente);
-      btn_vincular_tacografo.setDisabled(selected_record.data.tiene_tacografo);
+      if (selected_record.data.tiene_tacografo)
+        btn_vincular_tacografo.setText("Actualizar Tacógrafo");
+      else btn_vincular_tacografo.setText("Vincular Tacógrafo");
+      //btn_vincular_tacografo.setDisabled(selected_record.data.tiene_tacografo);
 
       //enable update and delete in toolbar
       var top_toolbar = grid.query('toolbar[dock="top"]')[0];
