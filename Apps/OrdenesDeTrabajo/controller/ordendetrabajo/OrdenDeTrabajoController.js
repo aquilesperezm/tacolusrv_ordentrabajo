@@ -77,7 +77,7 @@ Ext.define("MyApp.controller.ordendetrabajo.OrdenDeTrabajoController", {
                 .getSelectionModel()
                 .getSelection()[0];
 
-              console.log(selected_record);
+             // console.log(selected_record);
 
               Ext.StoreManager.lookup(
                 "tipointervencion.TipoIntervencionByIDOrdenStore"

@@ -67,6 +67,7 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
           {
             xtype: "button",
             text: "Vincular Cliente",
+            id:'btn_vincular_cliente',
             scale: "medium",
             style: {
               textDecoration: "none",
@@ -83,7 +84,8 @@ Ext.define("MyApp.view.ordendetrabajo.form.CreateOrdenDeTrabajoView_Window", {
             },
             icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/add-location.ico",
             text: "Vincular Tacógrafo",
-            disabled: true,
+            id:'btn_vincular_tacografo',
+            //disabled: true,
             style: {
               textDecoration: "none",
             },

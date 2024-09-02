@@ -94,6 +94,17 @@ Ext.define("MyApp.view.vehiculo.VehiculoView_Grid", {
         textDecoration: "none",
       },
       icon:'Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/delete.ico',
+    },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },{
+      text: "Detalles",
+      id:'ShowDetails_Vehicle',
+      xtype: "button",
+      //hidden:true,
+      scale: "medium",
+      disabled:true,
+      style: {
+        textDecoration: "none",
+      },
+      icon: "Plugins/OrdenDeTrabajo/Assets/CSS/Extjs/icons/search.ico",
     },{ xtype: "tbspacer" },{xtype:'tbseparator'},{ xtype: "tbspacer" },
     {
       text: "Imprimir",

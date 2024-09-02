@@ -27,10 +27,10 @@ Ext.define(
         },
 
       // Vinculate Tachograph
-      'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Tacógrafo"]':
-        {
-          click: "OnClickButton_VincularTacografo",
-        },
+      //'window[title="Adicionar una nueva Orden de Trabajo"] > grid > toolbar[dock="bottom"] > button[text="Vincular Tacógrafo"]':
+      "#btn_vincular_tacografo": {
+        click: "OnClickButton_VincularTacografo",
+      },
 
       'window[title="Vincular un Tacógrafo a un Vehículo"] > grid': {
         selectionchange: "onSelectionChange_GridVincularTacografo",
@@ -304,6 +304,7 @@ Ext.define(
         url: "api/3/tacografo_manager",
         method: "POST",
         params: {
+          action:'vinculate',
           id_vehiculo: selected_record.data.id,
           id_tacografo: grid_tacografo.getSelectionModel().getSelection()[0]
             .data.id,

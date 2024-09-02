@@ -29,6 +29,7 @@ Ext.define("MyApp.model.vehiculo.VehiculoModel", {
 
     { name: "tiene_tacografo", type: "bool" },
     { name: "tiene_tacografo_str", type: "string" },
+    { name: "num_serie_tacografo", type: "string" },
 
     { name: "logged_user", type: "string" },
     {
