@@ -60,10 +60,13 @@ Ext.define("MyApp.view.vehiculo.form.CreateVehiculoView_Window", {
               displayField: "nombre",
               valueField: "codcliente",
               scrollable: true,
+              queryParam:'criteria',
               allQuery: "all_data",
               // allowBlank:false,
               name: "codcliente",
               columnWidth: 0.7,
+              pageSize:50,
+              emptyText:'Código CIF/NIF, Nombre, Email'
             },
             {
               xtype: "container",
