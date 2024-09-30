@@ -155,10 +155,17 @@ class API_OrdenDeTrabajo extends ApiController
                     $ixt->save();
                 }
 
+                $fields = [];
+                $fields['numero_orden'] = $no_orden;
+                $fields['fecha_orden'] = $fecha_orden->format('Y-m-d');
+                $fields['id_vehiculo'] = $id_vehiculo;
+                $fields['id_tacografo'] = $tacografos[0]['id'];
+
+
                 if ($save_ordentrabajo) {
                     $this->response->setStatusCode(200);
                     $this->response->setContent(json_encode(['success' => true, 'action' => 'create']));
-                } else $this->response->setContent(json_encode(['success' => false]));
+                } else $this->response->setContent(json_encode(['success' => false, 'action' => 'create', 'msg'=>'Error al crear la orden de trabajo', 'logs'=>json_encode($fields)]));
 
                 //update 
             } else if ($action == 'update') {
