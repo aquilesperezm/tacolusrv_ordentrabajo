@@ -145,6 +145,7 @@ Ext.define(
         },
         success: function (response, opts) {
           let response_server = Ext.decode(response.responseText);
+          console.log(response_server);
           if (response_server.success) {
             Ext.StoreManager.lookup(
               "ordendetrabajo.OrdenDeTrabajoStore"
@@ -154,6 +155,7 @@ Ext.define(
             btn.up("window").close();
             // Ext.getCmp("CardPanel_AddOrden").up("window").close();
           } else {
+           
             Ext.Msg.alert(
               "Error",
               "Ha existido un problema al crear la orden, contacte al administrador del sistema"
